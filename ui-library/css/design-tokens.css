@@ -1,0 +1,122 @@
+/* ============================================================
+   DESIGN TOKENS — Amazon-inspired palette
+   Single source of truth for the shop's visual language.
+   Every component file reads from these variables — never
+   hard-code a color, font-size, or spacing value elsewhere.
+   ============================================================ */
+
+:root {
+  /* ---------- Color: brand (Amazon-style navy + orange/yellow) ---------- */
+  --color-primary-900: #0F1111;   /* near-black — footer bg              */
+  --color-primary-700: #131921;   /* header dark navy — navbar top bar   */
+  --color-primary-500: #232F3E;   /* secondary navy — navbar bottom bar  */
+  --color-primary-100: #EAEDED;   /* light gray section bg, filter chips */
+
+  --color-accent-600: #E88A00;    /* orange, pressed                     */
+  --color-accent-500: #FF9900;    /* Amazon orange — search btn, ribbons */
+  --color-accent-100: #FFF3E0;    /* orange tint — badge/focus backgrounds*/
+
+  --color-cta-600: #F7CA00;       /* yellow, pressed — Add to Cart hover */
+  --color-cta-500: #FFD814;       /* yellow — primary "Add to Cart" CTA  */
+  --color-cta2-600: #FA8900;      /* orange, pressed — Buy Now hover     */
+  --color-cta2-500: #FFA41C;      /* orange-yellow — "Buy Now" CTA       */
+
+  --color-link-600: #C7511F;      /* link hover (orange-red)             */
+  --color-link-500: #007185;      /* teal — links, "See all reviews"     */
+
+  /* ---------- Color: feedback ---------- */
+  --color-success-600: #005A00;
+  --color-success-500: #007600;   /* "In Stock" text                     */
+  --color-success-100: #DEF2D6;
+
+  --color-danger-600: #941C00;
+  --color-danger-500: #B12704;    /* deal price red, error text          */
+  --color-danger-100: #FBE0DC;
+
+  --color-warning-600: #C77700;
+  --color-warning-500: #FFA41C;   /* star ratings                        */
+  --color-warning-100: #FEF3D8;
+
+  --color-info-600: #005A66;
+  --color-info-500: #007185;      /* same teal as links, used for info   */
+  --color-info-100: #D9F0F3;
+
+  /* ---------- Color: neutrals ---------- */
+  --color-bg: #FFFFFF;
+  --color-surface: #FFFFFF;
+  --color-border: #D5D9D9;
+  --color-border-strong: #888C8C;
+  --color-text-muted: #565959;
+  --color-text-subtle: #0F1111;
+  --color-text: #0F1111;
+  --color-disabled-bg: #F0F2F2;
+  --color-disabled-text: #999999;
+
+  /* ---------- Typography ---------- */
+  /* Amazon Ember is proprietary and unavailable — this system
+     stack is the closest free equivalent and needs no font
+     download, matching Amazon's plain, functional feel. */
+  --font-heading: -apple-system, 'Segoe UI', Roboto, Arial, Helvetica, sans-serif;
+  --font-body: -apple-system, 'Segoe UI', Roboto, Arial, Helvetica, sans-serif;
+
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-base: 1rem;
+  --fs-md: 1.125rem;
+  --fs-lg: 1.25rem;
+  --fs-xl: 1.5rem;
+  --fs-2xl: 1.875rem;
+  --fs-3xl: 2.25rem;
+  --fs-4xl: 3rem;
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 700;   /* Amazon headings read as bold, not semibold */
+  --fw-bold: 700;
+
+  --lh-tight: 1.25;
+  --lh-normal: 1.4;     /* Amazon's body copy runs tighter than most sites */
+  --lh-relaxed: 1.6;
+
+  /* ---------- Spacing (4px base unit) ---------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  /* ---------- Radius & elevation ---------- */
+  /* Amazon's UI is squarer than most modern sites — small radii only */
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 1px 2px rgba(15, 17, 17, 0.15);
+  --shadow-md: 0 2px 5px rgba(15, 17, 17, 0.15);
+  --shadow-lg: 0 8px 20px rgba(15, 17, 17, 0.2);
+
+  /* ---------- Motion ---------- */
+  --transition-fast: 120ms ease;
+  --transition-base: 200ms ease;
+
+  /* ---------- Breakpoints (reference only — see below) ---------- */
+  /*
+    --bp-sm: 576px;    small phones → large phones
+    --bp-md: 768px;    tablets
+    --bp-lg: 992px;    small laptops
+    --bp-xl: 1200px;   desktops
+  */
+
+  /* ---------- Layout ---------- */
+  --container-max: 1200px;
+  --z-navbar: 100;
+  --z-modal-backdrop: 900;
+  --z-modal: 1000;
+  --z-toast: 1100;
+}
