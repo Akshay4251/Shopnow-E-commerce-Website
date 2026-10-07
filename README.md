@@ -50,37 +50,6 @@ The application uses an **offline-first hybrid data strategy** combining MockAPI
 
 ---
 
-## ✉️ EmailJS Integration & Configuration
-
-Automated emails are handled via EmailJS SDK for both Support Tickets and Password Reset recovery.
-
-### Configured Credentials (`common/js/contact.js` & `login.js`)
-```javascript
-const EMAILJS_CONFIG = {
-  publicKey: "6qvjKclv0jk3R-Sx2",
-  serviceId: "service_lexu2zj",
-  contactTemplateId: "template_9b28avm",     // Contact Us Confirmation Email
-  forgotPwTemplateId: "template_33zy1sm"     // Password Reset Email
-};
-```
-
-### Email Template Variables
-
-#### Contact Us Confirmation Email (`template_9b28avm`):
-- `{{to_name}}` / `{{from_name}}` – Customer's full name
-- `{{to_email}}` / `{{reply_to}}` – Customer's email address
-- `{{order_number}}` – Order reference number (or `N/A`)
-- `{{category}}` – Selected help topic
-- `{{message}}` – Customer's message text
-- `{{ticket_id}}` – Unique support reference (e.g. `TICKET-849201`)
-
-#### Password Reset Email (`template_33zy1sm`):
-- `{{to_email}}` / `{{user_email}}` – Registered account email
-- `{{to_name}}` – Username / email handle
-- `{{reset_url}}` – Account password recovery URL
-
----
-
 ## 🔑 Multi-Role Demo Credentials
 
 The login system (`common/html/login.html`) supports 4 distinct user roles with built-in auto-fill demo accounts:
