@@ -1,0 +1,286 @@
+/* ===================================================
+   SHOPNOW - REGISTER PAGE STYLES (FIGMA IDENTICAL MATCHING)
+   =================================================== */
+
+.register-page-wrapper {
+  padding: 60px 0 90px;
+  background-color: #f4f7fb;
+  min-height: calc(100vh - 180px);
+}
+
+.register-card-main {
+  background-color: #ffffff;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Left Side Hero Panel with Story image (2).png */
+.register-side-hero {
+  position: relative;
+  min-height: 680px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-radius: 24px 0 0 24px;
+}
+
+.register-hero-bg-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.register-hero-overlay {
+  position: relative;
+  z-index: 2;
+  padding: 44px 38px;
+  background: linear-gradient(180deg, rgba(8, 23, 38, 0.1) 0%, rgba(8, 23, 38, 0.45) 35%, rgba(8, 23, 38, 0.88) 70%, rgba(8, 23, 38, 0.98) 100%);
+  color: #ffffff;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hero-top-tag {
+  font-size: 0.8rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.register-hero-title {
+  font-size: 2.6rem;
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -0.5px;
+}
+
+.register-hero-desc {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.glass-icon-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-coral, #ff5338);
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+
+.register-feature-list span {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}
+
+.avatar-stack {
+  display: flex;
+  align-items: center;
+}
+
+.avatar-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid #081726;
+  object-fit: cover;
+  margin-left: -8px;
+}
+
+.avatar-img:first-child {
+  margin-left: 0;
+}
+
+/* Right Side Form Area */
+.register-form-area {
+  padding: 48px 44px;
+}
+
+.register-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+}
+
+/* Social Buttons */
+.btn-social-auth {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 50px;
+  padding: 11px 18px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+.btn-social-auth:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* Divider Line */
+.auth-divider-line {
+  position: relative;
+  text-align: center;
+  margin: 22px 0;
+}
+
+.auth-divider-line::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: #e2e8f0;
+}
+
+.auth-divider-line span {
+  position: relative;
+  background-color: #ffffff;
+  padding: 0 16px;
+  font-size: 0.825rem;
+  font-weight: 500;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Role Selection Pills */
+.role-pills-bar {
+  display: flex;
+  background-color: #f1f5f9;
+  border-radius: 50px;
+  padding: 5px;
+  gap: 4px;
+}
+
+.role-tab-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 10px 18px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.role-tab-btn:hover {
+  color: #1e293b;
+}
+
+.role-tab-btn.active {
+  background-color: var(--color-coral);
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(255, 83, 56, 0.3);
+}
+
+/* Custom Input Controls */
+.form-control-custom {
+  border-radius: 12px;
+  padding: 11px 16px;
+  border: 1px solid #cbd5e1;
+  font-size: 0.925rem;
+  color: #1e293b;
+  transition: all 0.2s ease;
+  background-color: #ffffff;
+}
+
+.form-control-custom:focus {
+  border-color: var(--color-coral);
+  box-shadow: 0 0 0 3px rgba(255, 83, 56, 0.15);
+  outline: none;
+}
+
+.extra-small {
+  font-size: 0.775rem;
+}
+
+.pw-toggle-icon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 0;
+  font-size: 1.1rem;
+}
+
+.pw-toggle-icon:hover {
+  color: var(--color-coral);
+}
+
+/* Solid Coral Red Register Button */
+.btn-coral-pill, .btn-coral-custom {
+  background-color: #ff5338 !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: 50px !important;
+  padding: 13px 28px !important;
+  border: none !important;
+  font-size: 0.95rem !important;
+  transition: all 0.25s ease !important;
+  box-shadow: 0 4px 14px rgba(255, 83, 56, 0.35) !important;
+}
+
+.btn-coral-pill:hover, .btn-coral-custom:hover {
+  background-color: #e0442b !important;
+  color: #ffffff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 83, 56, 0.45) !important;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 991.98px) {
+  .register-page-wrapper {
+    padding: 40px 0 60px;
+  }
+
+  .register-form-area {
+    padding: 32px 24px;
+  }
+
+  .register-title {
+    font-size: 1.85rem;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .role-tab-btn {
+    font-size: 0.775rem;
+    padding: 8px 10px;
+  }
+
+  .btn-social-auth {
+    font-size: 0.8rem;
+    padding: 10px 10px;
+  }
+}

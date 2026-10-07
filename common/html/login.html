@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Log in to ShopNow - Account Access</title>
+  <meta name="description" content="Access your ShopNow account. Supports Buyer, Seller Merchant, Delivery Fleet Agent, and System Admin roles." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Common CSS System -->
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/home.css" />
+  <link rel="stylesheet" href="../css/auth.css" />
+  <link rel="stylesheet" href="../css/login.css" />
+</head>
+<body>
+
+  <!-- ==================== MAIN LOGIN AREA ==================== -->
+  <main class="login-page-wrapper">
+    <div class="container">
+      <div class="row align-items-center g-5">
+
+        <!-- Left Column (Access Title & Headphones Recent Order Card) -->
+        <div class="col-lg-6">
+          <div class="login-left-content pe-lg-4">
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <i class="bi bi-stars text-coral fs-5"></i>
+              <span class="hero-tag-coral-text fw-bold">GOOD TO SEE YOU AGAIN</span>
+            </div>
+
+            <h1 class="login-left-title font-serif text-dark mb-3">Access your ShopNow account.</h1>
+            <p class="login-left-desc text-muted mb-4">
+              Buyers can continue shopping, sellers can manage listings, delivery agents can access routes, and authorized staff can open admin tools.
+            </p>
+
+            <!-- Recent Order Component Card (Product image (1).png) -->
+            <div class="recent-order-card shadow-sm mb-4">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="order-card-tag font-weight-600">Recent order</span>
+                <span class="badge badge-arriving">Arriving tomorrow</span>
+              </div>
+
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="order-product-thumb">
+                  <img src="https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_1_dtjolj.png" alt="QuietPro wireless headphones" class="img-fluid rounded-3" />
+                </div>
+                <div>
+                  <span class="product-brand-tag d-block">SONORA</span>
+                  <h6 class="product-title font-weight-700 mb-1">QuietPro wireless headphones</h6>
+                  <small class="text-muted">Order #SN-840291</small>
+                </div>
+              </div>
+
+              <!-- Shipping Progress Segments -->
+              <div class="shipping-progress-track d-flex gap-2">
+                <div class="progress-segment active"></div>
+                <div class="progress-segment active"></div>
+                <div class="progress-segment active"></div>
+                <div class="progress-segment"></div>
+              </div>
+            </div>
+
+            <!-- Verified Rating Row -->
+            <div class="d-flex align-items-center gap-2 text-muted small">
+              <div class="text-warning fs-6">
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+              </div>
+              <span class="fw-medium">4.8 average from 2.4M verified reviews</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column (White Login Card) -->
+        <div class="col-lg-6">
+          <div class="login-card-main shadow-lg">
+            <!-- Role Selection Tabs (4 Roles) -->
+            <div class="mb-3">
+              <div class="role-pills-bar four-roles" id="loginRoleBar">
+                <button type="button" class="role-tab-btn active" data-role="buyer">
+                  Buyer
+                </button>
+                <button type="button" class="role-tab-btn" data-role="seller">
+                  Seller
+                </button>
+                <button type="button" class="role-tab-btn" data-role="delivery">
+                  Delivery Agent
+                </button>
+                <button type="button" class="role-tab-btn" data-role="admin">
+                  Admin
+                </button>
+              </div>
+              <small class="text-muted extra-small d-block text-center mt-2">
+                Buyer is selected by default. Use the same email and password for your selected role.
+              </small>
+            </div>
+
+            <div class="login-card-header text-start mb-3">
+              <h2 class="login-card-title font-serif text-dark mb-1">Log in to ShopNow</h2>
+              <p class="text-muted small mb-0">Access your account with the email and password for your selected role.</p>
+            </div>
+
+            <!-- Role Access Callout Box -->
+            <div class="role-access-callout mb-4" id="roleDescBox">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <h6 class="fw-bold text-dark mb-0" id="roleDescTitle">Buyer access</h6>
+                <button type="button" class="btn btn-sm btn-link text-coral p-0 text-decoration-none fw-bold small" id="btnAutoFillDemo">Auto-fill demo</button>
+              </div>
+              <p class="text-muted small mb-1" id="roleDescText">
+                Continue shopping, track orders, and manage your favorites and saved addresses.
+              </p>
+              <small class="text-muted">
+                New buyer? <a href="register.html" class="text-coral fw-bold text-decoration-none">Create an account</a>
+              </small>
+            </div>
+
+            <!-- Alert Message Box -->
+            <div id="loginAlert" class="alert alert-dismissible fade show d-none mb-3" role="alert">
+              <span id="loginAlertText"></span>
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="figmaLoginForm" novalidate>
+              <input type="hidden" id="loginRoleInput" value="buyer" />
+
+              <!-- Email Field -->
+              <div class="mb-3 text-start">
+                <label class="form-label font-weight-600 small">Email</label>
+                <div class="input-capsule-group">
+                  <i class="bi bi-person input-capsule-icon"></i>
+                  <input type="email" class="form-control form-control-custom-icon" id="loginEmail" placeholder="Enter your email" required />
+                </div>
+              </div>
+
+              <!-- Password Field -->
+              <div class="mb-3 text-start">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <label class="form-label font-weight-600 small mb-0">Password</label>
+                  <a href="#" class="small text-coral fw-semibold text-decoration-none" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">Forgot password?</a>
+                </div>
+                <div class="input-capsule-group">
+                  <i class="bi bi-lock input-capsule-icon"></i>
+                  <input type="password" class="form-control form-control-custom-icon" id="loginPassword" placeholder="Enter your password" required />
+                  <button type="button" class="pw-toggle-icon" id="toggleLoginPw"><i class="bi bi-eye"></i></button>
+                </div>
+              </div>
+
+              <!-- Keep me signed in -->
+              <div class="form-check mb-4 text-start">
+                <input class="form-check-input" type="checkbox" id="keepLoggedIn" checked />
+                <label class="form-check-label text-muted small" for="keepLoggedIn">
+                  Keep me signed in on this device
+                </label>
+              </div>
+
+              <!-- Log in Submit Button -->
+              <button type="submit" class="btn btn-coral-pill w-100 py-3 mb-3">
+                Log in &rarr;
+              </button>
+            </form>
+
+            <!-- Create Account Link Capsule -->
+            <div class="create-account-callout text-center p-3 rounded-4 mb-3">
+              <a href="register.html" class="text-coral fw-semibold text-decoration-none small">
+                <i class="bi bi-person me-1"></i> Create an account for Buyer, Seller, or Delivery Agent
+              </a>
+            </div>
+
+            <p class="text-muted text-center extra-small mb-0">
+              <i class="bi bi-shield-lock me-1"></i> Secure, encrypted login protected by fraud monitoring.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- ==================== HAVING TROUBLE SIGNING IN BANNER ==================== -->
+  <section class="trouble-signing-section py-4">
+    <div class="container">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 text-center text-md-start">
+        <div>
+          <h6 class="fw-bold text-dark mb-1">Having trouble signing in?</h6>
+          <p class="text-muted small mb-0">Visit account support or chat with us anytime.</p>
+        </div>
+        <a href="contact.html" class="btn btn-outline-dark rounded-pill px-4 py-2 flex-shrink-0">
+          <i class="bi bi-headset me-2"></i> Get account help
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FORGOT PASSWORD MODAL (EMAILJS INTEGRATED) ==================== -->
+  <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 shadow-lg p-3 p-md-4">
+        <div class="modal-header border-0 pb-0">
+          <div>
+            <span class="hero-tag-coral-text fw-bold mb-1 d-block">ACCOUNT RECOVERY</span>
+            <h5 class="modal-title font-serif fw-bold text-dark fs-3" id="forgotPasswordModalLabel">Reset your password</h5>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p class="text-muted small mb-4">
+            Enter the email address associated with your ShopNow account. We'll send a password recovery email directly to your inbox via EmailJS.
+          </p>
+
+          <div id="forgotPasswordAlert" class="alert fade show d-none mb-3" role="alert">
+            <span id="forgotPasswordAlertText"></span>
+          </div>
+
+          <form id="forgotPasswordForm" novalidate>
+            <div class="mb-3 text-start">
+              <label class="form-label font-weight-600 small">Registered Email Address *</label>
+              <div class="input-capsule-group">
+                <i class="bi bi-envelope input-capsule-icon"></i>
+                <input type="email" class="form-control form-control-custom-icon" id="forgotEmail" placeholder="e.g. buyer@demo.com" required />
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-coral-pill w-100 py-3 mt-2" id="btnSendReset">
+              <i class="bi bi-send me-2"></i> Send Password Reset Email
+            </button>
+          </form>
+        </div>
+        <div class="modal-footer border-0 pt-0 text-center justify-content-center">
+          <small class="text-muted">Remembered your password? <a href="#" data-bs-dismiss="modal" class="text-coral fw-bold text-decoration-none">Back to Log In</a></small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- jQuery & Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <!-- Common JS System -->
+  <script src="../js/global.js"></script>
+  <script src="../js/login.js"></script>
+</body>
+</html>
