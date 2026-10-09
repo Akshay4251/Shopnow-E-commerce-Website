@@ -1,0 +1,40 @@
+{
+  "categories": [
+    {
+      "id": "womens",
+      "title": "Women's Fashion",
+      "subtitle": "Coat, dresses & top",
+      "image": "https://res.cloudinary.com/dpva4smxo/image/upload/v1791382195/Category_image_ngf5ah.png"
+    },
+    {
+      "id": "mens",
+      "title": "Men's Apparel",
+      "subtitle": "Tailoring & casualwear",
+      "image": "https://res.cloudinary.com/dpva4smxo/image/upload/v1791382194/Category_image_1_to3kzh.png"
+    },
+    {
+      "id": "tech",
+      "title": "Tech & Sound",
+      "subtitle": "Audio, headphones & desk",
+      "image": "https://res.cloudinary.com/dpva4smxo/image/upload/v1791382194/Category_image_2_f7jb8v.png"
+    },
+    {
+      "id": "home",
+      "title": "Modern Home",
+      "subtitle": "Lamps, cookware & decor",
+      "image": "https://res.cloudinary.com/dpva4smxo/image/upload/v1791382194/Category_image_3_he65nx.png"
+    },
+    {
+      "id": "beauty",
+      "title": "Beauty Edit",
+      "subtitle": "Serums & body",
+      "image": "https://res.cloudinary.com/dpva4smxo/image/upload/v1791382195/Category_image_4_xcruqj.png"
+    },
+    {
+      "id": "active",
+      "title": "Active Life",
+      "subtitle": "Gym, running & outdoors",
+      "image": "https://res.cloudinary.com/dpva4smxo/image/upload/v1791382195/Category_image_5_tkquqx.png"
+    }
+  ]
+}
