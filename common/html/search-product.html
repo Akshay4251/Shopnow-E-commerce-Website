@@ -1,0 +1,48 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo results · ShopNow</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="../css/search-common.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <!-- DEMO ONLY: stands in for your own header -->
+  <div class="bg-white border-bottom"><div class="container py-3" data-shopnow-search></div></div>
+
+  <!-- DEMO ONLY: shows how a results page uses ShopNow.search(). The real listing page is built by its own team. -->
+  <main class="container py-4">
+    <h1 class="h4 mb-1" id="heading">Results</h1>
+    <p class="text-muted" id="sub"></p>
+    <div class="row g-3" id="grid"></div>
+  </main>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/search-fake-api.js"></script>
+  <script src="../js/search-common.js"></script>
+  <script src="../js/search.js"></script>
+  <script>
+    $(function () {
+      var p = new URLSearchParams(location.search);
+      var q = p.get('q') || '', category = p.get('category') || '';
+      ShopNow.search({ q: q, category: category, sort: p.get('sort') || 'featured', page: p.get('page') || 1 })
+        .done(function (res) {
+          var what = q ? '“' + q + '”' : (category || 'all products');
+          $('#heading').text(res.total + ' result' + (res.total === 1 ? '' : 's') + ' for ' + what);
+          $('#sub').text(res.total ? 'Page ' + res.page + ' of ' + res.pages : 'Try a different search term.');
+          $('#grid').html(res.items.map(function (i) {
+            return '<div class="col-6 col-md-3"><div class="bg-white border rounded-3 p-3 h-100">' +
+              '<div class="text-muted small">' + ShopNow.esc(i.brand) + ' · ' + ShopNow.esc(i.category) + '</div>' +
+              '<div class="fw-semibold my-1">' + ShopNow.esc(i.name) + '</div>' +
+              '<div class="fs-5 fw-bold">$' + i.price + '</div>' +
+              '<div class="small text-muted">★ ' + i.rating + '</div></div></div>';
+          }).join(''));
+        })
+        .fail(function () { $('#heading').text('Could not load results.'); });
+    });
+  </script>
+</body>
+</html>

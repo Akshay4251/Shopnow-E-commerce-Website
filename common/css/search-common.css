@@ -1,0 +1,29 @@
+/* ShopNow common search bar (+ suggestions). Safe to load alongside any header design. */
+:root {
+  --orange: #ff5a36;
+  --orange-dark: #e84a27;
+  --navy: #0b1d33;
+  --muted: #6b7280;
+  --bg: #f3f4f6;
+  --peach: #fff5ec;
+  --border: #e5e7eb;
+}
+
+/* Search bar */
+.search-form { flex: 1; position: relative; }
+.search-form .form-control { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: .6rem 3rem .6rem 2.5rem; font-size: 13px; }
+.search-form .form-control:focus { border-color: var(--orange); box-shadow: 0 0 0 .2rem rgba(255,90,54,.15); background: #fff; }
+.search-form .bi-search { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); }
+.search-form .go { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); width: 36px; height: 30px; border: 0; border-radius: 8px; background: var(--orange); color: #fff; }
+
+.suggest { position: absolute; top: calc(100% + 8px); left: 0; right: 0; z-index: 1050; background: #fff; border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 12px 28px rgba(11,29,51,.14); max-height: 380px; overflow-y: auto; padding: 6px; }
+.suggest ul { list-style: none; margin: 0; padding: 0; }
+.suggest li { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 8px; cursor: pointer; font-size: 13px; }
+.suggest li i { color: var(--muted); font-size: 14px; width: 16px; flex: none; }
+.suggest li .t { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.suggest li small { color: var(--muted); font-size: 11px; }
+.suggest li.active, .suggest li:hover { background: var(--peach); }
+.suggest li.active i { color: var(--orange); }
+.suggest .sg-head { display: flex; justify-content: space-between; padding: 6px 10px 4px; font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.suggest .sg-clear { font-size: 11px; text-transform: none; letter-spacing: 0; }
+
