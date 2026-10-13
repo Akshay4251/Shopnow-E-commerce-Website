@@ -2510,4 +2510,94 @@
   margin-bottom: 14px;
 }
 
+/* ===================================================
+   BUYER PORTAL RESPONSIVE ENHANCEMENTS
+   =================================================== */
+
+/* Tablet Screens (<= 991.98px) */
+@media (max-width: 991.98px) {
+  .buyer-page-wrapper {
+    padding: 24px 0 50px;
+  }
+  .filters-sidebar-card {
+    margin-bottom: 24px;
+  }
+  .catalog-results-header {
+    margin-bottom: 18px;
+  }
+  .detail-gallery-thumbs {
+    flex-direction: row;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+  .cart-table-card {
+    margin-bottom: 24px;
+  }
+  .checkout-summary-card {
+    margin-top: 24px;
+  }
+}
+
+/* Mobile Screens (<= 767.98px) */
+@media (max-width: 767.98px) {
+  .catalog-product-card {
+    padding: 10px;
+    border-radius: 14px;
+  }
+  .catalog-product-name {
+    font-size: 0.85rem;
+    height: 2.4em;
+    line-height: 1.2;
+  }
+  .catalog-price-current {
+    font-size: 0.95rem;
+  }
+  .btn-catalog-cart {
+    font-size: 0.775rem;
+    padding: 8px 10px;
+  }
+  .catalog-wish-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 0.85rem;
+    top: 8px;
+    right: 8px;
+  }
+  .order-history-card {
+    padding: 16px;
+    border-radius: 14px;
+  }
+  .order-history-header {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 10px;
+  }
+  .dashboard-kpi-card {
+    padding: 16px;
+    border-radius: 14px;
+  }
+  .dashboard-kpi-number {
+    font-size: 1.65rem;
+  }
+  .checkout-step-card {
+    padding: 20px 16px;
+    border-radius: 14px;
+  }
+  .cart-item-row {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 12px;
+  }
+}
+
+/* Extra Small Phones (<= 480px) */
+@media (max-width: 479.98px) {
+  .catalog-product-thumb {
+    height: 150px;
+  }
+  .detail-main-img-box {
+    max-height: 300px;
+  }
+}
+
 

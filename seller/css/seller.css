@@ -1057,3 +1057,90 @@
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
+/* ===================================================
+   SELLER PORTAL RESPONSIVE ENHANCEMENTS
+   =================================================== */
+
+/* Tablet & Below (<= 991.98px) */
+@media (max-width: 991.98px) {
+  .seller-page-wrapper {
+    padding: 20px 0 40px;
+  }
+  .seller-hero-banner {
+    padding: 28px 24px;
+    border-radius: 16px;
+  }
+  .seller-hero-title {
+    font-size: 2rem;
+  }
+  .seller-hero-img-box {
+    margin-top: 20px;
+    max-height: 180px;
+  }
+  .seller-stats-strip {
+    padding: 20px;
+  }
+  .seller-nav-list {
+    gap: 18px;
+    padding: 0 8px;
+  }
+  .seller-nav-link {
+    font-size: 0.825rem;
+    padding: 12px 2px;
+  }
+}
+
+/* Mobile Screens (<= 767.98px) */
+@media (max-width: 767.98px) {
+  .seller-hero-banner {
+    padding: 22px 18px;
+  }
+  .seller-hero-title {
+    font-size: 1.65rem;
+  }
+  .seller-hero-sub {
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+  }
+  .seller-stats-strip {
+    padding: 16px;
+    border-radius: 14px;
+  }
+  .seller-stat-column {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 12px 0;
+  }
+  .seller-stat-column:last-child {
+    border-bottom: none;
+  }
+  .seller-stat-value {
+    font-size: 1.5rem;
+  }
+  .seller-section-title {
+    font-size: 1.35rem;
+  }
+  .seller-card-table {
+    border-radius: 14px;
+    margin-bottom: 24px;
+  }
+  .table-seller th,
+  .table-seller td {
+    padding: 10px 12px;
+    font-size: 0.825rem;
+  }
+  .seller-search-form {
+    display: none !important;
+  }
+  .seller-header-actions {
+    gap: 10px;
+  }
+  .seller-nav-list::-webkit-scrollbar {
+    height: 3px;
+  }
+  .seller-nav-list::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+  }
+}
+

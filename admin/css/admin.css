@@ -500,10 +500,12 @@ body.admin-body {
   background-color: #fff9f8;
 }
 
-/* Mobile Sidebar Toggle */
+/* Mobile Sidebar Toggle & Responsive Rules */
 @media (max-width: 991.98px) {
   .admin-sidebar {
     transform: translateX(-100%);
+    z-index: 1050;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
   }
 
   .admin-sidebar.show {
@@ -517,5 +519,24 @@ body.admin-body {
 
   .admin-content {
     padding: 18px 16px 40px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .admin-kpi-card {
+    padding: 16px;
+    border-radius: 14px;
+    margin-bottom: 12px;
+  }
+  .admin-kpi-val {
+    font-size: 1.5rem;
+  }
+  .admin-table-card {
+    border-radius: 14px;
+  }
+  .table-admin th,
+  .table-admin td {
+    padding: 10px 12px;
+    font-size: 0.8rem;
   }
 }

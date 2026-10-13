@@ -504,4 +504,52 @@
     width: 100%;
     margin-top: 12px;
   }
+  .brand-logo-text {
+    font-size: 1.35rem;
+  }
+  .brand-logo-icon {
+    width: 34px;
+    height: 34px;
+    font-size: 1.1rem;
+    border-radius: 10px;
+  }
+  .header-icon-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 1.1rem;
+  }
+  .header-account-pill {
+    padding: 3px 8px;
+  }
+  .account-user-name {
+    font-size: 0.8rem;
+  }
+  .footer-col-heading {
+    margin-bottom: 12px;
+    margin-top: 16px;
+  }
+  .footer-bottom-divider {
+    margin-top: 32px;
+    padding-top: 20px;
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .header-actions-group {
+    gap: 8px;
+  }
+  .header-search-input {
+    height: 40px;
+    font-size: 16px !important;
+  }
+  .header-search-icon {
+    left: 14px;
+    font-size: 0.85rem;
+  }
+  .category-nav-link {
+    font-size: 0.8rem;
+    padding: 6px 4px;
+  }
 }

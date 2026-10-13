@@ -562,10 +562,12 @@ body.delivery-body {
   box-shadow: 0 0 0 3px rgba(255, 83, 56, 0.25);
 }
 
-/* Mobile Sidebar Toggle */
+/* Mobile Sidebar Toggle & Responsive Rules */
 @media (max-width: 991.98px) {
   .delivery-sidebar {
     transform: translateX(-100%);
+    z-index: 1050;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
   }
 
   .delivery-sidebar.show {
@@ -579,5 +581,28 @@ body.delivery-body {
 
   .delivery-content {
     padding: 20px 16px 40px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .delivery-stat-card {
+    padding: 16px;
+    border-radius: 14px;
+    margin-bottom: 12px;
+  }
+  .delivery-stat-val {
+    font-size: 1.5rem;
+  }
+  .delivery-table-card {
+    border-radius: 14px;
+  }
+  .table-delivery th,
+  .table-delivery td {
+    padding: 10px 12px;
+    font-size: 0.8rem;
+  }
+  .delivery-order-card {
+    padding: 16px;
+    border-radius: 14px;
   }
 }
