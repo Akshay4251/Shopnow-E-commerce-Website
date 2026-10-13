@@ -671,6 +671,16 @@ $(document).ready(function () {
         }
       }
     });
+
+    if (result.length === 0) {
+      let prods = JSON.parse(localStorage.getItem(STORAGE_SELLER_PRODUCTS) || '[]');
+      if (!prods || prods.length === 0) {
+        initSellerProducts();
+        prods = JSON.parse(localStorage.getItem(STORAGE_SELLER_PRODUCTS) || '[]');
+      }
+      return prods || [];
+    }
+
     return result;
   }
 
@@ -996,14 +1006,23 @@ $(document).ready(function () {
   // ===================================================
   if ($('#sellerProductsTableBody').length) {
     let allProducts = getSellerProducts();
+    let currentProdPage = 1;
+    const prodPageSize = 5;
+    let filteredProducts = allProducts;
 
-    function renderProductsTable(prods) {
+    function renderProductsTable(prods, page) {
+      if (prods !== undefined) filteredProducts = prods;
+      if (page !== undefined) currentProdPage = page;
+
+      const pInfo = ShopNowCommon.paginate(filteredProducts, currentProdPage, prodPageSize);
+      currentProdPage = pInfo.currentPage;
+
       let html = '';
-      if (prods.length === 0) {
-        html = `<tr><td colspan="8" class="text-center py-5 text-muted"><p class="mb-2">No products found for your store.</p><a href="add-product.html" class="btn btn-coral-seller btn-sm"><i class="bi bi-plus-lg"></i> Add your first product</a></td></tr>`;
+      if (pInfo.pageItems.length === 0) {
+        html = `<tr><td colspan="8" class="text-center py-5 text-muted"><p class="mb-2">No products found matching criteria.</p><a href="add-product.html" class="btn btn-coral-seller btn-sm"><i class="bi bi-plus-lg"></i> Add a product</a></td></tr>`;
       } else {
-        prods.forEach(p => {
-          const isLow = p.stock <= 5;
+        pInfo.pageItems.forEach(p => {
+          const isLow = Number(p.stock) <= 5;
           const fallbackImg = 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_2_k3wqpn.png';
           const imgSrc = p.image || (Array.isArray(p.images) && p.images[0]) || fallbackImg;
           html += `
@@ -1022,7 +1041,7 @@ $(document).ready(function () {
               </td>
               <td><code class="text-secondary small fw-bold">${p.sku}</code></td>
               <td><span class="badge bg-light text-dark border extra-small">${p.category}</span></td>
-              <td><strong class="text-dark">Rs ${Number(p.price).toLocaleString('en-IN')}</strong></td>
+              <td><strong class="text-dark">₹ ${Number(p.price).toLocaleString('en-IN')}</strong></td>
               <td>
                 <span class="${isLow ? 'text-danger fw-bold' : 'text-dark font-monospace'}">${p.stock}</span>
                 ${isLow ? '<span class="badge bg-danger-subtle text-danger ms-1 extra-small">Low</span>' : ''}
@@ -1039,10 +1058,51 @@ $(document).ready(function () {
         });
       }
       $('#sellerProductsTableBody').html(html);
-      $('#sellerProductsCountHeader').text(`Showing 1-${prods.length} of ${allProducts.length} products`);
+
+      if (filteredProducts.length === 0) {
+        $('#sellerProductsCountHeader').text(`Showing 0 of ${allProducts.length} products`);
+      } else {
+        $('#sellerProductsCountHeader').text(`Showing ${pInfo.startIndex + 1}-${pInfo.endIndex} of ${filteredProducts.length} products`);
+      }
+
+      ShopNowCommon.renderPaginationUI({
+        wrapperSelector: '#sellerProductsPaginationWrapper',
+        infoSelector: '#sellerProductsPaginationInfo',
+        listSelector: '#sellerProductsPaginationList',
+        currentPage: pInfo.currentPage,
+        totalPages: pInfo.totalPages,
+        totalItems: pInfo.totalItems,
+        startIndex: pInfo.startIndex,
+        endIndex: pInfo.endIndex,
+        itemLabel: 'products',
+        onPageChange: function (newPage) {
+          renderProductsTable(filteredProducts, newPage);
+        }
+      });
     }
 
-    renderProductsTable(allProducts);
+    function applyProductFilters() {
+      const q = ($('#sellerProductSearch').val() || '').toLowerCase().trim();
+      const cat = $('#filterCategory').val() || 'all';
+      const stock = $('#filterStock').val() || 'all';
+      const status = $('#filterStatus').val() || 'all';
+
+      filteredProducts = allProducts.filter(p => {
+        const titleStr = (p.title || '').toLowerCase();
+        const skuStr = (p.sku || '').toLowerCase();
+        const matchesQ = !q || titleStr.includes(q) || skuStr.includes(q);
+        const matchesCat = (cat === 'all') || (p.category === cat);
+        let matchesStock = true;
+        if (stock === 'in') matchesStock = Number(p.stock) > 5;
+        else if (stock === 'low') matchesStock = Number(p.stock) <= 5;
+        const matchesStatus = (status === 'all') || ((p.status || '').toLowerCase() === status.toLowerCase());
+        return matchesQ && matchesCat && matchesStock && matchesStatus;
+      });
+
+      renderProductsTable(filteredProducts, 1);
+    }
+
+    renderProductsTable(allProducts, 1);
 
     // Sync seller products from MockAPI to ensure newly registered or restored accounts see their products
     async function syncProductsFromMockAPI() {
@@ -1078,7 +1138,7 @@ $(document).ready(function () {
               safeStorageSet(STORAGE_SELLER_PRODUCTS, sellerProds);
               safeStorageSet('shopnow_products', catalogProds);
               allProducts = getSellerProducts();
-              renderProductsTable(allProducts);
+              applyProductFilters();
             }
           }
         }
@@ -1088,12 +1148,9 @@ $(document).ready(function () {
     }
     syncProductsFromMockAPI();
 
-    // Search filter
-    $('#sellerProductSearch').on('input', function () {
-      const q = $(this).val().toLowerCase().trim();
-      const filtered = allProducts.filter(p => p.title.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q));
-      renderProductsTable(filtered);
-    });
+    // Search and Dropdown filters
+    $('#sellerProductSearch').on('input', applyProductFilters);
+    $('#filterCategory, #filterStock, #filterStatus').on('change', applyProductFilters);
 
     // Delete Modal trigger
     let deleteTargetId = null;
@@ -1107,8 +1164,17 @@ $(document).ready(function () {
     $('#btnConfirmDeleteProduct').on('click', function () {
       if (deleteTargetId) {
         allProducts = allProducts.filter(p => p.id != deleteTargetId);
-        localStorage.setItem(STORAGE_SELLER_PRODUCTS, JSON.stringify(allProducts));
-        renderProductsTable(allProducts);
+        safeStorageSet(STORAGE_SELLER_PRODUCTS, allProducts);
+        let catalogProds = JSON.parse(localStorage.getItem('shopnow_products') || '[]');
+        catalogProds = catalogProds.filter(p => p.id != deleteTargetId);
+        safeStorageSet('shopnow_products', catalogProds);
+
+        // Non-blocking sync deletion with MockAPI
+        try {
+          fetch(`https://6ac630bdbea0e72cf5c8ada0.mockapi.io/api/v1/products/${deleteTargetId}`, { method: 'DELETE' }).catch(() => {});
+        } catch (e) {}
+
+        applyProductFilters();
         bootstrap.Modal.getInstance(document.getElementById('deleteProductModal')).hide();
         if (typeof ShopNowCommon !== 'undefined') {
           ShopNowCommon.showToast('Product deleted from catalogue.', 'info');
@@ -1477,6 +1543,10 @@ $(document).ready(function () {
   // ===================================================
   if ($('#inventoryTableBody').length) {
     let prods = getSellerProducts();
+    let currentInventoryPage = 1;
+    const inventoryPageSize = 5;
+    let activeInventoryTab = 'all';
+    let filteredInventory = prods;
 
     function updateInventoryKpi(items) {
       const lowCount = items.filter(p => Number(p.stock) > 0 && Number(p.stock) <= 5).length;
@@ -1488,12 +1558,18 @@ $(document).ready(function () {
       $('#kpiInventoryOutOfStock').text(outCount);
     }
 
-    function renderInventoryTable(items) {
+    function renderInventoryTable(items, page) {
+      if (items !== undefined) filteredInventory = items;
+      if (page !== undefined) currentInventoryPage = page;
+
+      const pInfo = ShopNowCommon.paginate(filteredInventory, currentInventoryPage, inventoryPageSize);
+      currentInventoryPage = pInfo.currentPage;
+
       let html = '';
-      if (items.length === 0) {
-        html = '<tr><td colspan="6" class="text-center py-4 text-muted">No inventory records found for your store.</td></tr>';
+      if (pInfo.pageItems.length === 0) {
+        html = '<tr><td colspan="6" class="text-center py-4 text-muted">No inventory records found matching criteria.</td></tr>';
       } else {
-        items.forEach(p => {
+        pInfo.pageItems.forEach(p => {
           const isLow = Number(p.stock) <= 5 && Number(p.stock) > 0;
           const isOut = Number(p.stock) <= 0;
           const statusLabel = isOut ? 'Out of stock' : (isLow ? 'Low stock' : 'In stock');
@@ -1513,7 +1589,7 @@ $(document).ready(function () {
                 </div>
               </td>
               <td><code class="text-secondary small">${p.sku}</code></td>
-              <td><strong>Rs ${Number(p.price).toLocaleString('en-IN')}</strong></td>
+              <td><strong>₹ ${Number(p.price).toLocaleString('en-IN')}</strong></td>
               <td><span class="fw-bold fs-6 ${isLow || isOut ? 'text-danger' : 'text-dark'}">${p.stock} units</span></td>
               <td><span class="status-badge ${statusClass}">${statusLabel}</span></td>
               <td>
@@ -1529,10 +1605,50 @@ $(document).ready(function () {
         });
       }
       $('#inventoryTableBody').html(html);
+
+      ShopNowCommon.renderPaginationUI({
+        wrapperSelector: '#sellerInventoryPaginationWrapper',
+        infoSelector: '#sellerInventoryPaginationInfo',
+        listSelector: '#sellerInventoryPaginationList',
+        currentPage: pInfo.currentPage,
+        totalPages: pInfo.totalPages,
+        totalItems: pInfo.totalItems,
+        startIndex: pInfo.startIndex,
+        endIndex: pInfo.endIndex,
+        itemLabel: 'records',
+        onPageChange: function (newPage) {
+          renderInventoryTable(filteredInventory, newPage);
+        }
+      });
+    }
+
+    function applyInventoryFilters() {
+      const q = ($('#sellerInventorySearch').val() || '').toLowerCase().trim();
+      const sortVal = $('#sellerInventorySort').val() || 'default';
+
+      let list = prods.filter(p => {
+        let matchesTab = true;
+        if (activeInventoryTab === 'low') matchesTab = Number(p.stock) <= 5 && Number(p.stock) > 0;
+        else if (activeInventoryTab === 'in') matchesTab = Number(p.stock) > 5;
+        else if (activeInventoryTab === 'out') matchesTab = Number(p.stock) <= 0;
+
+        const matchesQ = !q || (p.title || '').toLowerCase().includes(q) || (p.sku || '').toLowerCase().includes(q);
+        return matchesTab && matchesQ;
+      });
+
+      if (sortVal === 'stock-asc') {
+        list.sort((a, b) => Number(a.stock) - Number(b.stock));
+      } else if (sortVal === 'stock-desc') {
+        list.sort((a, b) => Number(b.stock) - Number(a.stock));
+      } else if (sortVal === 'title-asc') {
+        list.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+      }
+
+      renderInventoryTable(list, 1);
     }
 
     updateInventoryKpi(prods);
-    renderInventoryTable(prods);
+    renderInventoryTable(prods, 1);
 
     // Modal Stock Update
     let currentStockProdId = null;
@@ -1565,7 +1681,7 @@ $(document).ready(function () {
           }
 
           updateInventoryKpi(prods);
-          renderInventoryTable(prods);
+          applyInventoryFilters();
           bootstrap.Modal.getInstance(document.getElementById('updateStockModal')).hide();
           if (typeof ShopNowCommon !== 'undefined') {
             ShopNowCommon.showToast(`Stock updated to ${newStock} units for ${item.title}.`, 'success');
@@ -1578,18 +1694,13 @@ $(document).ready(function () {
     $('#inventoryFilterTabs button').on('click', function () {
       $('#inventoryFilterTabs button').removeClass('active');
       $(this).addClass('active');
-
-      const filter = $(this).data('filter');
-      if (filter === 'all') {
-        renderInventoryTable(prods);
-      } else if (filter === 'low') {
-        renderInventoryTable(prods.filter(p => Number(p.stock) <= 5 && Number(p.stock) > 0));
-      } else if (filter === 'in') {
-        renderInventoryTable(prods.filter(p => Number(p.stock) > 5));
-      } else if (filter === 'out') {
-        renderInventoryTable(prods.filter(p => Number(p.stock) === 0));
-      }
+      activeInventoryTab = $(this).data('filter') || 'all';
+      applyInventoryFilters();
     });
+
+    // Inventory search and sort
+    $('#sellerInventorySearch').on('input', applyInventoryFilters);
+    $('#sellerInventorySort').on('change', applyInventoryFilters);
   }
 
   // ===================================================
@@ -1597,6 +1708,9 @@ $(document).ready(function () {
   // ===================================================
   if ($('#sellerOrdersTableBody').length) {
     const orders = getSellerOrders();
+    let currentOrderPage = 1;
+    const orderPageSize = 5;
+    let filteredOrders = orders;
 
     function updateOrdersKpi(items) {
       const allCount = items.length;
@@ -1612,12 +1726,18 @@ $(document).ready(function () {
 
     updateOrdersKpi(orders);
 
-    function renderOrdersTable(items) {
+    function renderOrdersTable(items, page) {
+      if (items !== undefined) filteredOrders = items;
+      if (page !== undefined) currentOrderPage = page;
+
+      const pInfo = ShopNowCommon.paginate(filteredOrders, currentOrderPage, orderPageSize);
+      currentOrderPage = pInfo.currentPage;
+
       let html = '';
-      if (items.length === 0) {
-        html = '<tr><td colspan="8" class="text-center py-4 text-muted">No orders found for your store catalogue.</td></tr>';
+      if (pInfo.pageItems.length === 0) {
+        html = '<tr><td colspan="8" class="text-center py-4 text-muted">No orders found matching criteria.</td></tr>';
       } else {
-        items.forEach(o => {
+        pInfo.pageItems.forEach(o => {
           html += `
             <tr>
               <td><strong class="text-dark">#${o.id || o.orderId}</strong></td>
@@ -1627,7 +1747,7 @@ $(document).ready(function () {
                 <div class="extra-small text-muted">${o.city || 'Standard Delivery'}</div>
               </td>
               <td>${o.itemTitle || (o.items && o.items[0] ? o.items[0].title : 'Order Items')}</td>
-              <td><strong class="text-dark">Rs ${Number(o.total).toLocaleString('en-IN')}</strong></td>
+              <td><strong class="text-dark">₹ ${Number(o.total).toLocaleString('en-IN')}</strong></td>
               <td><span class="badge bg-secondary-subtle text-secondary">${o.paymentMethod || 'Prepaid'}</span></td>
               <td><span class="status-badge ${o.statusClass || (o.status ? o.status.toLowerCase() : 'processing')}">${o.status || 'Processing'}</span></td>
               <td>
@@ -1638,9 +1758,24 @@ $(document).ready(function () {
         });
       }
       $('#sellerOrdersTableBody').html(html);
+
+      ShopNowCommon.renderPaginationUI({
+        wrapperSelector: '#sellerOrdersPaginationWrapper',
+        infoSelector: '#sellerOrdersPaginationInfo',
+        listSelector: '#sellerOrdersPaginationList',
+        currentPage: pInfo.currentPage,
+        totalPages: pInfo.totalPages,
+        totalItems: pInfo.totalItems,
+        startIndex: pInfo.startIndex,
+        endIndex: pInfo.endIndex,
+        itemLabel: 'orders',
+        onPageChange: function (newPage) {
+          renderOrdersTable(filteredOrders, newPage);
+        }
+      });
     }
 
-    renderOrdersTable(orders);
+    renderOrdersTable(orders, 1);
 
     // Orders Filter Buttons
     let currentOrderFilter = 'all';
@@ -1672,7 +1807,7 @@ $(document).ready(function () {
           (o.itemTitle && o.itemTitle.toLowerCase().includes(q))
         );
       }
-      renderOrdersTable(filtered);
+      renderOrdersTable(filtered, 1);
     }
   }
 

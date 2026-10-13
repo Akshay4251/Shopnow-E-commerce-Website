@@ -317,3 +317,63 @@ html, body {
     padding: 3px;
   }
 }
+
+/* ===================================================
+   GLOBAL PAGINATION ENHANCEMENTS
+   =================================================== */
+.pagination {
+  margin-bottom: 0;
+  gap: 4px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.pagination .page-item .page-link {
+  color: #334155;
+  border-radius: 6px;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border: 1px solid #e2e8f0;
+  background-color: #ffffff;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+  text-decoration: none;
+  min-width: 32px;
+  text-align: center;
+}
+.pagination .page-item:not(.disabled) .page-link:hover {
+  background-color: #fff7ed;
+  border-color: #ea580c;
+  color: #ea580c;
+}
+.pagination .page-item.active .page-link {
+  background-color: #ea580c;
+  border-color: #ea580c;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(234, 88, 12, 0.25);
+  cursor: default;
+}
+.pagination .page-item.disabled .page-link {
+  color: #94a3b8;
+  background-color: #f8fafc;
+  border-color: #e2e8f0;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+@media (max-width: 575.98px) {
+  #sellerProductsPaginationWrapper,
+  #sellerInventoryPaginationWrapper,
+  #sellerOrdersPaginationWrapper,
+  #adminSellersPaginationWrapper,
+  #adminBuyersPaginationWrapper,
+  #adminOrdersPaginationWrapper,
+  #deliveryHistoryPaginationWrapper,
+  #deliveryAssignedPaginationWrapper {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center;
+    gap: 0.75rem;
+  }
+}

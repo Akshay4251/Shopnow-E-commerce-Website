@@ -434,39 +434,68 @@ $(document).ready(function () {
   // ===================================================
   if ($('#adminSellersTableBody').length) {
     let sellers = JSON.parse(localStorage.getItem(STORAGE_SELLERS) || '[]');
+    let currentSellerPage = 1;
+    const sellerPageSize = 5;
+    let filteredSellers = sellers;
 
-    function renderSellersTable(items) {
+    function renderSellersTable(items, page) {
+      if (items !== undefined) filteredSellers = items;
+      if (page !== undefined) currentSellerPage = page;
+
+      const pInfo = ShopNowCommon.paginate(filteredSellers, currentSellerPage, sellerPageSize);
+      currentSellerPage = pInfo.currentPage;
+
       let html = '';
-      items.forEach((s, idx) => {
-        html += `
-          <tr>
-            <td>${idx + 1}</td>
-            <td><strong class="text-dark">${s.storeName}</strong></td>
-            <td>${s.ownerName}</td>
-            <td><span class="text-secondary">${s.email}</span></td>
-            <td><span class="badge-status badge-status-${s.statusClass}">${s.status}</span></td>
-            <td>${s.joined}</td>
-            <td class="text-end">
-              <button class="btn btn-sm btn-outline-admin py-1 px-2 btn-view-seller" data-id="${s.id}">
-                View &amp; Verify
-              </button>
-            </td>
-          </tr>
-        `;
-      });
+      if (pInfo.pageItems.length === 0) {
+        html = '<tr><td colspan="7" class="text-center py-4 text-muted">No sellers found matching criteria.</td></tr>';
+      } else {
+        pInfo.pageItems.forEach((s, idx) => {
+          html += `
+            <tr>
+              <td>${pInfo.startIndex + idx + 1}</td>
+              <td><strong class="text-dark">${s.storeName}</strong></td>
+              <td>${s.ownerName}</td>
+              <td><span class="text-secondary">${s.email}</span></td>
+              <td><span class="badge-status badge-status-${s.statusClass}">${s.status}</span></td>
+              <td>${s.joined}</td>
+              <td class="text-end">
+                <button class="btn btn-sm btn-outline-admin py-1 px-2 btn-view-seller" data-id="${s.id}">
+                  View &amp; Verify
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+      }
       $('#adminSellersTableBody').html(html);
+
+      ShopNowCommon.renderPaginationUI({
+        wrapperSelector: '#adminSellersPaginationWrapper',
+        infoSelector: '#adminSellersPaginationInfo',
+        listSelector: '#adminSellersPaginationList',
+        currentPage: pInfo.currentPage,
+        totalPages: pInfo.totalPages,
+        totalItems: pInfo.totalItems,
+        startIndex: pInfo.startIndex,
+        endIndex: pInfo.endIndex,
+        itemLabel: 'sellers',
+        onPageChange: function (newPage) {
+          renderSellersTable(filteredSellers, newPage);
+        }
+      });
     }
-    renderSellersTable(sellers);
+
+    renderSellersTable(sellers, 1);
 
     // Search Filter
     $('#adminSellerSearchInput').on('input', function () {
-      const q = $(this).val().toLowerCase();
+      const q = $(this).val().toLowerCase().trim();
       const filtered = sellers.filter(s =>
-        s.storeName.toLowerCase().includes(q) ||
-        s.ownerName.toLowerCase().includes(q) ||
-        s.email.toLowerCase().includes(q)
+        (s.storeName || '').toLowerCase().includes(q) ||
+        (s.ownerName || '').toLowerCase().includes(q) ||
+        (s.email || '').toLowerCase().includes(q)
       );
-      renderSellersTable(filtered);
+      renderSellersTable(filtered, 1);
     });
 
     // View & Verify Seller Modal
@@ -496,7 +525,7 @@ $(document).ready(function () {
         seller.status = 'Active';
         seller.statusClass = 'active';
         localStorage.setItem(STORAGE_SELLERS, JSON.stringify(sellers));
-        renderSellersTable(sellers);
+        renderSellersTable(filteredSellers, currentSellerPage);
         bootstrap.Modal.getInstance(document.getElementById('approveSellerModal')).hide();
         if (typeof ShopNowCommon !== 'undefined') {
           ShopNowCommon.showToast(`Seller "${seller.storeName}" approved successfully! Storefront activated.`, 'success');
@@ -512,7 +541,7 @@ $(document).ready(function () {
         seller.status = 'Blocked';
         seller.statusClass = 'blocked';
         localStorage.setItem(STORAGE_SELLERS, JSON.stringify(sellers));
-        renderSellersTable(sellers);
+        renderSellersTable(filteredSellers, currentSellerPage);
         bootstrap.Modal.getInstance(document.getElementById('approveSellerModal')).hide();
         if (typeof ShopNowCommon !== 'undefined') {
           ShopNowCommon.showToast(`Seller "${seller.storeName}" onboarding rejected. Notification sent.`, 'danger');
@@ -544,7 +573,7 @@ $(document).ready(function () {
 
       sellers.unshift(newSeller);
       localStorage.setItem(STORAGE_SELLERS, JSON.stringify(sellers));
-      renderSellersTable(sellers);
+      renderSellersTable(sellers, 1);
       const modalEl = document.getElementById('addSellerModal');
       if (modalEl) {
         const modalInstance = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
@@ -564,29 +593,90 @@ $(document).ready(function () {
   // ===================================================
   if ($('#adminBuyersTableBody').length) {
     let buyers = JSON.parse(localStorage.getItem(STORAGE_BUYERS) || '[]');
+    let currentBuyerPage = 1;
+    const buyerPageSize = 5;
+    let currentBuyerFilter = 'all';
+    let filteredBuyers = buyers;
 
-    function renderBuyersTable(items) {
+    function renderBuyersTable(items, page) {
+      if (items !== undefined) filteredBuyers = items;
+      if (page !== undefined) currentBuyerPage = page;
+
+      const pInfo = ShopNowCommon.paginate(filteredBuyers, currentBuyerPage, buyerPageSize);
+      currentBuyerPage = pInfo.currentPage;
+
       let html = '';
-      items.forEach(b => {
-        html += `
-          <tr>
-            <td><strong class="text-coral">${b.id}</strong></td>
-            <td><strong class="text-dark">${b.name}</strong></td>
-            <td>${b.email}</td>
-            <td>${b.ordersCount} Orders</td>
-            <td><strong>₹ ${Number(b.totalSpent).toLocaleString('en-IN')}</strong></td>
-            <td><span class="badge-status badge-status-${b.statusClass}">${b.status}</span></td>
-            <td class="text-end">
-              <button class="btn btn-sm btn-outline-admin py-1 px-2 btn-view-buyer" data-id="${b.id}">
-                View Details
-              </button>
-            </td>
-          </tr>
-        `;
-      });
+      if (pInfo.pageItems.length === 0) {
+        html = '<tr><td colspan="7" class="text-center py-4 text-muted">No shoppers found matching criteria.</td></tr>';
+      } else {
+        pInfo.pageItems.forEach(b => {
+          html += `
+            <tr>
+              <td><strong class="text-coral">${b.id}</strong></td>
+              <td><strong class="text-dark">${b.name}</strong></td>
+              <td>${b.email}</td>
+              <td>${b.ordersCount} Orders</td>
+              <td><strong>₹ ${Number(b.totalSpent).toLocaleString('en-IN')}</strong></td>
+              <td><span class="badge-status badge-status-${b.statusClass}">${b.status}</span></td>
+              <td class="text-end">
+                <button class="btn btn-sm btn-outline-admin py-1 px-2 btn-view-buyer" data-id="${b.id}">
+                  View Details
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+      }
       $('#adminBuyersTableBody').html(html);
+
+      ShopNowCommon.renderPaginationUI({
+        wrapperSelector: '#adminBuyersPaginationWrapper',
+        infoSelector: '#adminBuyersPaginationInfo',
+        listSelector: '#adminBuyersPaginationList',
+        currentPage: pInfo.currentPage,
+        totalPages: pInfo.totalPages,
+        totalItems: pInfo.totalItems,
+        startIndex: pInfo.startIndex,
+        endIndex: pInfo.endIndex,
+        itemLabel: 'shoppers',
+        onPageChange: function (newPage) {
+          renderBuyersTable(filteredBuyers, newPage);
+        }
+      });
     }
-    renderBuyersTable(buyers);
+
+    function applyBuyerFilters() {
+      const q = ($('#adminBuyerSearchInput').val() || '').toLowerCase().trim();
+      let list = buyers;
+
+      if (currentBuyerFilter !== 'all') {
+        list = list.filter(b => (b.status || '').toLowerCase() === currentBuyerFilter.toLowerCase());
+      }
+      if (q) {
+        list = list.filter(b =>
+          (b.id && b.id.toLowerCase().includes(q)) ||
+          (b.name && b.name.toLowerCase().includes(q)) ||
+          (b.email && b.email.toLowerCase().includes(q))
+        );
+      }
+      renderBuyersTable(list, 1);
+    }
+
+    renderBuyersTable(buyers, 1);
+
+    // Search input
+    $('#adminBuyerSearchInput').on('input', applyBuyerFilters);
+
+    // Filter Buttons in toolbar if present
+    $('.admin-card .btn-group button').on('click', function () {
+      $('.admin-card .btn-group button').removeClass('btn-dark active').addClass('btn-outline-secondary');
+      $(this).removeClass('btn-outline-secondary').addClass('btn-dark active');
+      const text = $(this).text().trim().toLowerCase();
+      if (text.includes('all')) currentBuyerFilter = 'all';
+      else if (text.includes('active')) currentBuyerFilter = 'active';
+      else if (text.includes('block')) currentBuyerFilter = 'blocked';
+      applyBuyerFilters();
+    });
 
     $(document).on('click', '.btn-view-buyer', function () {
       const id = $(this).data('id');
@@ -619,28 +709,58 @@ $(document).ready(function () {
       localStorage.setItem('shopnow_orders', JSON.stringify(orders));
     }
 
-    function renderOrdersTable(items) {
+    let currentAdminOrderPage = 1;
+    const adminOrderPageSize = 5;
+    let filteredAdminOrders = orders;
+
+    function renderAdminOrdersTable(items, page) {
+      if (items !== undefined) filteredAdminOrders = items;
+      if (page !== undefined) currentAdminOrderPage = page;
+
+      const pInfo = ShopNowCommon.paginate(filteredAdminOrders, currentAdminOrderPage, adminOrderPageSize);
+      currentAdminOrderPage = pInfo.currentPage;
+
       let html = '';
-      items.forEach(ord => {
-        html += `
-          <tr>
-            <td><strong class="text-coral">${ord.id || ord.orderId}</strong></td>
-            <td><strong class="text-dark">${ord.customer || ord.customerName || 'Shopper'}</strong></td>
-            <td>${ord.product || (ord.items ? ord.items[0]?.name : 'Assorted Items')}</td>
-            <td><strong>₹ ${Number(ord.price || ord.totalAmount || 1499).toLocaleString('en-IN')}</strong></td>
-            <td><span class="badge-status badge-status-${ord.statusClass || 'pending'}">${ord.status || 'Processing'}</span></td>
-            <td><span class="small text-muted">${ord.agent || 'Alex Rivera'}</span></td>
-            <td class="text-end">
-              <button class="btn btn-sm btn-outline-admin py-1 px-2 btn-assign-delivery" data-id="${ord.id || ord.orderId}">
-                Assign Driver
-              </button>
-            </td>
-          </tr>
-        `;
-      });
+      if (pInfo.pageItems.length === 0) {
+        html = '<tr><td colspan="7" class="text-center py-4 text-muted">No orders found matching criteria.</td></tr>';
+      } else {
+        pInfo.pageItems.forEach(ord => {
+          html += `
+            <tr>
+              <td><strong class="text-coral">${ord.id || ord.orderId}</strong></td>
+              <td><strong class="text-dark">${ord.customer || ord.customerName || 'Shopper'}</strong></td>
+              <td>${ord.product || (ord.items ? ord.items[0]?.name : 'Assorted Items')}</td>
+              <td><strong>₹ ${Number(ord.price || ord.totalAmount || 1499).toLocaleString('en-IN')}</strong></td>
+              <td><span class="badge-status badge-status-${ord.statusClass || 'pending'}">${ord.status || 'Processing'}</span></td>
+              <td><span class="small text-muted">${ord.agent || 'Alex Rivera'}</span></td>
+              <td class="text-end">
+                <button class="btn btn-sm btn-outline-admin py-1 px-2 btn-assign-delivery" data-id="${ord.id || ord.orderId}">
+                  Assign Driver
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+      }
       $('#adminOrdersTableBody').html(html);
+
+      ShopNowCommon.renderPaginationUI({
+        wrapperSelector: '#adminOrdersPaginationWrapper',
+        infoSelector: '#adminOrdersPaginationInfo',
+        listSelector: '#adminOrdersPaginationList',
+        currentPage: pInfo.currentPage,
+        totalPages: pInfo.totalPages,
+        totalItems: pInfo.totalItems,
+        startIndex: pInfo.startIndex,
+        endIndex: pInfo.endIndex,
+        itemLabel: 'orders',
+        onPageChange: function (newPage) {
+          renderAdminOrdersTable(filteredAdminOrders, newPage);
+        }
+      });
     }
-    renderOrdersTable(orders);
+
+    renderAdminOrdersTable(orders, 1);
 
     $(document).on('click', '.btn-assign-delivery', function () {
       const id = $(this).data('id');

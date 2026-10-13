@@ -414,31 +414,42 @@ $(document).ready(function () {
         filtered.sort((a, b) => Number(b.rating) - Number(a.rating));
       }
 
-      renderCatalogGrid(filtered);
+      renderCatalogGrid(filtered, 1);
     }
 
-    function renderCatalogGrid(prods) {
+    let currentCatalogPage = 1;
+    const catalogPageSize = 8;
+    let filteredCatalogProds = [];
+
+    function renderCatalogGrid(prods, page) {
+      if (prods !== undefined) filteredCatalogProds = prods;
+      if (page !== undefined) currentCatalogPage = page;
+
       const $container = $('#catalogProductsContainer');
       const $title = $('#catalogResultsTitle');
 
-      $title.text(`${prods.length} results for ${$('#siteSearchInput').val() || 'all items'}`);
+      $title.text(`${filteredCatalogProds.length} results for ${$('#siteSearchInput').val() || 'all items'}`);
 
-      if (prods.length === 0) {
+      if (filteredCatalogProds.length === 0) {
         $container.html(`
           <div class="col-12 text-center py-5">
             <h5 class="text-muted font-serif">No products found matching your filter criteria.</h5>
             <button class="btn btn-sm btn-coral-custom mt-3" id="btnResetAllFiltersEmpty">Reset Filters</button>
           </div>
         `);
+        $('.catalog-pagination').addClass('d-none');
         return;
       }
+
+      const pInfo = ShopNowCommon.paginate(filteredCatalogProds, currentCatalogPage, catalogPageSize);
+      currentCatalogPage = pInfo.currentPage;
 
       const currentWishlist = getBuyerWishlist();
 
       let html = '';
-      prods.forEach(p => {
+      pInfo.pageItems.forEach(p => {
         const ratingVal = p.rating ? Number(p.rating).toFixed(1) : '4.8';
-        const priceVal = Number(p.price).toFixed(2);
+        const priceVal = Number(p.price).toLocaleString('en-IN');
         const isWishlisted = currentWishlist.some(w => String(w.id) === String(p.id));
 
         html += `
@@ -457,7 +468,7 @@ $(document).ready(function () {
                   <i class="bi bi-star-fill text-warning"></i>
                   <span>${ratingVal}</span>
                 </div>
-                <div class="catalog-price-val">$${priceVal}</div>
+                <div class="catalog-price-val">₹ ${priceVal}</div>
               </div>
               <button type="button" class="btn-coral-add-cart btn-quick-add" data-id="${p.id}">
                 <i class="bi bi-cart-plus me-1"></i>Add to Cart
@@ -468,6 +479,46 @@ $(document).ready(function () {
       });
 
       $container.html(html);
+
+      // Render Dynamic Catalog Pagination
+      const $pag = $('.catalog-pagination');
+      if ($pag.length) {
+        $pag.removeClass('d-none');
+        let pagHtml = '';
+        const prevDisabled = currentCatalogPage <= 1;
+        pagHtml += `<button class="page-btn-item page-catalog-prev" ${prevDisabled ? 'disabled' : ''}>&lt;</button>`;
+
+        for (let i = 1; i <= pInfo.totalPages; i++) {
+          pagHtml += `<button class="page-btn-item page-catalog-num ${i === currentCatalogPage ? 'active' : ''}" data-page="${i}">${i}</button>`;
+        }
+
+        const nextDisabled = currentCatalogPage >= pInfo.totalPages;
+        pagHtml += `<button class="page-btn-item page-catalog-next" ${nextDisabled ? 'disabled' : ''}>&gt;</button>`;
+        $pag.html(pagHtml);
+
+        $pag.off('click', '.page-catalog-prev').on('click', '.page-catalog-prev', function () {
+          if (currentCatalogPage > 1) {
+            renderCatalogGrid(filteredCatalogProds, currentCatalogPage - 1);
+            const el = document.getElementById('catalogProductsContainer');
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+        $pag.off('click', '.page-catalog-next').on('click', '.page-catalog-next', function () {
+          if (currentCatalogPage < pInfo.totalPages) {
+            renderCatalogGrid(filteredCatalogProds, currentCatalogPage + 1);
+            const el = document.getElementById('catalogProductsContainer');
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+        $pag.off('click', '.page-catalog-num').on('click', '.page-catalog-num', function () {
+          const pg = parseInt($(this).data('page'), 10);
+          if (pg && pg !== currentCatalogPage) {
+            renderCatalogGrid(filteredCatalogProds, pg);
+            const el = document.getElementById('catalogProductsContainer');
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      }
     }
 
     // Filter Events

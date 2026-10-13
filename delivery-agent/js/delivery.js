@@ -225,6 +225,9 @@ $(document).ready(function () {
   // ===================================================
   if ($('#assignedOrdersTableBody').length) {
     let orders = getAgentOrders();
+    let currentAssignedPage = 1;
+    const assignedPageSize = 5;
+    let filteredAssignedOrders = orders;
 
     const activeCount = orders.filter(o => o.status !== 'Delivered').length;
     const readyPickup = orders.filter(o => o.status === 'Pending').length;
@@ -235,12 +238,18 @@ $(document).ready(function () {
       $('#badgeReadyPickup').text(readyPickup > 9 ? readyPickup : '0' + readyPickup);
     }
 
-    function renderAssignedTable(items) {
+    function renderAssignedTable(items, page) {
+      if (items !== undefined) filteredAssignedOrders = items;
+      if (page !== undefined) currentAssignedPage = page;
+
+      const pInfo = ShopNowCommon.paginate(filteredAssignedOrders, currentAssignedPage, assignedPageSize);
+      currentAssignedPage = pInfo.currentPage;
+
       let html = '';
-      if (!items || items.length === 0) {
+      if (!items || pInfo.pageItems.length === 0) {
         html = '<tr><td colspan="6" class="text-center py-5 text-muted">No orders currently assigned to your route.</td></tr>';
       } else {
-        items.forEach(ord => {
+        pInfo.pageItems.forEach(ord => {
           html += `
             <tr>
               <td><strong class="text-dark">${ord.id || ord.orderId}</strong></td>
@@ -273,13 +282,28 @@ $(document).ready(function () {
         });
       }
       $('#assignedOrdersTableBody').html(html);
+
+      ShopNowCommon.renderPaginationUI({
+        wrapperSelector: '#deliveryAssignedPaginationWrapper',
+        infoSelector: '#deliveryAssignedPaginationInfo',
+        listSelector: '#deliveryAssignedPaginationList',
+        currentPage: pInfo.currentPage,
+        totalPages: pInfo.totalPages,
+        totalItems: pInfo.totalItems,
+        startIndex: pInfo.startIndex,
+        endIndex: pInfo.endIndex,
+        itemLabel: 'assignments',
+        onPageChange: function (newPage) {
+          renderAssignedTable(filteredAssignedOrders, newPage);
+        }
+      });
     }
 
-    renderAssignedTable(orders);
+    renderAssignedTable(orders, 1);
 
     // Search and Status Filters
     function filterAssignedOrders() {
-      const q = ($('#assignedOrdersSearchInput').val() || '').toLowerCase();
+      const q = ($('#assignedOrdersSearchInput').val() || '').toLowerCase().trim();
       const status = $('#assignedOrdersStatusFilter').val();
 
       const filtered = orders.filter(ord => {
@@ -291,7 +315,7 @@ $(document).ready(function () {
         return matchesQ && matchesStatus;
       });
 
-      renderAssignedTable(filtered);
+      renderAssignedTable(filtered, 1);
     }
 
     $('#assignedOrdersSearchInput').on('input', filterAssignedOrders);
@@ -478,13 +502,22 @@ $(document).ready(function () {
   // ===================================================
   if ($('#deliveryHistoryTableBody').length) {
     const orders = getAgentOrders();
+    let currentHistoryPage = 1;
+    const historyPageSize = 5;
+    let filteredHistoryOrders = orders;
 
-    function renderHistoryTable(items) {
+    function renderHistoryTable(items, page) {
+      if (items !== undefined) filteredHistoryOrders = items;
+      if (page !== undefined) currentHistoryPage = page;
+
+      const pInfo = ShopNowCommon.paginate(filteredHistoryOrders, currentHistoryPage, historyPageSize);
+      currentHistoryPage = pInfo.currentPage;
+
       let html = '';
-      if (!items || items.length === 0) {
-        html = '<tr><td colspan="6" class="text-center py-4 text-muted">No historical delivery records found.</td></tr>';
+      if (!items || pInfo.pageItems.length === 0) {
+        html = '<tr><td colspan="6" class="text-center py-4 text-muted">No historical delivery records found matching criteria.</td></tr>';
       } else {
-        items.forEach(ord => {
+        pInfo.pageItems.forEach(ord => {
           html += `
             <tr>
               <td><strong class="text-coral">${ord.id || ord.orderId}</strong></td>
@@ -505,12 +538,27 @@ $(document).ready(function () {
         });
       }
       $('#deliveryHistoryTableBody').html(html);
+
+      ShopNowCommon.renderPaginationUI({
+        wrapperSelector: '#deliveryHistoryPaginationWrapper',
+        infoSelector: '#deliveryHistoryPaginationInfo',
+        listSelector: '#deliveryHistoryPaginationList',
+        currentPage: pInfo.currentPage,
+        totalPages: pInfo.totalPages,
+        totalItems: pInfo.totalItems,
+        startIndex: pInfo.startIndex,
+        endIndex: pInfo.endIndex,
+        itemLabel: 'results',
+        onPageChange: function (newPage) {
+          renderHistoryTable(filteredHistoryOrders, newPage);
+        }
+      });
     }
 
-    renderHistoryTable(orders);
+    renderHistoryTable(orders, 1);
 
-    $('#historySearchInput').on('input', function () {
-      const q = $(this).val().toLowerCase();
+    function applyHistoryFilters() {
+      const q = ($('#historySearchInput').val() || '').toLowerCase().trim();
       const status = $('#historyStatusFilter').val();
       const filtered = orders.filter(o => {
         const id = (o.id || o.orderId || '').toLowerCase();
@@ -520,12 +568,11 @@ $(document).ready(function () {
         const matchesStatus = (status === 'all') || ((o.status || '').toLowerCase() === status.toLowerCase());
         return matchesQ && matchesStatus;
       });
-      renderHistoryTable(filtered);
-    });
+      renderHistoryTable(filtered, 1);
+    }
 
-    $('#historyStatusFilter').on('change', function () {
-      $('#historySearchInput').trigger('input');
-    });
+    $('#historySearchInput').on('input', applyHistoryFilters);
+    $('#historyStatusFilter').on('change', applyHistoryFilters);
 
     if ($('#btnExportHistoryCsv').length) {
       $('#btnExportHistoryCsv').on('click', function () {

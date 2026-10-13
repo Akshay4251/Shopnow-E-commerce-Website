@@ -84,11 +84,12 @@
         </div>
 
         <div class="d-flex align-items-center gap-2">
-          <input type="text" class="form-control form-control-sm rounded-pill" placeholder="Search inventory..." style="width: 200px;" />
-          <select class="form-select form-select-sm w-auto rounded-pill">
-            <option>Sort by: Stock (Low to High)</option>
-            <option>Sort by: Stock (High to Low)</option>
-            <option>Sort by: Title (A-Z)</option>
+          <input type="text" class="form-control form-control-sm rounded-pill" id="sellerInventorySearch" placeholder="Search inventory..." style="width: 200px;" />
+          <select class="form-select form-select-sm w-auto rounded-pill" id="sellerInventorySort">
+            <option value="default">Sort by: Default</option>
+            <option value="stock-asc">Sort by: Stock (Low to High)</option>
+            <option value="stock-desc">Sort by: Stock (High to Low)</option>
+            <option value="title-asc">Sort by: Title (A-Z)</option>
           </select>
         </div>
       </div>
@@ -111,6 +112,18 @@
               <!-- Dynamically hydrated via seller.js -->
             </tbody>
           </table>
+        </div>
+
+        <!-- Table Pagination Footer -->
+        <div class="d-flex justify-content-between align-items-center p-3 border-top bg-light small" id="sellerInventoryPaginationWrapper">
+          <span class="text-muted" id="sellerInventoryPaginationInfo">Showing 1 to 5 of 5 records (Page 1 of 1)</span>
+          <nav aria-label="Page navigation">
+            <ul class="pagination pagination-sm mb-0" id="sellerInventoryPaginationList">
+              <li class="page-item disabled"><a class="page-link" href="javascript:void(0)">&laquo;</a></li>
+              <li class="page-item active"><a class="page-link" href="javascript:void(0)">1</a></li>
+              <li class="page-item disabled"><a class="page-link" href="javascript:void(0)">&raquo;</a></li>
+            </ul>
+          </nav>
         </div>
       </div>
 

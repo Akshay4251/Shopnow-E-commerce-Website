@@ -135,6 +135,138 @@ const ShopNowCommon = (function () {
     return html;
   }
 
+  // Universal Dynamic Pagination Helpers
+  function paginate(items = [], currentPage = 1, pageSize = 5) {
+    const list = Array.isArray(items) ? items : [];
+    const totalItems = list.length;
+    const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
+    let validPage = parseInt(currentPage, 10);
+    if (isNaN(validPage) || validPage < 1) validPage = 1;
+    if (validPage > totalPages) validPage = totalPages;
+    const startIndex = (validPage - 1) * pageSize;
+    const endIndex = Math.min(startIndex + pageSize, totalItems);
+    const pageItems = list.slice(startIndex, endIndex);
+
+    return {
+      pageItems,
+      currentPage: validPage,
+      totalPages,
+      totalItems,
+      pageSize,
+      startIndex,
+      endIndex
+    };
+  }
+
+  function renderPaginationUI({
+    wrapperSelector,
+    infoSelector,
+    listSelector,
+    currentPage = 1,
+    totalPages = 1,
+    totalItems = 0,
+    startIndex = 0,
+    endIndex = 0,
+    itemLabel = 'records',
+    onPageChange
+  }) {
+    if (wrapperSelector && $(wrapperSelector).length) {
+      if (totalItems <= 0) {
+        $(wrapperSelector).addClass('d-none');
+      } else {
+        $(wrapperSelector).removeClass('d-none');
+      }
+    }
+
+    if (infoSelector && $(infoSelector).length) {
+      if (totalItems === 0) {
+        $(infoSelector).text(`Showing 0 to 0 of 0 ${itemLabel}`);
+      } else {
+        $(infoSelector).text(`Showing ${startIndex + 1} to ${endIndex} of ${totalItems} ${itemLabel} (Page ${currentPage} of ${totalPages})`);
+      }
+    }
+
+    if (listSelector && $(listSelector).length) {
+      const $list = $(listSelector);
+      let html = '';
+
+      // Prev button
+      const isPrevDisabled = currentPage <= 1;
+      html += `
+        <li class="page-item ${isPrevDisabled ? 'disabled' : ''}">
+          <a class="page-link page-link-prev" href="javascript:void(0)" aria-label="Previous" ${isPrevDisabled ? 'tabindex="-1" aria-disabled="true"' : ''}>
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+      `;
+
+      // Page numbers (sliding window up to 5 buttons)
+      let startP = Math.max(1, currentPage - 2);
+      let endP = Math.min(totalPages, startP + 4);
+      if (endP - startP < 4) {
+        startP = Math.max(1, endP - 4);
+      }
+
+      if (startP > 1) {
+        html += `<li class="page-item"><a class="page-link page-link-num" data-page="1" href="javascript:void(0)">1</a></li>`;
+        if (startP > 2) {
+          html += `<li class="page-item disabled"><span class="page-link">&hellip;</span></li>`;
+        }
+      }
+
+      for (let p = startP; p <= endP; p++) {
+        const isActive = p === currentPage;
+        html += `
+          <li class="page-item ${isActive ? 'active' : ''}">
+            <a class="page-link page-link-num" data-page="${p}" href="javascript:void(0)">${p}</a>
+          </li>
+        `;
+      }
+
+      if (endP < totalPages) {
+        if (endP < totalPages - 1) {
+          html += `<li class="page-item disabled"><span class="page-link">&hellip;</span></li>`;
+        }
+        html += `<li class="page-item"><a class="page-link page-link-num" data-page="${totalPages}" href="javascript:void(0)">${totalPages}</a></li>`;
+      }
+
+      // Next button
+      const isNextDisabled = currentPage >= totalPages;
+      html += `
+        <li class="page-item ${isNextDisabled ? 'disabled' : ''}">
+          <a class="page-link page-link-next" href="javascript:void(0)" aria-label="Next" ${isNextDisabled ? 'tabindex="-1" aria-disabled="true"' : ''}>
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      `;
+
+      $list.html(html);
+
+      // Re-bind listeners safely
+      $list.off('click', '.page-link-prev').on('click', '.page-link-prev', function (e) {
+        e.preventDefault();
+        if (currentPage > 1 && typeof onPageChange === 'function') {
+          onPageChange(currentPage - 1);
+        }
+      });
+
+      $list.off('click', '.page-link-next').on('click', '.page-link-next', function (e) {
+        e.preventDefault();
+        if (currentPage < totalPages && typeof onPageChange === 'function') {
+          onPageChange(currentPage + 1);
+        }
+      });
+
+      $list.off('click', '.page-link-num').on('click', '.page-link-num', function (e) {
+        e.preventDefault();
+        const p = parseInt($(this).data('page'), 10);
+        if (p && p !== currentPage && typeof onPageChange === 'function') {
+          onPageChange(p);
+        }
+      });
+    }
+  }
+
   // Route Protection: Check if user is logged in on protected pages
   function enforceAuthGuard() {
     const fullPath = (window.location.pathname || '').toLowerCase().replace(/\\/g, '/');
@@ -194,7 +326,9 @@ const ShopNowCommon = (function () {
     saveUserWishlist,
     showToast,
     formatPrice,
-    generateStars
+    generateStars,
+    paginate,
+    renderPaginationUI
   };
 })();
 
