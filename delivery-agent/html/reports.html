@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Performance Reports - Delivery Fleet - ShopNow</title>
+  <meta name="description" content="Courier operational performance, route efficiency audits, weekly volume trends, and on-time delivery analytics." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Common & Delivery Agent CSS -->
+  <link rel="stylesheet" href="../../common/css/global.css" />
+  <link rel="stylesheet" href="../css/delivery.css" />
+</head>
+<body class="delivery-body">
+
+  <div class="delivery-layout">
+    <!-- Reusable Dark Navy Sidebar (Active Tab: reports) -->
+    <aside class="delivery-sidebar" id="deliverySidebar" data-active="reports"></aside>
+
+    <!-- Main Content Area -->
+    <div class="delivery-main">
+      <!-- Reusable Top Header Bar -->
+      <header class="delivery-topbar" id="deliveryTopBar"></header>
+
+      <!-- Reports Content (Matching Figma Image 3 Screen 8) -->
+      <main class="delivery-content">
+        <!-- Page Header & Action Buttons -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+          <div>
+            <h1 class="delivery-page-title">Performance Reports</h1>
+            <p class="delivery-page-subtitle">Detailed analysis of your delivery operations and efficiency metrics.</p>
+          </div>
+
+          <div class="d-flex align-items-center gap-2">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text bg-white border-light-subtle"><i class="bi bi-calendar3 text-muted"></i></span>
+              <select class="form-select bg-white border-light-subtle extra-small" id="reportDateRange">
+                <option value="7">Last 7 Days</option>
+                <option value="30">Last 30 Days</option>
+                <option value="90">Last Quarter</option>
+              </select>
+            </div>
+            <button type="button" class="btn btn-coral-delivery btn-sm px-3" id="btnExportReportsPdf">
+              <i class="bi bi-file-earmark-pdf-fill"></i> Export PDF
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 Metric Cards Strip (Matching Figma Screen 8) -->
+        <div class="row g-3 mb-4">
+          <!-- Success Rate (Featured Coral Card) -->
+          <div class="col-12 col-sm-6 col-xl-3">
+            <div class="delivery-stat-card text-white" style="background: linear-gradient(135deg, #ff5338 0%, #ff7660 100%); border-color: #ff5338;">
+              <div>
+                <span class="stat-card-label text-white-50">Success Rate</span>
+                <div class="stat-card-number text-white">98.4%</div>
+                <span class="badge bg-white text-coral stat-card-badge">
+                  <i class="bi bi-arrow-up-right"></i> +4.2% vs fleet avg
+                </span>
+              </div>
+              <div class="stat-card-icon bg-white text-coral">
+                <i class="bi bi-award-fill"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Total Deliveries -->
+          <div class="col-12 col-sm-6 col-xl-3">
+            <div class="delivery-stat-card">
+              <div>
+                <span class="stat-card-label">Total Deliveries</span>
+                <div class="stat-card-number">247</div>
+                <span class="extra-small text-muted fw-semibold">Completed in period</span>
+              </div>
+              <div class="stat-card-icon bg-warning-subtle text-warning-emphasis">
+                <i class="bi bi-box-seam-fill"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Avg Completion -->
+          <div class="col-12 col-sm-6 col-xl-3">
+            <div class="delivery-stat-card">
+              <div>
+                <span class="stat-card-label">Avg. Completion</span>
+                <div class="stat-card-number">22m</div>
+                <span class="badge bg-success-subtle text-success stat-card-badge">
+                  <i class="bi bi-speedometer2"></i> 5m ahead of target
+                </span>
+              </div>
+              <div class="stat-card-icon bg-success-subtle text-success">
+                <i class="bi bi-stopwatch-fill"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Customer Satisfaction -->
+          <div class="col-12 col-sm-6 col-xl-3">
+            <div class="delivery-stat-card">
+              <div>
+                <span class="stat-card-label">Customer Satisfaction</span>
+                <div class="stat-card-number">4.9</div>
+                <span class="extra-small text-muted fw-semibold">Based on 189 reviews</span>
+              </div>
+              <div class="stat-card-icon bg-warning-subtle text-warning">
+                <i class="bi bi-star-fill"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Middle Row: Volume Charts & Status Distribution -->
+        <div class="row g-4 mb-4">
+          <!-- Weekly Volume Bar Chart (7 Cols) -->
+          <div class="col-12 col-xl-7">
+            <div class="delivery-card h-100 mb-0">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                  <h6 class="fw-bold text-dark mb-0">Weekly Volume</h6>
+                  <span class="extra-small text-muted">Daily delivery completion vs schedule target</span>
+                </div>
+                <div class="d-flex align-items-center gap-3 extra-small">
+                  <span class="d-flex align-items-center gap-1">
+                    <span class="rounded-circle d-inline-block" style="width: 8px; height: 8px; background-color: #ff5338;"></span> Completed
+                  </span>
+                  <span class="d-flex align-items-center gap-1">
+                    <span class="rounded-circle d-inline-block" style="width: 8px; height: 8px; background-color: #081726;"></span> Target
+                  </span>
+                </div>
+              </div>
+
+              <!-- Bar Volume Chart -->
+              <div class="p-3 bg-light rounded-3">
+                <div class="d-flex align-items-end justify-content-between gap-3" style="height: 190px;">
+                  <!-- Mon -->
+                  <div class="d-flex flex-column align-items-center flex-grow-1 h-100 justify-content-end">
+                    <div class="w-100 rounded-top" style="height: 60%; background-color: #ff5338;" title="Mon: 32 Deliveries"></div>
+                    <span class="extra-small text-muted mt-2">Mon</span>
+                  </div>
+                  <!-- Tue -->
+                  <div class="d-flex flex-column align-items-center flex-grow-1 h-100 justify-content-end">
+                    <div class="w-100 rounded-top" style="height: 75%; background-color: #ff5338;" title="Tue: 41 Deliveries"></div>
+                    <span class="extra-small text-muted mt-2">Tue</span>
+                  </div>
+                  <!-- Wed -->
+                  <div class="d-flex flex-column align-items-center flex-grow-1 h-100 justify-content-end">
+                    <div class="w-100 rounded-top" style="height: 65%; background-color: #ff5338;" title="Wed: 35 Deliveries"></div>
+                    <span class="extra-small text-muted mt-2">Wed</span>
+                  </div>
+                  <!-- Thu -->
+                  <div class="d-flex flex-column align-items-center flex-grow-1 h-100 justify-content-end">
+                    <div class="w-100 rounded-top" style="height: 85%; background-color: #ff5338;" title="Thu: 48 Deliveries"></div>
+                    <span class="extra-small text-muted mt-2">Thu</span>
+                  </div>
+                  <!-- Fri -->
+                  <div class="d-flex flex-column align-items-center flex-grow-1 h-100 justify-content-end">
+                    <div class="w-100 rounded-top" style="height: 95%; background-color: #ff5338;" title="Fri: 54 Deliveries"></div>
+                    <span class="extra-small text-muted mt-2">Fri</span>
+                  </div>
+                  <!-- Sat -->
+                  <div class="d-flex flex-column align-items-center flex-grow-1 h-100 justify-content-end">
+                    <div class="w-100 rounded-top" style="height: 100%; background: linear-gradient(to top, #ff5338, #ff7a66);" title="Sat: 58 Deliveries (Peak)"></div>
+                    <span class="extra-small fw-bold text-coral mt-2">Sat</span>
+                  </div>
+                  <!-- Sun -->
+                  <div class="d-flex flex-column align-items-center flex-grow-1 h-100 justify-content-end">
+                    <div class="w-100 rounded-top" style="height: 70%; background-color: #ff5338;" title="Sun: 37 Deliveries"></div>
+                    <span class="extra-small text-muted mt-2">Sun</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Status Distribution Donut Chart (5 Cols) -->
+          <div class="col-12 col-xl-5">
+            <div class="delivery-card h-100 mb-0 d-flex flex-column justify-content-between">
+              <div>
+                <h6 class="fw-bold text-dark mb-0">Status Distribution</h6>
+                <span class="extra-small text-muted d-block mb-3">Overall parcel state breakdown</span>
+
+                <!-- SVG Donut Chart Mockup -->
+                <div class="d-flex justify-content-center my-3">
+                  <div class="position-relative" style="width: 160px; height: 160px;">
+                    <svg viewBox="0 0 36 36" class="w-100 h-100">
+                      <!-- Background circle -->
+                      <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#f1f5f9" stroke-width="4.5" />
+                      <!-- Completed arc (82%) -->
+                      <path class="circle" stroke-dasharray="82, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#ff5338" stroke-width="4.5" stroke-linecap="round" />
+                      <!-- In-transit arc (12%) -->
+                      <path class="circle" stroke-dasharray="12, 100" stroke-dashoffset="-82" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#081726" stroke-width="4.5" />
+                    </svg>
+                    <div class="position-absolute top-50 start-50 translate-middle text-center">
+                      <span class="fs-4 fw-bold text-dark lh-1 d-block">92%</span>
+                      <span class="extra-small text-muted" style="font-size: 0.65rem;">On-Time</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Donut Legends -->
+              <div class="pt-3 border-top">
+                <div class="d-flex justify-content-between extra-small mb-1">
+                  <span class="d-flex align-items-center gap-1"><span class="rounded-circle d-inline-block" style="width: 8px; height: 8px; background-color: #ff5338;"></span> On-Time Delivered</span>
+                  <strong class="text-dark">82%</strong>
+                </div>
+                <div class="d-flex justify-content-between extra-small mb-1">
+                  <span class="d-flex align-items-center gap-1"><span class="rounded-circle d-inline-block" style="width: 8px; height: 8px; background-color: #081726;"></span> In Transit</span>
+                  <strong class="text-dark">12%</strong>
+                </div>
+                <div class="d-flex justify-content-between extra-small">
+                  <span class="d-flex align-items-center gap-1"><span class="rounded-circle d-inline-block" style="width: 8px; height: 8px; background-color: #e2e8f0;"></span> Exception / Re-routed</span>
+                  <strong class="text-dark">6%</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Row: Recent Reports & Efficiency Insights -->
+        <div class="row g-4">
+          <!-- Recent Reports List (7 Cols) -->
+          <div class="col-12 col-xl-7">
+            <div class="delivery-table-card mb-0">
+              <div class="p-3 border-bottom d-flex justify-content-between align-items-center">
+                <h6 class="fw-bold text-dark mb-0">Recent Reports</h6>
+                <a href="history.html" class="btn btn-sm btn-link text-coral text-decoration-none fw-bold extra-small">View all &rarr;</a>
+              </div>
+
+              <div class="list-group list-group-flush extra-small">
+                <div class="list-group-item d-flex justify-content-between align-items-center p-3">
+                  <div class="d-flex align-items-center gap-3">
+                    <i class="bi bi-file-earmark-bar-graph-fill text-coral fs-5"></i>
+                    <div>
+                      <strong class="text-dark d-block">Weekly Efficiency Audit</strong>
+                      <span class="text-muted">Oct 18, 2026 - Oct 24, 2026</span>
+                    </div>
+                  </div>
+                  <button class="btn btn-sm btn-outline-delivery py-1 px-3" onclick="ShopNowCommon.showToast('Downloading Weekly Audit PDF...', 'info');">
+                    <i class="bi bi-download"></i> PDF
+                  </button>
+                </div>
+
+                <div class="list-group-item d-flex justify-content-between align-items-center p-3">
+                  <div class="d-flex align-items-center gap-3">
+                    <i class="bi bi-fuel-pump-fill text-warning fs-5"></i>
+                    <div>
+                      <strong class="text-dark d-block">Fuel &amp; Distance Analysis</strong>
+                      <span class="text-muted">Oct 18, 2026 - Oct 24, 2026</span>
+                    </div>
+                  </div>
+                  <button class="btn btn-sm btn-outline-delivery py-1 px-3" onclick="ShopNowCommon.showToast('Downloading Fuel Audit PDF...', 'info');">
+                    <i class="bi bi-download"></i> PDF
+                  </button>
+                </div>
+
+                <div class="list-group-item d-flex justify-content-between align-items-center p-3">
+                  <div class="d-flex align-items-center gap-3">
+                    <i class="bi bi-star-half text-coral fs-5"></i>
+                    <div>
+                      <strong class="text-dark d-block">Customer Rating Summary</strong>
+                      <span class="text-muted">Q3 2026 Final Review</span>
+                    </div>
+                  </div>
+                  <button class="btn btn-sm btn-outline-delivery py-1 px-3" onclick="ShopNowCommon.showToast('Downloading Rating Summary PDF...', 'info');">
+                    <i class="bi bi-download"></i> PDF
+                  </button>
+                </div>
+
+                <div class="list-group-item d-flex justify-content-between align-items-center p-3">
+                  <div class="d-flex align-items-center gap-3">
+                    <i class="bi bi-shield-check text-success fs-5"></i>
+                    <div>
+                      <strong class="text-dark d-block">Monthly Fleet Service Review</strong>
+                      <span class="text-muted">Sep 2026 Courier Performance</span>
+                    </div>
+                  </div>
+                  <button class="btn btn-sm btn-outline-delivery py-1 px-3" onclick="ShopNowCommon.showToast('Downloading Fleet Review PDF...', 'info');">
+                    <i class="bi bi-download"></i> PDF
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Efficiency Insights (5 Cols - Dark Navy Matching Figma) -->
+          <div class="col-12 col-xl-5">
+            <div class="dark-widget-card d-flex flex-column justify-content-between mb-0">
+              <div>
+                <span class="dark-widget-tag"><i class="bi bi-cpu-fill me-1"></i> AI Fleet Suggestions</span>
+                <h5 class="fw-bold text-white mb-2">Efficiency Insights</h5>
+                <p class="extra-small text-secondary mb-3">AI-driven recommendations based on your recent delivery patterns.</p>
+
+                <!-- Recommendation 1 -->
+                <div class="p-3 rounded-3 bg-secondary-subtle bg-opacity-10 border border-secondary border-opacity-25 mb-3">
+                  <strong class="text-coral small d-block mb-1"><i class="bi bi-signpost-split me-1"></i> Route Optimization</strong>
+                  <p class="extra-small text-white-50 mb-0">
+                    Your Thursday routes have a 15% higher delay rate. Consider taking the North Arterial Bypass between 4:00 PM and 6:00 PM to save roughly 12 minutes per drop.
+                  </p>
+                </div>
+
+                <!-- Recommendation 2 -->
+                <div class="p-3 rounded-3 bg-secondary-subtle bg-opacity-10 border border-secondary border-opacity-25 mb-3">
+                  <strong class="text-success small d-block mb-1"><i class="bi bi-chat-heart-fill me-1"></i> Customer Ratings Boost</strong>
+                  <p class="extra-small text-white-50 mb-0">
+                    Deliveries with a "Pre-Arrival Text" message score 0.3 points higher in customer satisfaction. Automated alerts are recommended for your next 10 orders.
+                  </p>
+                </div>
+              </div>
+
+              <button type="button" class="btn btn-coral-delivery w-100 justify-content-center py-2" id="btnApplyEfficiencySettings">
+                <i class="bi bi-sliders"></i> Apply Efficiency Settings
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../common/js/global.js"></script>
+  <script src="../js/delivery-nav.js"></script>
+  <script src="../js/delivery.js"></script>
+</body>
+</html>

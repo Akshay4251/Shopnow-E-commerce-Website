@@ -17,10 +17,14 @@
 
   <!-- Common CSS System -->
   <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/header-footer.css" />
   <link rel="stylesheet" href="../css/home.css" />
   <link rel="stylesheet" href="../css/contact.css" />
 </head>
 <body>
+
+  <!-- Reusable Common Header -->
+  <div id="siteHeader" data-active="trending"></div>
 
   <!-- ==================== HERO SECTION (DARK NAVY FULL WIDTH) ==================== -->
   <section class="contact-hero-section">
@@ -59,7 +63,7 @@
       <div class="row g-4">
         <!-- Card 1: Track an order -->
         <div class="col-12 col-sm-6 col-lg-3">
-          <a href="#" class="quick-help-card-figma">
+          <a href="../../buyer/html/orders.html" class="quick-help-card-figma">
             <div class="quick-help-icon-box">
               <i class="bi bi-box-seam"></i>
             </div>
@@ -71,7 +75,7 @@
 
         <!-- Card 2: Returns & refunds -->
         <div class="col-12 col-sm-6 col-lg-3">
-          <a href="#" class="quick-help-card-figma">
+          <a href="../../buyer/html/return-status.html" class="quick-help-card-figma">
             <div class="quick-help-icon-box">
               <i class="bi bi-arrow-counterclockwise"></i>
             </div>
@@ -83,7 +87,7 @@
 
         <!-- Card 3: Chat with us -->
         <div class="col-12 col-sm-6 col-lg-3">
-          <a href="#" class="quick-help-card-figma">
+          <a href="../../buyer/html/support.html" class="quick-help-card-figma">
             <div class="quick-help-icon-box">
               <i class="bi bi-chat-dots"></i>
             </div>
@@ -95,7 +99,7 @@
 
         <!-- Card 4: Seller support -->
         <div class="col-12 col-sm-6 col-lg-3">
-          <a href="#" class="quick-help-card-figma">
+          <a href="../../seller/html/support.html" class="quick-help-card-figma">
             <div class="quick-help-icon-box">
               <i class="bi bi-shop"></i>
             </div>
@@ -133,7 +137,7 @@
             <div class="contact-info-icon-circle"><i class="bi bi-telephone"></i></div>
             <div>
               <span class="d-block font-weight-700 text-dark small text-uppercase">Phone</span>
-              <span class="text-muted">1-800-555-SHOP (9am–6pm ET)</span>
+              <span class="text-muted">+91 1800-209-7467 &bull; 98201 45892 (9am&ndash;8pm IST)</span>
             </div>
           </div>
 
@@ -206,13 +210,13 @@
           <h2 class="heading-lg font-serif mb-1">Browse by topic</h2>
           <p class="subtitle mb-0">Clear answers to the questions shoppers ask most.</p>
         </div>
-        <a href="#" class="btn-white-outline-pill">Visit Help Center</a>
+        <a href="../../buyer/html/support.html" class="btn-white-outline-pill">Visit Help Center</a>
       </div>
 
       <div class="row g-4">
         <!-- 1. Orders & delivery -->
         <div class="col-md-6 col-lg-4">
-          <a href="#" class="topic-grid-card-figma">
+          <a href="../../buyer/html/orders.html" class="topic-grid-card-figma">
             <div class="topic-icon-box">
               <i class="bi bi-box-seam"></i>
             </div>
@@ -226,7 +230,7 @@
 
         <!-- 2. Returns & refunds -->
         <div class="col-md-6 col-lg-4">
-          <a href="#" class="topic-grid-card-figma">
+          <a href="../../buyer/html/return-status.html" class="topic-grid-card-figma">
             <div class="topic-icon-box">
               <i class="bi bi-arrow-counterclockwise"></i>
             </div>
@@ -240,7 +244,7 @@
 
         <!-- 3. Payments & gift cards -->
         <div class="col-md-6 col-lg-4">
-          <a href="#" class="topic-grid-card-figma">
+          <a href="../../buyer/html/payment.html" class="topic-grid-card-figma">
             <div class="topic-icon-box">
               <i class="bi bi-credit-card"></i>
             </div>
@@ -254,7 +258,7 @@
 
         <!-- 4. Account & membership -->
         <div class="col-md-6 col-lg-4">
-          <a href="#" class="topic-grid-card-figma">
+          <a href="../../buyer/html/dashboard.html" class="topic-grid-card-figma">
             <div class="topic-icon-box">
               <i class="bi bi-person"></i>
             </div>
@@ -268,7 +272,7 @@
 
         <!-- 5. Products & warranties -->
         <div class="col-md-6 col-lg-4">
-          <a href="#" class="topic-grid-card-figma">
+          <a href="../../buyer/html/catalog.html" class="topic-grid-card-figma">
             <div class="topic-icon-box">
               <i class="bi bi-shield-check"></i>
             </div>
@@ -282,7 +286,7 @@
 
         <!-- 6. Selling on ShopNow -->
         <div class="col-md-6 col-lg-4">
-          <a href="#" class="topic-grid-card-figma">
+          <a href="../../seller/html/dashboard.html" class="topic-grid-card-figma">
             <div class="topic-icon-box">
               <i class="bi bi-shop"></i>
             </div>
@@ -325,57 +329,8 @@
     </div>
   </section>
 
-  <!-- ==================== TRUST BADGES ROW (EXACT FIGMA MATCHING) ==================== -->
-  <div class="trust-badges-bar contact-trust-badges bg-white">
-    <div class="container">
-      <div class="row g-4 align-items-center">
-        <div class="col-6 col-md-3">
-          <div class="trust-badge-item">
-            <div class="trust-icon-circle">
-              <i class="bi bi-truck"></i>
-            </div>
-            <div>
-              <span class="trust-badge-title">Fast, free delivery</span>
-              <small class="trust-badge-sub">On millions of eligible items</small>
-            </div>
-          </div>
-        </div>
-        <div class="col-6 col-md-3">
-          <div class="trust-badge-item">
-            <div class="trust-icon-circle">
-              <i class="bi bi-arrow-repeat"></i>
-            </div>
-            <div>
-              <span class="trust-badge-title">Easy 30-day returns</span>
-              <small class="trust-badge-sub">Simple, convenient and flexible</small>
-            </div>
-          </div>
-        </div>
-        <div class="col-6 col-md-3">
-          <div class="trust-badge-item">
-            <div class="trust-icon-circle">
-              <i class="bi bi-shield-check"></i>
-            </div>
-            <div>
-              <span class="trust-badge-title">Secure checkout</span>
-              <small class="trust-badge-sub">Protected payments and purchases</small>
-            </div>
-          </div>
-        </div>
-        <div class="col-6 col-md-3">
-          <div class="trust-badge-item">
-            <div class="trust-icon-circle">
-              <i class="bi bi-headset"></i>
-            </div>
-            <div>
-              <span class="trust-badge-title">Always-on support</span>
-              <small class="trust-badge-sub">Real help, whenever you need it</small>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- Reusable Common Footer -->
+  <div id="siteFooter"></div>
 
   <!-- jQuery & Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -386,6 +341,7 @@
 
   <!-- Common JS System -->
   <script src="../js/global.js"></script>
+  <script src="../js/header-footer.js"></script>
   <script src="../js/contact.js"></script>
 </body>
 </html>

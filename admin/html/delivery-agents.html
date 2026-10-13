@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Delivery Agent Management - ShopNow Admin</title>
+  <meta name="description" content="Courier fleet dispatch operations, driver vehicle monitoring, and parcel run assignments." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Common & Admin CSS -->
+  <link rel="stylesheet" href="../../common/css/global.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body class="admin-body">
+
+  <div class="admin-layout">
+    <!-- Reusable Dark Navy Sidebar (Active Tab: delivery) -->
+    <aside class="admin-sidebar" id="adminSidebar" data-active="delivery"></aside>
+
+    <!-- Main Content Area -->
+    <div class="admin-main">
+      <!-- Reusable Top Header Bar -->
+      <header class="admin-topbar" id="adminTopBar"></header>
+
+      <!-- Delivery Agent Content (Matching Figma Image 3 Top Middle) -->
+      <main class="admin-content">
+        <!-- Page Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h1 class="admin-page-title">Delivery Agent Management</h1>
+            <p class="admin-page-subtitle">Assign delivery runs, audit courier fleet performance, and route live dispatches.</p>
+          </div>
+          <button type="button" class="btn btn-coral-admin btn-sm px-3" data-bs-toggle="modal" data-bs-target="#assignDeliveryModal">
+            <i class="bi bi-box-arrow-up-right"></i> Assign Delivery
+          </button>
+        </div>
+
+        <!-- 4 Metric Cards (Matching Figma Screen 3 Top Middle) -->
+        <div class="row g-3 mb-4">
+          <div class="col-6 col-md-3">
+            <div class="admin-stat-card">
+              <div>
+                <span class="stat-label">Ready for Dispatch</span>
+                <div class="stat-number text-coral">24</div>
+              </div>
+              <div class="stat-icon bg-warning-subtle text-warning-emphasis"><i class="bi bi-box-seam"></i></div>
+            </div>
+          </div>
+
+          <div class="col-6 col-md-3">
+            <div class="admin-stat-card">
+              <div>
+                <span class="stat-label">Assigned Agents</span>
+                <div class="stat-number">18</div>
+              </div>
+              <div class="stat-icon bg-info-subtle text-info"><i class="bi bi-person-check-fill"></i></div>
+            </div>
+          </div>
+
+          <div class="col-6 col-md-3">
+            <div class="admin-stat-card">
+              <div>
+                <span class="stat-label">Delivery Active</span>
+                <div class="stat-number text-purple" style="color: #7e22ce;">31</div>
+              </div>
+              <div class="stat-icon bg-purple-subtle text-purple" style="background-color: #f3e8ff; color: #7e22ce;"><i class="bi bi-truck"></i></div>
+            </div>
+          </div>
+
+          <div class="col-6 col-md-3">
+            <div class="admin-stat-card">
+              <div>
+                <span class="stat-label">Completed Today</span>
+                <div class="stat-number text-success">142</div>
+              </div>
+              <div class="stat-icon bg-success-subtle text-success"><i class="bi bi-check2-all"></i></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fleet Roster Table Card (Matching Figma) -->
+        <div class="admin-table-card mb-4">
+          <div class="p-3 border-bottom d-flex justify-content-between align-items-center">
+            <h6 class="fw-bold text-dark mb-0">Delivery Agent Information</h6>
+            <span class="extra-small text-muted">Fleet active: 18 Drivers online</span>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-admin align-middle">
+              <thead>
+                <tr>
+                  <th>Agent ID</th>
+                  <th>Agent Name</th>
+                  <th>Contact</th>
+                  <th>Vehicle Type</th>
+                  <th>Status</th>
+                  <th>Active Stops</th>
+                  <th class="text-end">Action</th>
+                </tr>
+              </thead>
+              <tbody id="adminDeliveryAgentsTableBody">
+                <tr>
+                  <td><strong class="text-coral">DRV-821</strong></td>
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="admin-avatar"><img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80" alt="Rajesh" /></div>
+                      <div><strong class="text-dark d-block">Rajesh Verma</strong><span class="extra-small text-muted">★ 4.95 Rating</span></div>
+                    </div>
+                  </td>
+                  <td>+91 98201 45892</td>
+                  <td>Sprinter Van (MH-02-CP-8921)</td>
+                  <td><span class="badge-status badge-status-active">On Route</span></td>
+                  <td><strong>14 stops</strong></td>
+                  <td class="text-end">
+                    <button class="btn btn-sm btn-coral-admin py-1 px-3" data-bs-toggle="modal" data-bs-target="#assignDeliveryModal">Assign Run</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong class="text-coral">DRV-822</strong></td>
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="admin-avatar"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=100&q=80" alt="Sunita" /></div>
+                      <div><strong class="text-dark d-block">Sunita Patel</strong><span class="extra-small text-muted">★ 4.92 Rating</span></div>
+                    </div>
+                  </td>
+                  <td>+91 98334 56789</td>
+                  <td>Hybrid Sedan (MH-12-AB-4819)</td>
+                  <td><span class="badge-status badge-status-active">On Route</span></td>
+                  <td><strong>9 stops</strong></td>
+                  <td class="text-end">
+                    <button class="btn btn-sm btn-coral-admin py-1 px-3" data-bs-toggle="modal" data-bs-target="#assignDeliveryModal">Assign Run</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong class="text-coral">DRV-823</strong></td>
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="admin-avatar"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="Amit" /></div>
+                      <div><strong class="text-dark d-block">Amit Kumar</strong><span class="extra-small text-muted">★ 4.88 Rating</span></div>
+                    </div>
+                  </td>
+                  <td>+91 98112 44999</td>
+                  <td>Motorcycle (MH-01-BK-9981)</td>
+                  <td><span class="badge-status badge-status-review">Available At Hub</span></td>
+                  <td><strong>0 stops</strong></td>
+                  <td class="text-end">
+                    <button class="btn btn-sm btn-coral-admin py-1 px-3" data-bs-toggle="modal" data-bs-target="#assignDeliveryModal">Assign Run</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Assign Delivery Modal (Matching Figma Image 3 Bottom Middle) -->
+  <div class="modal fade" id="assignDeliveryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 shadow">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold text-dark">Assign Order to Delivery Agent</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body py-4">
+          <p class="extra-small text-muted mb-3">Select available driver from central fleet pool to dispatch parcel delivery run.</p>
+          <div class="mb-3">
+            <label class="form-label extra-small fw-bold text-uppercase text-muted">Order ID</label>
+            <input type="text" class="form-control extra-small font-monospace fw-bold" value="#ORD-104 (Running Shoes)" readonly />
+          </div>
+          <div class="mb-3">
+            <label class="form-label extra-small fw-bold text-uppercase text-muted">Select Fleet Courier</label>
+            <select class="form-select extra-small" id="selectDeliveryDriver">
+              <option value="Alex Rivera (Sprinter Van)">Alex Rivera &bull; 14 stops assigned</option>
+              <option value="Sophia Love (Hybrid Sedan)">Sophia Love &bull; 9 stops assigned</option>
+              <option value="David Miller (Motorcycle)" selected>David Miller &bull; Available (0 stops)</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label extra-small fw-bold text-uppercase text-muted">Dispatch Priority</label>
+            <select class="form-select extra-small">
+              <option value="standard">Standard Same-Day</option>
+              <option value="rush" selected>Priority Rush (2hr target)</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer border-0 pt-0">
+          <button type="button" class="btn btn-light extra-small px-3" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-coral-admin extra-small px-4" id="btnConfirmAssignDriver">
+            <i class="bi bi-send-check me-1"></i> Confirm Assignment
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../common/js/global.js"></script>
+  <script src="../js/admin-nav.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>

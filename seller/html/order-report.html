@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Report - Seller Center</title>
+  <meta name="description" content="Detailed analytical breakdown of customer orders, status distribution, and fulfillment metrics on ShopNow." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Common & Seller CSS -->
+  <link rel="stylesheet" href="../../common/css/global.css" />
+  <link rel="stylesheet" href="../css/seller.css" />
+</head>
+<body class="seller-body">
+
+  <!-- Reusable Seller Header & Subnav -->
+  <div id="sellerHeader" data-active="reports"></div>
+
+  <!-- Order Report Content -->
+  <main class="seller-page-wrapper">
+    <div class="container">
+
+      <!-- Breadcrumbs -->
+      <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb extra-small fw-bold">
+          <li class="breadcrumb-item"><a href="dashboard.html" class="text-decoration-none text-muted">Dashboard</a></li>
+          <li class="breadcrumb-item"><a href="reports.html" class="text-decoration-none text-muted">Reports</a></li>
+          <li class="breadcrumb-item active text-coral" aria-current="page">Order report</li>
+        </ol>
+      </nav>
+
+      <!-- Page Header -->
+      <div class="seller-page-title-row mb-4">
+        <div>
+          <h1 class="seller-page-title">Order report</h1>
+          <p class="text-secondary small mb-0">Detailed breakdown of orders, fulfillment velocity, and customer deliveries.</p>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <div class="input-group input-group-sm">
+            <span class="input-group-text bg-white"><i class="bi bi-calendar3"></i></span>
+            <select class="form-select form-select-sm rounded-end">
+              <option>01 Apr &ndash; 12 Oct 2026</option>
+              <option>Last 30 Days</option>
+              <option>This Year</option>
+            </select>
+          </div>
+          <button type="button" class="btn btn-outline-seller" id="btnExportOrderCsv">
+            <i class="bi bi-download"></i> Export CSV
+          </button>
+        </div>
+      </div>
+
+      <!-- 4 Top Metrics Strip (Matching Figma Image 5 Screen 3) -->
+      <div class="seller-stats-strip mb-4">
+        <div class="row text-center text-md-start g-3">
+          <div class="col-6 col-md-3 seller-stat-column">
+            <div class="seller-stat-value" id="kpiOrderReportTotal">0</div>
+            <div class="seller-stat-label">Total Orders</div>
+          </div>
+          <div class="col-6 col-md-3 seller-stat-column">
+            <div class="seller-stat-value text-success" id="kpiOrderReportDelivered">0</div>
+            <div class="seller-stat-label">Delivered</div>
+          </div>
+          <div class="col-6 col-md-3 seller-stat-column">
+            <div class="seller-stat-value text-warning" id="kpiOrderReportProcessing">0</div>
+            <div class="seller-stat-label">Processing</div>
+          </div>
+          <div class="col-6 col-md-3 seller-stat-column">
+            <div class="seller-stat-value text-danger" id="kpiOrderReportCancelled">0</div>
+            <div class="seller-stat-label">Cancelled / Returned</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Orders By Status Horizontal Bars Card (Matching Figma Image 5 Screen 3) -->
+      <div class="seller-card-table p-4 mb-4">
+        <h5 class="fw-bold mb-1">Orders by status</h5>
+        <span class="extra-small text-muted d-block mb-4" id="orderReportStatusDistSub">Status distribution across your shop orders</span>
+
+        <div id="orderReportStatusDistWrap">
+          <!-- Dynamically populated from seller.js -->
+          <div class="dist-bar-item">
+            <div class="dist-bar-header">
+              <span><i class="bi bi-check-circle-fill text-success me-1"></i> Delivered</span>
+              <span id="orderReportDelivCount">0 orders</span>
+            </div>
+            <div class="dist-bar-track">
+              <div class="dist-bar-fill bg-success" id="orderReportDelivFill" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <div class="dist-bar-item">
+            <div class="dist-bar-header">
+              <span><i class="bi bi-clock-fill text-warning me-1"></i> Processing</span>
+              <span id="orderReportProcCount">0 orders</span>
+            </div>
+            <div class="dist-bar-track">
+              <div class="dist-bar-fill bg-warning" id="orderReportProcFill" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <div class="dist-bar-item">
+            <div class="dist-bar-header">
+              <span><i class="bi bi-truck text-purple me-1"></i> In transit / Shipped</span>
+              <span id="orderReportShipCount">0 orders</span>
+            </div>
+            <div class="dist-bar-track">
+              <div class="dist-bar-fill bg-info" id="orderReportShipFill" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <div class="dist-bar-item mb-0">
+            <div class="dist-bar-header">
+              <span><i class="bi bi-x-circle-fill text-danger me-1"></i> Cancelled / Returned</span>
+              <span id="orderReportCancCount">0 orders</span>
+            </div>
+            <div class="dist-bar-track">
+              <div class="dist-bar-fill bg-danger" id="orderReportCancFill" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Details Table (Matching Figma Image 5 Screen 3) -->
+      <div class="seller-card-table mb-4">
+        <div class="p-4 border-bottom d-flex align-items-center justify-content-between">
+          <h5 class="fw-bold mb-0">Order details</h5>
+          <span class="extra-small text-muted">Showing recent shop orders</span>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-seller align-middle">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Date</th>
+                <th>Customer</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="orderReportDetailsTableBody">
+              <!-- Dynamically hydrated from seller.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Back Link -->
+      <div class="mb-4">
+        <a href="reports.html" class="text-decoration-none text-coral fw-bold small">
+          <i class="bi bi-arrow-left"></i> Back to Reports Overview
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Reusable Seller Navy Footer -->
+  <div id="sellerFooter"></div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../common/js/global.js"></script>
+  <script src="../js/seller-nav.js"></script>
+  <script src="../js/seller.js"></script>
+</body>
+</html>

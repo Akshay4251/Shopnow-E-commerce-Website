@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Management - Delivery Fleet - ShopNow</title>
+  <meta name="description" content="Track delivery earnings, driver tips, shift bonuses, withdraw payouts, and review transaction statements." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Common & Delivery Agent CSS -->
+  <link rel="stylesheet" href="../../common/css/global.css" />
+  <link rel="stylesheet" href="../css/delivery.css" />
+</head>
+<body class="delivery-body">
+
+  <div class="delivery-layout">
+    <!-- Reusable Dark Navy Sidebar (Active Tab: payment) -->
+    <aside class="delivery-sidebar" id="deliverySidebar" data-active="payment"></aside>
+
+    <!-- Main Content Area -->
+    <div class="delivery-main">
+      <!-- Reusable Top Header Bar -->
+      <header class="delivery-topbar" id="deliveryTopBar"></header>
+
+      <!-- Payment Management Content (Matching Figma Image 2 Screen 6) -->
+      <main class="delivery-content">
+        <!-- Page Header & Action Buttons -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+          <div>
+            <h1 class="delivery-page-title">Payment Management</h1>
+            <p class="delivery-page-subtitle">Track your earnings, manage payouts, and view detailed financial reports.</p>
+          </div>
+
+          <div class="d-flex align-items-center gap-2">
+            <button type="button" class="btn btn-outline-secondary btn-sm px-3 fw-bold" id="btnDownloadStatement">
+              <i class="bi bi-file-earmark-text me-1"></i> Statements
+            </button>
+            <button type="button" class="btn btn-coral-delivery btn-sm px-3" id="btnRequestPayout">
+              <i class="bi bi-cash-stack"></i> Request Payout
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 Metric Cards Strip -->
+        <div class="row g-3 mb-4">
+          <!-- Total Earnings -->
+          <div class="col-12 col-sm-6 col-xl-3">
+            <div class="delivery-stat-card">
+              <div>
+                <span class="stat-card-label">Total Earnings</span>
+                <div class="stat-card-number">₹ 42,800</div>
+                <span class="badge bg-success-subtle text-success stat-card-badge">
+                  <i class="bi bi-arrow-up-right"></i> +12.5% this month
+                </span>
+              </div>
+              <div class="stat-card-icon bg-coral-subtle text-coral" style="background-color: #fef2ee; color: #ff5338;">
+                <i class="bi bi-currency-rupee"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pending Payout -->
+          <div class="col-12 col-sm-6 col-xl-3">
+            <div class="delivery-stat-card">
+              <div>
+                <span class="stat-card-label">Pending Payout</span>
+                <div class="stat-card-number" id="pendingPayoutAmountLabel">₹ 8,420</div>
+                <span class="extra-small text-muted fw-semibold">Next: Oct 28, 2026</span>
+              </div>
+              <div class="stat-card-icon bg-warning-subtle text-warning-emphasis">
+                <i class="bi bi-hourglass-split"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Avg Weekly Payout -->
+          <div class="col-12 col-sm-6 col-xl-3">
+            <div class="delivery-stat-card">
+              <div>
+                <span class="stat-card-label">Avg. Weekly Payout</span>
+                <div class="stat-card-number">₹ 11,500</div>
+                <span class="badge bg-success-subtle text-success stat-card-badge">
+                  <i class="bi bi-graph-up-arrow"></i> Steady
+                </span>
+              </div>
+              <div class="stat-card-icon bg-purple-subtle text-purple" style="background-color: #f3e8ff; color: #7e22ce;">
+                <i class="bi bi-calendar-week"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Completed Payouts -->
+          <div class="col-12 col-sm-6 col-xl-3">
+            <div class="delivery-stat-card">
+              <div>
+                <span class="stat-card-label">Completed Payouts</span>
+                <div class="stat-card-number">24</div>
+                <span class="extra-small text-muted fw-semibold">Year to date</span>
+              </div>
+              <div class="stat-card-icon bg-success-subtle text-success">
+                <i class="bi bi-check2-all"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Middle Row: Weekly Earnings Chart & Payout Widget -->
+        <div class="row g-4 mb-4">
+          <!-- Left: Weekly Earnings Performance Chart (8 Cols) -->
+          <div class="col-12 col-xl-8">
+            <div class="delivery-card h-100 mb-0">
+              <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-4">
+                <div>
+                  <h6 class="fw-bold text-dark mb-0">Weekly Earnings Performance</h6>
+                  <span class="extra-small text-muted">Consolidated breakdown of delivery base fees, customer tips, and bonuses.</span>
+                </div>
+                
+                <div class="btn-group btn-group-sm">
+                  <button type="button" class="btn btn-outline-secondary">Daily</button>
+                  <button type="button" class="btn btn-dark active">Weekly</button>
+                  <button type="button" class="btn btn-outline-secondary">Monthly</button>
+                </div>
+              </div>
+
+              <!-- Bar Chart Visualization -->
+              <div class="p-3 bg-light rounded-3 mb-3">
+                <div class="d-flex align-items-end justify-content-between gap-2" style="height: 180px;">
+                  <!-- Mon -->
+                  <div class="d-flex flex-column align-items-center flex-grow-1 h-100 justify-content-end">
+                    <div class="w-100 rounded-top" style="height: 55%; background: linear-gradient(to top, #ff5338, #ff7a66);" title="Mon: ₹ 1,200"></div>
+                    <span class="extra-small text-muted mt-2">Mon</span>
+                  </div>
+                  <!-- Tue -->
+                  <div class="d-flex flex-column align-items-center flex-grow-1 h-100 justify-content-end">
+                    <div class="w-100 rounded-top" style="height: 70%; background: linear-gradient(to top, #ff5338, #ff7a66);" title="Tue: ₹ 1,550"></div>
+                    <span class="extra-small text-muted mt-2">Tue</span>
+                  </div>
+                  <!-- Wed -->
+                  <div class="d-flex flex-column align-items-center flex-grow-1 h-100 justify-content-end">
+                    <div class="w-100 rounded-top" style="height: 65%; background: linear-gradient(to top, #ff5338, #ff7a66);" title="Wed: ₹ 1,400"></div>
+                    <span class="extra-small text-muted mt-2">Wed</span>
+                  </div>
+                  <!-- Thu -->
+                  <div class="d-flex flex-column align-items-center flex-grow-1 h-100 justify-content-end">
+                    <div class="w-100 rounded-top" style="height: 85%; background: linear-gradient(to top, #ff5338, #ff7a66);" title="Thu: ₹ 1,900"></div>
+                    <span class="extra-small text-muted mt-2">Thu</span>
+                  </div>
+                  <!-- Fri -->
+                  <div class="d-flex flex-column align-items-center flex-grow-1 h-100 justify-content-end">
+                    <div class="w-100 rounded-top" style="height: 95%; background: linear-gradient(to top, #ff5338, #ff7a66);" title="Fri: ₹ 2,300"></div>
+                    <span class="extra-small text-muted mt-2">Fri</span>
+                  </div>
+                  <!-- Sat -->
+                  <div class="d-flex flex-column align-items-center flex-grow-1 h-100 justify-content-end">
+                    <div class="w-100 rounded-top" style="height: 100%; background: linear-gradient(to top, #10b981, #34d399);" title="Sat (Peak): ₹ 2,600"></div>
+                    <span class="extra-small fw-bold text-coral mt-2">Sat</span>
+                  </div>
+                  <!-- Sun -->
+                  <div class="d-flex flex-column align-items-center flex-grow-1 h-100 justify-content-end">
+                    <div class="w-100 rounded-top" style="height: 78%; background: linear-gradient(to top, #ff5338, #ff7a66);" title="Sun: ₹ 1,750"></div>
+                    <span class="extra-small text-muted mt-2">Sun</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Chart Legends -->
+              <div class="d-flex justify-content-center gap-4 extra-small">
+                <span class="d-flex align-items-center gap-1">
+                  <span class="rounded-circle d-inline-block" style="width: 10px; height: 10px; background-color: #ff5338;"></span> Base Deliveries
+                </span>
+                <span class="d-flex align-items-center gap-1">
+                  <span class="rounded-circle d-inline-block" style="width: 10px; height: 10px; background-color: #10b981;"></span> Customer Tips
+                </span>
+                <span class="d-flex align-items-center gap-1">
+                  <span class="rounded-circle d-inline-block" style="width: 10px; height: 10px; background-color: #f59e0b;"></span> Peak Bonuses
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Pending Payout & Direct Transfer Card (4 Cols - Dark Navy) -->
+          <div class="col-12 col-xl-4">
+            <div class="dark-widget-card d-flex flex-column justify-content-between h-100">
+              <div>
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <span class="dark-widget-tag"><i class="bi bi-wallet2 me-1"></i> Ready for Release</span>
+                  <i class="bi bi-shield-check text-success fs-5"></i>
+                </div>
+                <h2 class="fw-bold text-white mb-0" id="pendingPayoutWidgetAmount">₹ 8,420</h2>
+                <span class="extra-small text-secondary d-block mb-3">Processing for Oct 28, 2026</span>
+
+                <div class="p-3 rounded-3 bg-secondary-subtle bg-opacity-10 border border-secondary border-opacity-25 mb-3">
+                  <div class="d-flex justify-content-between extra-small text-white-50 mb-1">
+                    <span>Minimum threshold reached</span>
+                    <strong class="text-white">100%</strong>
+                  </div>
+                  <div class="progress" style="height: 6px; background-color: rgba(255,255,255,0.1);">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%;"></div>
+                  </div>
+                  <div class="d-flex justify-content-between extra-small text-secondary mt-1">
+                    <span>₹ 1,000 min</span>
+                    <span>₹ 8,420 earned</span>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <button type="button" class="btn btn-coral-delivery w-100 justify-content-center py-2 mb-2" id="btnWithdrawNow">
+                  <i class="bi bi-lightning-charge-fill"></i> Withdraw Now
+                </button>
+                <span class="extra-small text-secondary text-center d-block">
+                  Transfers are routed instantly to your linked checking account.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Row: Transaction History & Payout Settings -->
+        <div class="row g-4">
+          <!-- Left: Transaction History Table (8 Cols) -->
+          <div class="col-12 col-xl-8">
+            <div class="delivery-table-card mb-0">
+              <div class="p-3 border-bottom d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 class="fw-bold text-dark mb-0">Transaction History</h6>
+                  <span class="extra-small text-muted">Consolidated record of recent payouts, tips, and adjustments.</span>
+                </div>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-outline-secondary btn-sm extra-small" title="Filter"><i class="bi bi-funnel"></i> Filter</button>
+                  <button class="btn btn-outline-secondary btn-sm extra-small" title="Export"><i class="bi bi-download"></i> Export CSV</button>
+                </div>
+              </div>
+
+              <div class="table-responsive">
+                <table class="table table-delivery align-middle">
+                  <thead>
+                    <tr>
+                      <th>Reference ID</th>
+                      <th>Date</th>
+                      <th>Description</th>
+                      <th>Payout Method</th>
+                      <th>Status</th>
+                      <th class="text-end">Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong class="text-coral">TR-24019</strong></td>
+                      <td><span class="small text-dark">Oct 24, 2026</span></td>
+                      <td><strong class="text-dark small d-block">Delivery Payout</strong></td>
+                      <td><span class="extra-small text-muted">Direct Deposit</span></td>
+                      <td><span class="delivery-status-pill delivered">Completed</span></td>
+                      <td class="text-end fw-bold text-dark">+₹ 1,425</td>
+                    </tr>
+                    <tr>
+                      <td><strong class="text-coral">TR-24018</strong></td>
+                      <td><span class="small text-dark">Oct 23, 2026</span></td>
+                      <td><strong class="text-dark small d-block">Tips &amp; Bonuses</strong></td>
+                      <td><span class="extra-small text-muted">HDFC Bank</span></td>
+                      <td><span class="delivery-status-pill delivered">Completed</span></td>
+                      <td class="text-end fw-bold text-dark">+₹ 640</td>
+                    </tr>
+                    <tr>
+                      <td><strong class="text-coral">TR-24017</strong></td>
+                      <td><span class="small text-dark">Oct 22, 2026</span></td>
+                      <td><strong class="text-dark small d-block">Delivery Payout</strong></td>
+                      <td><span class="extra-small text-muted">Direct Deposit</span></td>
+                      <td><span class="delivery-status-pill in-transit">In Transit</span></td>
+                      <td class="text-end fw-bold text-dark">+₹ 1,242</td>
+                    </tr>
+                    <tr>
+                      <td><strong class="text-coral">TR-24016</strong></td>
+                      <td><span class="small text-dark">Oct 21, 2026</span></td>
+                      <td><strong class="text-dark small d-block">Service Adjustment</strong></td>
+                      <td><span class="extra-small text-muted">Balance Movement</span></td>
+                      <td><span class="delivery-status-pill delivered">Completed</span></td>
+                      <td class="text-end fw-bold text-danger">-₹ 120</td>
+                    </tr>
+                    <tr>
+                      <td><strong class="text-coral">TR-24015</strong></td>
+                      <td><span class="small text-dark">Oct 20, 2026</span></td>
+                      <td><strong class="text-dark small d-block">Delivery Payout</strong></td>
+                      <td><span class="extra-small text-muted">Direct Deposit</span></td>
+                      <td><span class="delivery-status-pill delivered">Completed</span></td>
+                      <td class="text-end fw-bold text-dark">+₹ 1,896</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Payout Settings Card (4 Cols) -->
+          <div class="col-12 col-xl-4">
+            <div class="delivery-card mb-0">
+              <span class="stat-card-label d-block mb-3"><i class="bi bi-bank2 text-coral me-1"></i> Payout Settings</span>
+
+              <!-- Direct Deposit Bank Box -->
+              <div class="p-3 bg-light rounded-3 border mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-credit-card-2-front-fill fs-5 text-dark"></i>
+                    <div>
+                      <strong class="text-dark small d-block">HDFC Direct Deposit</strong>
+                      <span class="extra-small text-muted">A/C &bull;&bull;&bull;&bull; 4589</span>
+                    </div>
+                  </div>
+                  <span class="badge bg-success-subtle text-success extra-small">Active</span>
+                </div>
+              </div>
+
+              <!-- Automated Schedules -->
+              <div class="extra-small text-secondary d-flex flex-column gap-3 mb-4">
+                <div class="d-flex align-items-start gap-2">
+                  <i class="bi bi-clock-history text-coral mt-1"></i>
+                  <div>
+                    <strong class="text-dark d-block">Automatic Weekly Payouts</strong>
+                    <span>Auto-disbursed every Monday at 09:00 AM IST.</span>
+                  </div>
+                </div>
+
+                <div class="d-flex align-items-start gap-2">
+                  <i class="bi bi-receipt-cutoff text-coral mt-1"></i>
+                  <div>
+                    <strong class="text-dark d-block">TDS &amp; GST Statements Ready</strong>
+                    <span>Annual courier tax statements are archived and downloadable.</span>
+                  </div>
+                </div>
+              </div>
+
+              <a href="profile.html" class="btn btn-outline-delivery w-100 justify-content-center btn-sm mb-3">
+                Manage Financial Details
+              </a>
+
+              <div class="p-3 bg-warning-subtle border border-warning-subtle rounded-3">
+                <span class="extra-small text-secondary d-block">
+                  <i class="bi bi-info-circle-fill text-warning-emphasis me-1"></i>
+                  <strong>Missing a payout?</strong> Check your account verification status in the driver financial support desk.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../common/js/global.js"></script>
+  <script src="../js/delivery-nav.js"></script>
+  <script src="../js/delivery.js"></script>
+</body>
+</html>

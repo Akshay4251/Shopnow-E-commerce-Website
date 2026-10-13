@@ -1,0 +1,583 @@
+/**
+ * ===================================================
+ * SHOPNOW - DELIVERY AGENT DESIGN SYSTEM (delivery.css)
+ * Premium Dark Navy & Vibrant Coral Fleet UI
+ * Desktop Sidebar + Top Header + Responsive Cards + Live Maps
+ * ===================================================
+ */
+
+:root {
+  --delivery-sidebar-bg: #081726;
+  --delivery-sidebar-hover: #132437;
+  --delivery-sidebar-active: #ff5338;
+  --delivery-primary: #ff5338;
+  --delivery-primary-hover: #e04326;
+  --delivery-bg: #f8fafc;
+  --delivery-surface: #ffffff;
+  --delivery-border: #e2e8f0;
+  --delivery-text-main: #0f172a;
+  --delivery-text-muted: #64748b;
+  --delivery-success: #10b981;
+  --delivery-warning: #f59e0b;
+  --delivery-danger: #ef4444;
+  --delivery-purple: #8b5cf6;
+}
+
+body.delivery-body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--delivery-bg);
+  color: var(--delivery-text-main);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ---------------- Layout Wrapper ---------------- */
+.delivery-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* ---------------- 1. Dark Navy Sidebar ---------------- */
+.delivery-sidebar {
+  width: 250px;
+  min-width: 250px;
+  background-color: var(--delivery-sidebar-bg);
+  color: #94a3b8;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+  transition: transform 0.3s ease;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.delivery-sidebar-brand {
+  padding: 24px 20px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.delivery-brand-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #ff5338 0%, #ff7660 100%);
+  color: #ffffff;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 12px rgba(255, 83, 56, 0.35);
+}
+
+.delivery-brand-name {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.delivery-sidebar-menu {
+  list-style: none;
+  padding: 20px 12px;
+  margin: 0;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.delivery-sidebar-menu li {
+  margin-bottom: 4px;
+}
+
+.delivery-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.delivery-nav-item i {
+  font-size: 1.15rem;
+  color: #64748b;
+  transition: color 0.2s ease;
+}
+
+.delivery-nav-item:hover {
+  background-color: var(--delivery-sidebar-hover);
+  color: #ffffff;
+}
+
+.delivery-nav-item:hover i {
+  color: #ffffff;
+}
+
+.delivery-nav-item.active {
+  background-color: var(--delivery-sidebar-active);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(255, 83, 56, 0.35);
+}
+
+.delivery-nav-item.active i {
+  color: #ffffff;
+}
+
+.delivery-sidebar-footer {
+  padding: 16px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.775rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.delivery-sidebar-footer a {
+  color: #64748b;
+  text-decoration: none;
+}
+
+.delivery-sidebar-footer a:hover {
+  color: #ffffff;
+}
+
+/* ---------------- 2. Main Content Area ---------------- */
+.delivery-main {
+  margin-left: 250px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: calc(100% - 250px);
+}
+
+/* ---------------- 3. Top Header Bar ---------------- */
+.delivery-topbar {
+  background-color: var(--delivery-surface);
+  border-bottom: 1px solid var(--delivery-border);
+  padding: 14px 28px;
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+}
+
+.delivery-search-form {
+  position: relative;
+  min-width: 280px;
+  max-width: 440px;
+}
+
+.delivery-search-input {
+  width: 100%;
+  border-radius: 9999px;
+  border: 1px solid var(--delivery-border);
+  padding: 8px 16px 8px 38px;
+  font-size: 0.85rem;
+  background-color: #f8fafc;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.delivery-search-input:focus {
+  border-color: var(--delivery-primary);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(255, 83, 56, 0.12);
+}
+
+.delivery-search-icon {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+/* Status Active & Online Switch */
+.delivery-online-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background-color: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #065f46;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.online-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3);
+  animation: pulseDot 2s infinite;
+}
+
+@keyframes pulseDot {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+/* Profile Pill */
+.delivery-profile-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  border: 1px solid var(--delivery-border);
+  cursor: pointer;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.delivery-profile-pill:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.delivery-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #fed7aa;
+}
+
+.delivery-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---------------- 4. Content Containers & Titles ---------------- */
+.delivery-content {
+  padding: 28px 32px 60px;
+  flex-grow: 1;
+}
+
+.delivery-page-header {
+  margin-bottom: 24px;
+}
+
+.delivery-page-title {
+  font-family: var(--font-heading, 'Playfair Display', serif);
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #081726;
+  margin: 0 0 4px;
+}
+
+.delivery-page-subtitle {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin: 0;
+}
+
+/* ---------------- 5. Cards & Tables ---------------- */
+.delivery-card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid var(--delivery-border);
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  margin-bottom: 24px;
+}
+
+.delivery-stat-card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid var(--delivery-border);
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  height: 100%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.stat-card-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  margin-bottom: 6px;
+}
+
+.stat-card-number {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #081726;
+  margin-bottom: 6px;
+}
+
+.stat-card-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.stat-card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+/* Table Design */
+.delivery-table-card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid var(--delivery-border);
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  margin-bottom: 24px;
+}
+
+.table-delivery {
+  margin-bottom: 0;
+  vertical-align: middle;
+  font-size: 0.85rem;
+}
+
+.table-delivery th {
+  background-color: #f8fafc;
+  color: #64748b;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--delivery-border);
+}
+
+.table-delivery td {
+  padding: 16px 20px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #081726;
+}
+
+.table-delivery tr:last-child td {
+  border-bottom: none;
+}
+
+.table-delivery tr:hover td {
+  background-color: #fafbfc;
+}
+
+/* ---------------- 6. Status Pills ---------------- */
+.delivery-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.delivery-status-pill.in-transit {
+  background-color: #f3e8ff;
+  color: #7e22ce;
+}
+
+.delivery-status-pill.out-for-delivery {
+  background-color: #fff7ed;
+  color: #c2410c;
+}
+
+.delivery-status-pill.delivered {
+  background-color: #ecfdf5;
+  color: #047857;
+}
+
+.delivery-status-pill.pending {
+  background-color: #f1f5f9;
+  color: #475569;
+}
+
+.delivery-status-pill.failed,
+.delivery-status-pill.cancelled {
+  background-color: #fef2f2;
+  color: #b91c1c;
+}
+
+/* ---------------- 7. Buttons & Utilities ---------------- */
+.btn-coral-delivery {
+  background-color: var(--delivery-primary);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border-radius: 10px;
+  padding: 10px 20px;
+  border: none;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(255, 83, 56, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btn-coral-delivery:hover {
+  background-color: var(--delivery-primary-hover);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.btn-outline-delivery {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #081726;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border-radius: 10px;
+  padding: 9px 18px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-delivery:hover {
+  background-color: #f8fafc;
+  border-color: #94a3b8;
+  color: #081726;
+}
+
+/* ---------------- 8. Dark Navy Widgets ---------------- */
+.dark-widget-card {
+  background-color: #081726;
+  color: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  height: 100%;
+}
+
+.dark-widget-tag {
+  color: var(--delivery-primary);
+  font-size: 0.725rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* ---------------- 9. Chat & Interaction Hub ---------------- */
+.chat-bubble-agent {
+  background-color: #081726;
+  color: #ffffff;
+  border-radius: 14px 14px 2px 14px;
+  padding: 12px 16px;
+  font-size: 0.85rem;
+  max-width: 80%;
+}
+
+.chat-bubble-customer {
+  background-color: #f1f5f9;
+  color: #081726;
+  border-radius: 14px 14px 14px 2px;
+  padding: 12px 16px;
+  font-size: 0.85rem;
+  max-width: 80%;
+}
+
+/* ---------------- 10. Stacked Charts & Steppers ---------------- */
+.delivery-timeline {
+  position: relative;
+  padding-left: 28px;
+}
+
+.delivery-timeline::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  bottom: 20px;
+  left: 10px;
+  width: 2px;
+  background: #e2e8f0;
+}
+
+.delivery-timeline-step {
+  position: relative;
+  padding-bottom: 24px;
+}
+
+.delivery-timeline-step:last-child {
+  padding-bottom: 0;
+}
+
+.delivery-timeline-node {
+  position: absolute;
+  left: -28px;
+  top: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: #64748b;
+  z-index: 2;
+}
+
+.delivery-timeline-step.done .delivery-timeline-node {
+  background: #10b981;
+  border-color: #10b981;
+  color: #ffffff;
+}
+
+.delivery-timeline-step.active .delivery-timeline-node {
+  background: #ff5338;
+  border-color: #ff5338;
+  color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(255, 83, 56, 0.25);
+}
+
+/* Mobile Sidebar Toggle */
+@media (max-width: 991.98px) {
+  .delivery-sidebar {
+    transform: translateX(-100%);
+  }
+
+  .delivery-sidebar.show {
+    transform: translateX(0);
+  }
+
+  .delivery-main {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .delivery-content {
+    padding: 20px 16px 40px;
+  }
+}

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Details - Seller Center</title>
+  <meta name="description" content="Review order details, inspect item lists, update shipment status, and check customer delivery information." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Common & Seller CSS -->
+  <link rel="stylesheet" href="../../common/css/global.css" />
+  <link rel="stylesheet" href="../css/seller.css" />
+</head>
+<body class="seller-body">
+
+  <!-- Reusable Seller Header & Subnav -->
+  <div id="sellerHeader" data-active="orders"></div>
+
+  <!-- Order Details Main Content -->
+  <main class="seller-page-wrapper" id="sellerOrderDetailsWrapper">
+    <div class="container">
+
+      <!-- Breadcrumbs -->
+      <nav class="buyer-breadcrumb mb-2" aria-label="breadcrumb">
+        <a href="orders.html">Orders</a>
+        <span>&gt;</span>
+        <span class="active">Order details</span>
+      </nav>
+
+      <!-- Order Header Title & Badge (Matching Figma Image 3 Screen 3) -->
+      <div class="d-flex align-items-center gap-3 mb-4">
+        <h1 class="seller-page-title mb-0">Order <span id="detailOrderIdBadge">#ORD-1024</span></h1>
+        <span class="status-badge shipped fs-6 px-3 py-1" id="detailOrderStatusBadge">Shipped</span>
+      </div>
+
+      <!-- 5-Step Horizontal Fulfillment Stepper (Matching Figma Screen) -->
+      <div class="card border-1 rounded-4 shadow-sm p-4 mb-4">
+        <div class="fulfillment-stepper">
+          <div class="fulfillment-line">
+            <div class="fulfillment-line-fill" style="width: 75%;"></div>
+          </div>
+
+          <div class="fulfillment-step-node done">
+            <div class="fulfillment-circle"><i class="bi bi-check-lg"></i></div>
+            <span class="small fw-bold text-dark">Placed</span>
+            <span class="extra-small text-muted">10 Oct</span>
+          </div>
+
+          <div class="fulfillment-step-node done">
+            <div class="fulfillment-circle"><i class="bi bi-check-lg"></i></div>
+            <span class="small fw-bold text-dark">Confirmed</span>
+            <span class="extra-small text-muted">10 Oct</span>
+          </div>
+
+          <div class="fulfillment-step-node done">
+            <div class="fulfillment-circle"><i class="bi bi-check-lg"></i></div>
+            <span class="small fw-bold text-dark">Packed</span>
+            <span class="extra-small text-muted">11 Oct</span>
+          </div>
+
+          <div class="fulfillment-step-node active">
+            <div class="fulfillment-circle"><i class="bi bi-truck"></i></div>
+            <span class="small fw-bold text-dark">Shipped</span>
+            <span class="extra-small text-primary fw-bold">Active</span>
+          </div>
+
+          <div class="fulfillment-step-node">
+            <div class="fulfillment-circle">5</div>
+            <span class="small fw-bold text-dark">Delivered</span>
+            <span class="extra-small text-muted">ETA 14 Oct</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Two-Column Layout -->
+      <div class="row g-4 align-items-start">
+        
+        <!-- Left Column: Ordered Items & Status Updater -->
+        <div class="col-12 col-lg-8">
+          <div class="card border-1 rounded-4 shadow-sm p-4 mb-4">
+            <h5 class="fw-bold text-dark fs-6 mb-3">Items ordered</h5>
+
+            <div class="table-responsive">
+              <table class="table table-borderless align-middle mb-3">
+                <thead class="border-bottom">
+                  <tr class="extra-small text-muted text-uppercase">
+                    <th>Product</th>
+                    <th class="text-center">Qty</th>
+                    <th class="text-end">Unit Price</th>
+                    <th class="text-end">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="border-bottom">
+                    <td>
+                      <div class="d-flex align-items-center gap-3">
+                        <div class="cart-item-thumb-box" style="width: 52px; height: 52px;">
+                          <img src="https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_2_k3wqpn.png" alt="Mug" />
+                        </div>
+                        <div>
+                          <strong class="text-dark d-block">Speckled ceramic mug</strong>
+                          <span class="extra-small text-muted">SKU: MH-CER-012</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="text-center font-monospace">2</td>
+                    <td class="text-end">Rs 890</td>
+                    <td class="text-end fw-bold">Rs 1,780</td>
+                  </tr>
+
+                  <tr class="border-bottom">
+                    <td>
+                      <div class="d-flex align-items-center gap-3">
+                        <div class="cart-item-thumb-box" style="width: 52px; height: 52px;">
+                          <img src="https://res.cloudinary.com/dpva4smxo/image/upload/v1791382197/Product_image_ucgxvy.png" alt="Cushion" />
+                        </div>
+                        <div>
+                          <strong class="text-dark d-block">Linen cushion cover</strong>
+                          <span class="extra-small text-muted">SKU: PH-L-C-006</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="text-center font-monospace">1</td>
+                    <td class="text-end">Rs 1,299</td>
+                    <td class="text-end fw-bold">Rs 1,299</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Price Breakdown -->
+            <div class="p-3 bg-light rounded-3 mb-4">
+              <div class="d-flex justify-content-between small text-muted mb-2">
+                <span>Subtotal</span>
+                <span>Rs 3,079</span>
+              </div>
+              <div class="d-flex justify-content-between small text-muted mb-2">
+                <span>Discount (Coupon WELCOME100)</span>
+                <span class="text-success">- Rs 102</span>
+              </div>
+              <div class="d-flex justify-content-between small text-muted mb-2">
+                <span>Standard Shipping</span>
+                <span class="text-success fw-bold">FREE</span>
+              </div>
+              <hr class="my-2" />
+              <div class="d-flex justify-content-between fs-6 fw-bold text-dark">
+                <span>Total Revenue</span>
+                <span id="detailOrderTotal">Rs 2,977</span>
+              </div>
+            </div>
+
+            <!-- Update Status Section (Matching Figma Screen) -->
+            <h5 class="fw-bold text-dark fs-6 mb-2">Update status</h5>
+            <div class="d-flex flex-wrap gap-2 align-items-center">
+              <select class="form-select form-select-sm w-auto" id="detailOrderStatusSelect">
+                <option value="Processing">Processing</option>
+                <option value="Shipped" selected>Shipped</option>
+                <option value="Delivered">Delivered</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+              <button type="button" class="btn-coral-seller btn-sm" id="btnUpdateOrderStatus">
+                Save status
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Customer & Shipping Details Cards -->
+        <div class="col-12 col-lg-4">
+          <!-- Customer Card -->
+          <div class="card border-1 rounded-4 shadow-sm p-4 mb-4">
+            <h5 class="fw-bold text-dark fs-6 mb-3">Customer</h5>
+            <div class="d-flex align-items-center gap-3 mb-3">
+              <div class="seller-avatar-initials bg-primary-subtle text-primary">AM</div>
+              <div>
+                <strong class="d-block text-dark" id="detailOrderCustomerName">Ananya Mehta</strong>
+                <span class="extra-small text-muted">Customer since 2025</span>
+              </div>
+            </div>
+            <div class="small text-muted lh-base">
+              <div><i class="bi bi-envelope me-2"></i><span id="detailOrderCustomerEmail">ananya@example.com</span></div>
+              <div class="mt-1"><i class="bi bi-telephone me-2"></i><span id="detailOrderCustomerPhone">+91 98201 44820</span></div>
+            </div>
+          </div>
+
+          <!-- Shipping Address Card -->
+          <div class="card border-1 rounded-4 shadow-sm p-4 mb-4">
+            <h5 class="fw-bold text-dark fs-6 mb-2">Shipping address</h5>
+            <p class="small text-muted mb-0 lh-base" id="detailOrderAddress">
+              B-12, Palm Heights, Bandra West, Mumbai 400050, Maharashtra, India
+            </p>
+          </div>
+
+          <!-- Payment Card -->
+          <div class="card border-1 rounded-4 shadow-sm p-4">
+            <h5 class="fw-bold text-dark fs-6 mb-2">Payment details</h5>
+            <div class="d-flex justify-content-between align-items-center small">
+              <span class="text-muted">Method:</span>
+              <span class="fw-bold text-dark">UPI (Instant)</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center small mt-2">
+              <span class="text-muted">Payment status:</span>
+              <span class="badge bg-success-subtle text-success">Paid</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Reusable Seller Footer -->
+  <div id="sellerFooter"></div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../common/js/global.js"></script>
+  <script src="../js/seller-nav.js"></script>
+  <script src="../js/seller.js"></script>
+</body>
+</html>

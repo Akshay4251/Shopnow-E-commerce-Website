@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live GPS Route Navigation - Delivery Fleet - ShopNow</title>
+  <meta name="description" content="Live driver GPS navigation, turn-by-turn directions, real-time stop sequence, traffic warnings, and quick arrival actions." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Common & Delivery Agent CSS -->
+  <link rel="stylesheet" href="../../common/css/global.css" />
+  <link rel="stylesheet" href="../css/delivery.css" />
+</head>
+<body class="delivery-body">
+
+  <div class="delivery-layout">
+    <!-- Reusable Dark Navy Sidebar (Active Tab: location) -->
+    <aside class="delivery-sidebar" id="deliverySidebar" data-active="location"></aside>
+
+    <!-- Main Content Area -->
+    <div class="delivery-main">
+      <!-- Reusable Top Header Bar -->
+      <header class="delivery-topbar" id="deliveryTopBar"></header>
+
+      <!-- Live GPS Navigation Content -->
+      <main class="delivery-content">
+        <!-- Page Header & Action Controls -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+          <div>
+            <div class="d-flex align-items-center gap-2">
+              <h1 class="delivery-page-title mb-0">Live Navigation</h1>
+              <span class="badge bg-success text-white extra-small"><i class="bi bi-broadcast me-1"></i> ACTIVE GPS</span>
+            </div>
+            <p class="delivery-page-subtitle">Turn-by-turn routing &bull; Stop 3 of 14 on Morning Delivery Run</p>
+          </div>
+
+          <div class="d-flex align-items-center gap-2">
+            <button type="button" class="btn btn-outline-secondary btn-sm px-3 fw-bold" onclick="ShopNowCommon.showToast('Recalculating fastest route avoiding traffic...', 'info');">
+              <i class="bi bi-arrow-repeat me-1"></i> Recalculate Route
+            </button>
+            <a href="update-status.html?id=ORD-98104" class="btn btn-coral-delivery btn-sm px-3">
+              <i class="bi bi-check2-circle"></i> Arrived at Stop
+            </a>
+          </div>
+        </div>
+
+        <!-- Turn-by-Turn HUD Banner -->
+        <div class="p-3 bg-dark text-white rounded-4 shadow-sm mb-4 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+          <div class="d-flex align-items-center gap-3">
+            <div class="p-3 bg-coral rounded-3 text-white fs-4" style="background-color: #ff5338;">
+              <i class="bi bi-arrow-up-right-square-fill"></i>
+            </div>
+            <div>
+              <span class="extra-small text-white-50 text-uppercase fw-bold d-block">In 400 feet &bull; Turn Right</span>
+              <h5 class="fw-bold text-white mb-0">Onto Evergreen Terrace Blvd</h5>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center gap-4 extra-small">
+            <div class="text-md-end">
+              <span class="text-white-50 d-block">Remaining Distance</span>
+              <strong class="text-white fs-6">0.8 Miles</strong>
+            </div>
+            <div class="text-md-end">
+              <span class="text-white-50 d-block">Est. Arrival Time</span>
+              <strong class="text-coral fs-6">11:15 AM (6 mins)</strong>
+            </div>
+            <div class="text-md-end">
+              <span class="text-white-50 d-block">Speed</span>
+              <strong class="text-success fs-6">28 mph</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2-Column Map & Stop Sequence Layout -->
+        <div class="row g-4">
+          <!-- Left: Full Route Map Canvas (8 Cols) -->
+          <div class="col-12 col-xl-8">
+            <div class="delivery-card p-0 overflow-hidden mb-0 position-relative" style="min-height: 520px;">
+              <!-- Simulated Interactive Map Frame -->
+              <div class="w-100 h-100 position-absolute top-0 start-0" style="background-color: #e2e8f0;">
+                <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1200&q=80" alt="Full Navigation Map" class="w-100 h-100 object-fit-cover" />
+                
+                <!-- Map Overlay Gradient for HUD clarity -->
+                <div class="position-absolute top-0 start-0 w-100 h-100" style="background: radial-gradient(circle, rgba(0,0,0,0.1) 0%, rgba(8,23,38,0.4) 100%);"></div>
+
+                <!-- Floating Vehicle Marker -->
+                <div class="position-absolute top-50 start-50 translate-middle text-center" style="animation: pulseDot 2s infinite;">
+                  <div class="bg-coral text-white p-2 rounded-circle shadow-lg d-inline-flex" style="background-color: #ff5338; border: 3px solid #ffffff;">
+                    <i class="bi bi-cursor-fill fs-5" style="transform: rotate(45deg);"></i>
+                  </div>
+                  <span class="badge bg-dark text-white extra-small mt-1 d-block shadow">Alex (You)</span>
+                </div>
+
+                <!-- Stop 3 Destination Pin Marker -->
+                <div class="position-absolute text-center" style="top: 35%; left: 65%;">
+                  <div class="bg-dark text-white p-2 rounded-circle shadow-lg d-inline-flex border border-2 border-white">
+                    <i class="bi bi-pin-map-fill text-coral fs-5"></i>
+                  </div>
+                  <span class="badge bg-white text-dark extra-small mt-1 d-block shadow fw-bold">Stop 3: Sarah J.</span>
+                </div>
+
+                <!-- Floating Map Controls -->
+                <div class="position-absolute bottom-0 end-0 m-3 d-flex flex-column gap-2">
+                  <button class="btn btn-white bg-white text-dark shadow-sm rounded-circle p-2" title="Zoom in" onclick="ShopNowCommon.showToast('Zoom In', 'info');">
+                    <i class="bi bi-plus-lg"></i>
+                  </button>
+                  <button class="btn btn-white bg-white text-dark shadow-sm rounded-circle p-2" title="Zoom out" onclick="ShopNowCommon.showToast('Zoom Out', 'info');">
+                    <i class="bi bi-dash-lg"></i>
+                  </button>
+                  <button class="btn btn-coral-delivery shadow-sm rounded-circle p-2 justify-content-center" title="Recenter on My Vehicle" onclick="ShopNowCommon.showToast('Recycled camera to driver location.', 'success');" style="width: 40px; height: 40px;">
+                    <i class="bi bi-crosshair"></i>
+                  </button>
+                </div>
+
+                <!-- Floating Voice Guide Audio Toggle -->
+                <div class="position-absolute bottom-0 start-0 m-3">
+                  <div class="bg-white p-2 rounded-pill shadow-sm d-flex align-items-center gap-2 extra-small">
+                    <i class="bi bi-volume-up-fill text-coral fs-6"></i>
+                    <span class="fw-semibold text-dark">Audio Voice Navigation Active</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Sequence Stops Queue (4 Cols) -->
+          <div class="col-12 col-xl-4">
+            <div class="delivery-card mb-0 h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="stat-card-label mb-0"><i class="bi bi-list-ol text-coral me-1"></i> Today's Run Sequence</span>
+                  <span class="badge bg-coral-subtle text-coral extra-small fw-bold">14 Total Stops</span>
+                </div>
+
+                <!-- Stop 3: Current Stop (Highlighted) -->
+                <div class="p-3 rounded-3 border border-2 border-coral bg-light mb-3">
+                  <div class="d-flex justify-content-between align-items-start mb-1">
+                    <span class="badge bg-coral text-white extra-small" style="background-color: #ff5338;">NEXT STOP (3/14)</span>
+                    <strong class="text-coral small">6 mins away</strong>
+                  </div>
+                  <strong class="text-dark d-block">Sarah Jenkins</strong>
+                  <span class="extra-small text-secondary d-block mb-2">124 Park Ave, Suite 102 &bull; Gate #4912</span>
+                  <div class="d-flex gap-2">
+                    <a href="customer-interaction.html" class="btn btn-sm btn-outline-delivery flex-grow-1 extra-small">
+                      <i class="bi bi-chat-text text-coral"></i> Message
+                    </a>
+                    <a href="update-status.html?id=ORD-98104" class="btn btn-sm btn-coral-delivery flex-grow-1 extra-small justify-content-center">
+                      <i class="bi bi-check2"></i> Arrived
+                    </a>
+                  </div>
+                </div>
+
+                <!-- Stop 4: Up Next -->
+                <div class="p-3 rounded-3 border mb-2 bg-white">
+                  <div class="d-flex justify-content-between align-items-start mb-1">
+                    <span class="badge bg-secondary-subtle text-secondary extra-small">STOP 4</span>
+                    <span class="extra-small text-muted">11:45 AM</span>
+                  </div>
+                  <strong class="text-dark small d-block">Michael Chen</strong>
+                  <span class="extra-small text-muted d-block">884 O'Connell St, Apt 2 &bull; Direct handoff</span>
+                </div>
+
+                <!-- Stop 5: Scheduled -->
+                <div class="p-3 rounded-3 border mb-2 bg-white">
+                  <div class="d-flex justify-content-between align-items-start mb-1">
+                    <span class="badge bg-secondary-subtle text-secondary extra-small">STOP 5</span>
+                    <span class="extra-small text-muted">12:20 PM</span>
+                  </div>
+                  <strong class="text-dark small d-block">Elena Rodriguez</strong>
+                  <span class="extra-small text-muted d-block">45 Broadway, Floor 2 &bull; Fragile parcel</span>
+                </div>
+              </div>
+
+              <!-- External App Hand-off -->
+              <div class="pt-3 border-top mt-3">
+                <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary w-100 justify-content-center btn-sm">
+                  <i class="bi bi-box-arrow-up-right me-1"></i> Open in Google Maps
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../common/js/global.js"></script>
+  <script src="../js/delivery-nav.js"></script>
+  <script src="../js/delivery.js"></script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shopping Cart - ShopNow</title>
+  <meta name="description" content="Review items in your ShopNow shopping cart, update quantities, or proceed to secure checkout." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Common & Buyer CSS -->
+  <link rel="stylesheet" href="../../common/css/global.css" />
+  <link rel="stylesheet" href="../../common/css/header-footer.css" />
+  <link rel="stylesheet" href="../css/buyer.css" />
+</head>
+<body>
+
+  <!-- Reusable Common Header -->
+  <div id="siteHeader" data-active="trending"></div>
+
+  <!-- Cart Page Wrapper -->
+  <main class="buyer-page-wrapper">
+    <div class="container">
+
+      <!-- Breadcrumbs -->
+      <nav class="buyer-breadcrumb" aria-label="breadcrumb">
+        <a href="../../common/html/home.html">Home</a>
+        <span>|</span>
+        <span class="active">Cart</span>
+      </nav>
+
+      <!-- 1. CART EMPTY STATE (Matching Figma Screen: Cart Empty) -->
+      <div class="cart-empty-wrapper d-none" id="cartEmptyState">
+        <div class="cart-empty-card">
+          <div class="cart-empty-icon-circle">
+            <i class="bi bi-cart3"></i>
+          </div>
+          <h1 class="cart-empty-title">Your cart is empty</h1>
+          <p class="cart-empty-desc">
+            Explore new arrivals and everyday favorites, then add something you love to your cart.
+          </p>
+          <a href="catalog.html" class="btn-outline-continue" id="btnContinueShoppingEmpty">
+            Continue shopping
+          </a>
+          <div class="cart-empty-return-note">
+            <i class="bi bi-arrow-repeat"></i>
+            <span>Easy 30-day returns on every order</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. CART POPULATED STATE (Matching Figma Screen: Cart) -->
+      <div id="cartPopulatedState">
+        <div class="row g-4 align-items-start">
+          
+          <!-- Left Column: Cart Items -->
+          <div class="col-12 col-lg-8">
+            <div class="cart-header-row">
+              <h1 class="cart-heading-title">Shopping Cart</h1>
+              <span class="cart-item-count-label" id="cartItemsHeaderCount">3 items</span>
+            </div>
+
+            <!-- Items Container Card -->
+            <div class="cart-items-card">
+              <div id="cartItemsListContainer">
+                <!-- Dynamically rendered cart rows -->
+              </div>
+
+              <!-- Subtotal Footer Strip -->
+              <div class="cart-subtotal-footer">
+                <span class="cart-subtotal-items-text" id="cartSubtotalFooterLabel">Subtotal (3 items):</span>
+                <span class="cart-subtotal-price-text" id="cartSubtotalFooterVal">₹ 5,040.00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Order Summary -->
+          <div class="col-12 col-lg-4">
+            <div class="order-summary-card">
+              <h2 class="order-summary-title">Order summary</h2>
+              
+              <div class="summary-row">
+                <span>Subtotal</span>
+                <strong id="summarySubtotalVal">₹ 5,040.00</strong>
+              </div>
+
+              <!-- Free Delivery Pill -->
+              <div class="summary-delivery-banner">
+                <i class="bi bi-truck fs-5"></i>
+                <span>Free standard delivery applied at checkout</span>
+              </div>
+
+              <!-- Proceed to Checkout Button -->
+              <a href="checkout.html" class="btn-coral-checkout" id="btnProceedToCheckout">
+                Proceed to Checkout
+              </a>
+
+              <div class="summary-security-note">
+                <i class="bi bi-shield-check text-success me-1"></i>
+                <span>Secure checkout &bull; Easy 30-day returns</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Reusable Common Footer -->
+  <div id="siteFooter"></div>
+
+  <!-- jQuery & Bootstrap 5 Bundle -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Common Header/Footer Hydration & Buyer Logic -->
+  <script src="../../common/js/global.js"></script>
+  <script src="../../common/js/header-footer.js"></script>
+  <script src="../js/buyer.js"></script>
+</body>
+</html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seller Management - ShopNow Admin</title>
+  <meta name="description" content="Manage registered sellers, verify merchant KYC documents, approve new storefront onboarding, and audit seller payouts." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Common & Admin CSS -->
+  <link rel="stylesheet" href="../../common/css/global.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body class="admin-body">
+
+  <div class="admin-layout">
+    <!-- Reusable Dark Navy Sidebar (Active Tab: sellers) -->
+    <aside class="admin-sidebar" id="adminSidebar" data-active="sellers"></aside>
+
+    <!-- Main Content Area -->
+    <div class="admin-main">
+      <!-- Reusable Top Header Bar -->
+      <header class="admin-topbar" id="adminTopBar"></header>
+
+      <!-- Seller Management Content (Matching Figma Image 1 Top Right & Image 2) -->
+      <main class="admin-content">
+        <!-- Page Header & Action Controls -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+          <div>
+            <h1 class="admin-page-title">Seller Management</h1>
+            <p class="admin-page-subtitle">Manage all registered sellers on ShopNow, review KYC verifications, and audit payouts.</p>
+          </div>
+
+          <div class="d-flex align-items-center gap-2">
+            <button type="button" class="btn btn-coral-admin btn-sm px-3" data-bs-toggle="modal" data-bs-target="#addSellerModal">
+              <i class="bi bi-plus-lg"></i> Add Seller
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 Stat Metric Cards (Matching Figma Screen 1 Top Right) -->
+        <div class="row g-3 mb-4">
+          <div class="col-6 col-md-3">
+            <div class="admin-stat-card">
+              <div>
+                <span class="stat-label">Total Sellers</span>
+                <div class="stat-number">120</div>
+              </div>
+              <div class="stat-icon bg-info-subtle text-info"><i class="bi bi-people"></i></div>
+            </div>
+          </div>
+
+          <div class="col-6 col-md-3">
+            <div class="admin-stat-card">
+              <div>
+                <span class="stat-label">Pending Onboarding</span>
+                <div class="stat-number text-warning">15</div>
+              </div>
+              <div class="stat-icon bg-warning-subtle text-warning"><i class="bi bi-hourglass-split"></i></div>
+            </div>
+          </div>
+
+          <div class="col-6 col-md-3">
+            <div class="admin-stat-card">
+              <div>
+                <span class="stat-label">Active Sellers</span>
+                <div class="stat-number text-success">95</div>
+              </div>
+              <div class="stat-icon bg-success-subtle text-success"><i class="bi bi-check2-circle"></i></div>
+            </div>
+          </div>
+
+          <div class="col-6 col-md-3">
+            <div class="admin-stat-card">
+              <div>
+                <span class="stat-label">Blocked Sellers</span>
+                <div class="stat-number text-danger">10</div>
+              </div>
+              <div class="stat-icon bg-danger-subtle text-danger"><i class="bi bi-slash-circle"></i></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter Toolbar -->
+        <div class="admin-card p-3 mb-4">
+          <div class="row g-2 align-items-center">
+            <div class="col-12 col-md-6">
+              <div class="position-relative">
+                <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                <input type="text" id="adminSellerSearchInput" class="form-control ps-5 py-2 border-light-subtle rounded-3" placeholder="Search by store name, owner name, or email..." />
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6 text-md-end">
+              <div class="btn-group btn-group-sm">
+                <button type="button" class="btn btn-dark active">All Sellers</button>
+                <button type="button" class="btn btn-outline-secondary">Pending Onboarding</button>
+                <button type="button" class="btn btn-outline-secondary">Active</button>
+                <button type="button" class="btn btn-outline-secondary">Blocked</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sellers Master Table Card -->
+        <div class="admin-table-card mb-4">
+          <div class="table-responsive">
+            <table class="table table-admin align-middle">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Store Name</th>
+                  <th>Owner Name</th>
+                  <th>Email</th>
+                  <th>Status</th>
+                  <th>Joined On</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminSellersTableBody">
+                <!-- Dynamically hydrated from admin.js -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination -->
+          <div class="p-3 bg-white border-top d-flex justify-content-between align-items-center">
+            <span class="extra-small text-muted">Showing 1 to 5 of 120 sellers</span>
+            <nav>
+              <ul class="pagination pagination-sm mb-0">
+                <li class="page-item disabled"><a class="page-link" href="javascript:void(0)">&laquo;</a></li>
+                <li class="page-item active"><a class="page-link" href="javascript:void(0)">1</a></li>
+                <li class="page-item"><a class="page-link" href="javascript:void(0)">2</a></li>
+                <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
+                <li class="page-item"><a class="page-link" href="javascript:void(0)">&raquo;</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Approve Seller / KYC Verification Modal (Matching Figma Image 1 Bottom Right) -->
+  <div class="modal fade" id="approveSellerModal" tabindex="-1" aria-labelledby="approveSellerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 shadow">
+        <div class="modal-header border-bottom p-4">
+          <div>
+            <h5 class="modal-title fw-bold text-dark mb-0">Approve Seller Application</h5>
+            <span class="extra-small text-muted">Review seller KYC documentation and onboarding compliance credentials.</span>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body p-4">
+          <!-- Seller Snapshot Info Header -->
+          <div class="p-3 bg-light rounded-3 border mb-4 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+            <div class="d-flex align-items-center gap-3">
+              <div class="p-3 bg-white rounded-3 border fs-3 text-coral shadow-sm">
+                <i class="bi bi-shop-window"></i>
+              </div>
+              <div>
+                <div class="d-flex align-items-center gap-2 mb-1">
+                  <h5 class="fw-bold text-dark mb-0" id="sellerModalStoreName">Fashion Hub</h5>
+                  <span class="badge-status badge-status-review" id="sellerModalStatus">Pending Review</span>
+                </div>
+                <span class="extra-small text-muted d-block">Owner: <strong class="text-dark" id="sellerModalOwnerName">Rohit Sharma</strong> &bull; Email: <span id="sellerModalEmail">rohit@gmail.com</span></span>
+                <span class="extra-small text-muted">Phone: <span id="sellerModalPhone">+91 9819283718</span> &bull; Address: <span id="sellerModalAddress">Pune, Maharashtra</span></span>
+              </div>
+            </div>
+
+            <div class="d-flex gap-2">
+              <div class="p-2 bg-white rounded-2 border text-center">
+                <span class="extra-small text-muted d-block">PAN Number</span>
+                <strong class="text-dark font-monospace" id="sellerModalPan">ABCDE1234F</strong>
+              </div>
+              <div class="p-2 bg-white rounded-2 border text-center">
+                <span class="extra-small text-muted d-block">GST Number</span>
+                <strong class="text-dark font-monospace" id="sellerModalGst">27ABCDE1234F1Z5</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- KYC Documentation Cards Grid (Matching Figma Screen 1 Bottom Right) -->
+          <h6 class="fw-bold text-dark mb-3"><i class="bi bi-file-earmark-check-fill text-coral me-2"></i>Submitted KYC Documents</h6>
+          <div class="row g-3 mb-4">
+            <!-- Aadhaar Card -->
+            <div class="col-12 col-sm-6 col-xl-3">
+              <div class="admin-doc-card">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="badge bg-success-subtle text-success extra-small fw-bold">Verified</span>
+                  <i class="bi bi-file-earmark-person fs-4 text-secondary"></i>
+                </div>
+                <strong class="text-dark small d-block mb-1">Aadhaar Card</strong>
+                <span class="extra-small text-muted d-block mb-2">Government Citizen ID</span>
+                <button type="button" class="btn btn-sm btn-link p-0 text-coral extra-small fw-bold text-decoration-none">
+                  View Document &rarr;
+                </button>
+              </div>
+            </div>
+
+            <!-- PAN Card -->
+            <div class="col-12 col-sm-6 col-xl-3">
+              <div class="admin-doc-card">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="badge bg-success-subtle text-success extra-small fw-bold">Verified</span>
+                  <i class="bi bi-credit-card-2-front fs-4 text-secondary"></i>
+                </div>
+                <strong class="text-dark small d-block mb-1">PAN Card</strong>
+                <span class="extra-small text-muted d-block mb-2">Income Tax ID</span>
+                <button type="button" class="btn btn-sm btn-link p-0 text-coral extra-small fw-bold text-decoration-none">
+                  View Document &rarr;
+                </button>
+              </div>
+            </div>
+
+            <!-- Business Certificate -->
+            <div class="col-12 col-sm-6 col-xl-3">
+              <div class="admin-doc-card">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="badge bg-warning-subtle text-warning-emphasis extra-small fw-bold">Uploaded</span>
+                  <i class="bi bi-briefcase fs-4 text-secondary"></i>
+                </div>
+                <strong class="text-dark small d-block mb-1">Business Certificate</strong>
+                <span class="extra-small text-muted d-block mb-2">Trade License / Shop Act</span>
+                <button type="button" class="btn btn-sm btn-link p-0 text-coral extra-small fw-bold text-decoration-none">
+                  View Document &rarr;
+                </button>
+              </div>
+            </div>
+
+            <!-- GST Certificate -->
+            <div class="col-12 col-sm-6 col-xl-3">
+              <div class="admin-doc-card">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="badge bg-warning-subtle text-warning-emphasis extra-small fw-bold">Uploaded</span>
+                  <i class="bi bi-receipt-cutoff fs-4 text-secondary"></i>
+                </div>
+                <strong class="text-dark small d-block mb-1">GST Certificate</strong>
+                <span class="extra-small text-muted d-block mb-2">GSTIN Verification Form</span>
+                <button type="button" class="btn btn-sm btn-link p-0 text-coral extra-small fw-bold text-decoration-none">
+                  View Document &rarr;
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Remarks Textarea -->
+          <div class="mb-3">
+            <label class="form-label extra-small fw-bold text-uppercase text-muted">Admin Verification Remarks (Optional)</label>
+            <textarea class="form-control extra-small" id="sellerApprovalRemarks" rows="2" placeholder="e.g. All documents verified against MCA registry. Approved for live sales."></textarea>
+          </div>
+        </div>
+
+        <!-- Action Footer -->
+        <div class="modal-footer border-top p-3 justify-content-between">
+          <button type="button" class="btn btn-outline-danger px-4" id="btnRejectSellerAction">
+            <i class="bi bi-x-circle me-1"></i> Reject
+          </button>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-light px-3" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-success px-4" id="btnApproveSellerAction">
+              <i class="bi bi-check2-circle me-1"></i> Approve Seller
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Seller Modal -->
+  <div class="modal fade" id="addSellerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 shadow">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold text-dark">Manually Register Seller</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body py-4">
+          <form id="formManualAddSeller">
+            <div class="mb-3">
+              <label class="form-label extra-small fw-bold text-uppercase text-muted">Store Name *</label>
+              <input type="text" class="form-control extra-small" id="newSellerStore" required placeholder="e.g. Royal Silks" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label extra-small fw-bold text-uppercase text-muted">Owner Name *</label>
+              <input type="text" class="form-control extra-small" id="newSellerOwner" required placeholder="e.g. Rakesh Mehta" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label extra-small fw-bold text-uppercase text-muted">Business Email *</label>
+              <input type="email" class="form-control extra-small" id="newSellerEmail" required placeholder="rakesh@royalsilks.com" />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer border-0 pt-0">
+          <button type="button" class="btn btn-light extra-small px-3" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" form="formManualAddSeller" class="btn btn-coral-admin extra-small px-4" id="btnSubmitManualSeller">Create Seller</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../common/js/global.js"></script>
+  <script src="../js/admin-nav.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>

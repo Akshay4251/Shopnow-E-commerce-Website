@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat with Support - Seller Center</title>
+  <meta name="description" content="Live merchant support chat with dedicated ShopNow support specialists." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Common & Seller CSS -->
+  <link rel="stylesheet" href="../../common/css/global.css" />
+  <link rel="stylesheet" href="../css/seller.css" />
+</head>
+<body class="seller-body">
+
+  <!-- Reusable Seller Header & Subnav -->
+  <div id="sellerHeader" data-active="support"></div>
+
+  <!-- Support Chat Content (Matching Figma Image 2 Screen 2) -->
+  <main class="seller-page-wrapper">
+    <div class="container">
+
+      <!-- Breadcrumbs -->
+      <nav aria-label="breadcrumb" class="mb-2">
+        <ol class="breadcrumb extra-small fw-bold mb-1">
+          <li class="breadcrumb-item"><a href="dashboard.html" class="text-decoration-none text-muted">Dashboard</a></li>
+          <li class="breadcrumb-item"><a href="support.html" class="text-decoration-none text-muted">Support</a></li>
+          <li class="breadcrumb-item active text-coral" aria-current="page">Chat</li>
+        </ol>
+      </nav>
+
+      <!-- Page Title Row -->
+      <div class="seller-page-title-row mb-4">
+        <div>
+          <h1 class="seller-page-title">Chat with support</h1>
+          <p class="text-secondary small mb-0">Continue a conversation or start a new chat with our seller support team.</p>
+        </div>
+      </div>
+
+      <!-- Split Layout: Chat History & Active Chat Window -->
+      <div class="row g-4 mb-4">
+        <!-- Left: Chat History Sidebar -->
+        <div class="col-12 col-lg-4">
+          <div class="seller-card-table p-3 h-100">
+            <h6 class="fw-bold px-2 pt-2 mb-1">Chat history</h6>
+            <span class="extra-small text-muted px-2 d-block mb-3">Your recent support conversations</span>
+
+            <div class="list-group list-group-flush" id="chatHistoryList">
+              <!-- Item 1 (Active) -->
+              <a href="javascript:void(0)" class="list-group-item list-group-item-action p-3 rounded-3 active border-0 mb-1" style="background-color: #fff9f6; border-left: 3px solid #ff5338 !important;">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <strong class="text-dark small">Delayed delivery for ORD-1024</strong>
+                  <span class="status-badge processing extra-small">Open</span>
+                </div>
+                <span class="extra-small text-muted d-block">Today 10:42 AM</span>
+              </a>
+
+              <!-- Item 2 -->
+              <a href="javascript:void(0)" class="list-group-item list-group-item-action p-3 rounded-3 border-0 mb-1">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <strong class="text-dark small">September payout pending</strong>
+                  <span class="status-badge shipped extra-small">In progress</span>
+                </div>
+                <span class="extra-small text-muted d-block">11 Oct, 7:15 PM</span>
+              </a>
+
+              <!-- Item 3 -->
+              <a href="javascript:void(0)" class="list-group-item list-group-item-action p-3 rounded-3 border-0 mb-1">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <strong class="text-dark small">Unable to update listing images</strong>
+                  <span class="status-badge delivered extra-small">Resolved</span>
+                </div>
+                <span class="extra-small text-muted d-block">28 Sep, 3:10 PM</span>
+              </a>
+
+              <!-- Item 4 -->
+              <a href="javascript:void(0)" class="list-group-item list-group-item-action p-3 rounded-3 border-0 mb-1">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <strong class="text-dark small">Return address update</strong>
+                  <span class="status-badge delivered extra-small">Resolved</span>
+                </div>
+                <span class="extra-small text-muted d-block">25 Sep, 11:20 AM</span>
+              </a>
+
+              <!-- Item 5 -->
+              <a href="javascript:void(0)" class="list-group-item list-group-item-action p-3 rounded-3 border-0 mb-1">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <strong class="text-dark small">Shipping fee calculation</strong>
+                  <span class="status-badge delivered extra-small">Resolved</span>
+                </div>
+                <span class="extra-small text-muted d-block">21 Sep, 9:12 AM</span>
+              </a>
+
+              <!-- Item 6 -->
+              <a href="javascript:void(0)" class="list-group-item list-group-item-action p-3 rounded-3 border-0">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <strong class="text-dark small">Bulk inventory upload</strong>
+                  <span class="status-badge delivered extra-small">Resolved</span>
+                </div>
+                <span class="extra-small text-muted d-block">15 Sep, 2:45 PM</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Active Chat Window -->
+        <div class="col-12 col-lg-8">
+          <div class="seller-card-table d-flex flex-column" style="height: 600px;">
+            <!-- Agent Header -->
+            <div class="p-3 border-bottom d-flex align-items-center justify-content-between bg-light rounded-top-4">
+              <div class="d-flex align-items-center gap-3">
+                <div class="seller-avatar-initials bg-success-subtle text-success fs-6" style="width: 42px; height: 42px; border-radius: 50%;">
+                  AM
+                </div>
+                <div>
+                  <strong class="text-dark d-block">Aarav Mehta</strong>
+                  <span class="extra-small text-muted"><span class="badge bg-success rounded-circle p-1 me-1"></span> Seller Support Team &bull; Active now</span>
+                </div>
+              </div>
+              <div>
+                <span class="badge bg-secondary-subtle text-secondary">Case #SN-TK-0741</span>
+              </div>
+            </div>
+
+            <!-- Messages Stream Area -->
+            <div class="flex-grow-1 p-4 overflow-y-auto d-flex flex-column gap-3" id="supportChatMessagesArea" style="background-color: #fafbfc;">
+              <!-- Agent Message -->
+              <div class="d-flex align-items-start gap-2" style="max-width: 80%;">
+                <div class="seller-avatar-initials bg-success-subtle text-success" style="width: 30px; height: 30px; min-width: 30px; font-size: 0.75rem; border-radius: 50%;">AM</div>
+                <div>
+                  <div class="p-3 rounded-4 bg-white border text-dark small shadow-sm">
+                    Hi Riya! I am Aarav from ShopNow Seller Support. How can I help you today?
+                  </div>
+                  <span class="extra-small text-muted ms-2 mt-1 d-block">10:43 AM</span>
+                </div>
+              </div>
+
+              <!-- Seller Message -->
+              <div class="d-flex align-items-end justify-content-end gap-2 align-self-end" style="max-width: 80%;">
+                <div>
+                  <div class="p-3 rounded-4 text-white small shadow-sm" style="background-color: #081726;">
+                    Hi Aarav, order #ORD-1024 shows as delivered, but the buyer says it has not arrived.
+                  </div>
+                  <span class="extra-small text-muted me-2 mt-1 text-end d-block">10:44 AM</span>
+                </div>
+              </div>
+
+              <!-- Agent Message -->
+              <div class="d-flex align-items-start gap-2" style="max-width: 80%;">
+                <div class="seller-avatar-initials bg-success-subtle text-success" style="width: 30px; height: 30px; min-width: 30px; font-size: 0.75rem; border-radius: 50%;">AM</div>
+                <div>
+                  <div class="p-3 rounded-4 bg-white border text-dark small shadow-sm">
+                    Thanks for sharing that. I can see the carrier scan from Blue Dart here. I'll check the delivery proof and contact the courier dispatch hub directly.
+                  </div>
+                  <span class="extra-small text-muted ms-2 mt-1 d-block">10:46 AM</span>
+                </div>
+              </div>
+
+              <!-- Seller Message -->
+              <div class="d-flex align-items-end justify-content-end gap-2 align-self-end" style="max-width: 80%;">
+                <div>
+                  <div class="p-3 rounded-4 text-white small shadow-sm" style="background-color: #081726;">
+                    Thank you. The buyer needs an update before 4 PM - can you also confirm whether a carrier claim is covered if the parcel was misdelivered?
+                  </div>
+                  <span class="extra-small text-muted me-2 mt-1 text-end d-block">10:47 AM</span>
+                </div>
+              </div>
+
+              <!-- Agent Message -->
+              <div class="d-flex align-items-start gap-2" style="max-width: 80%;">
+                <div class="seller-avatar-initials bg-success-subtle text-success" style="width: 30px; height: 30px; min-width: 30px; font-size: 0.75rem; border-radius: 50%;">AM</div>
+                <div>
+                  <div class="p-3 rounded-4 bg-white border text-dark small shadow-sm">
+                    Yes, ShopNow Seller Protection covers verified misdeliveries. I've flagged this case as high priority and will update you right here within two hours.
+                  </div>
+                  <span class="extra-small text-muted ms-2 mt-1 d-block">10:49 AM</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chat Input Area -->
+            <div class="p-3 border-top bg-white rounded-bottom-4">
+              <form class="d-flex align-items-center gap-2" id="supportChatSendForm">
+                <button type="button" class="btn btn-light rounded-circle" title="Attach file">
+                  <i class="bi bi-paperclip fs-5 text-muted"></i>
+                </button>
+                <input type="text" class="form-control rounded-pill" id="supportChatInput" placeholder="Type your message..." required />
+                <button type="submit" class="btn btn-coral-seller rounded-circle" style="width: 42px; height: 42px; padding: 0;">
+                  <i class="bi bi-send-fill"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Reusable Seller Navy Footer -->
+  <div id="sellerFooter"></div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../common/js/global.js"></script>
+  <script src="../js/seller-nav.js"></script>
+  <script src="../js/seller.js"></script>
+</body>
+</html>

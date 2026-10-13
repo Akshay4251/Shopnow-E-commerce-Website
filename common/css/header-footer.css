@@ -1,0 +1,507 @@
+/* ===================================================
+   SHOPNOW - COMMON HEADER & FOOTER DESIGN SYSTEM
+   Figma Exact Pixel-Perfect Matching
+   Reusable across Buyer, Seller, Admin & Common modules
+   =================================================== */
+
+/* ---------------- Top Announcement Bar ---------------- */
+.site-top-bar {
+  background-color: #081726;
+  color: #94a3b8;
+  font-size: 0.775rem;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.top-bar-links a {
+  color: #cbd5e1;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.top-bar-links a:hover {
+  color: #ff5338;
+}
+
+.top-bar-divider {
+  color: rgba(255, 255, 255, 0.2);
+  margin: 0 10px;
+}
+
+/* ---------------- Main Brand Header ---------------- */
+.site-main-header {
+  background-color: #ffffff;
+  padding: 16px 0;
+  border-bottom: 1px solid #eef2f6;
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+.brand-logo-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.brand-logo-icon {
+  width: 40px;
+  height: 40px;
+  background-color: #ff5338;
+  color: #ffffff;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  box-shadow: 0 4px 14px rgba(255, 83, 56, 0.35);
+}
+
+.brand-logo-text {
+  font-family: var(--font-sans, 'Inter', sans-serif);
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: #081726;
+}
+
+/* ---------------- Search Capsule ---------------- */
+.header-search-form {
+  position: relative;
+  width: 100%;
+  max-width: 620px;
+}
+
+.header-search-input {
+  width: 100%;
+  height: 46px;
+  background-color: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 50px;
+  padding: 0 54px 0 46px;
+  font-size: 0.9rem;
+  color: #1e293b;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.header-search-input:focus {
+  background-color: #ffffff;
+  border-color: #ff5338;
+  box-shadow: 0 0 0 3px rgba(255, 83, 56, 0.15);
+}
+
+.header-search-icon {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  font-size: 1.05rem;
+  pointer-events: none;
+}
+
+.header-search-btn {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 34px;
+  height: 34px;
+  background-color: #ff5338;
+  color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(255, 83, 56, 0.3);
+}
+
+.header-search-btn:hover {
+  background-color: #e04326;
+  transform: translateY(-50%) scale(1.05);
+}
+
+/* ---------------- Header Nav Actions ---------------- */
+.header-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-action-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #1e293b;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: color 0.2s ease;
+  position: relative;
+}
+
+.header-action-item:hover {
+  color: #ff5338;
+}
+
+.header-action-item i {
+  font-size: 1.25rem;
+  color: #081726;
+  transition: color 0.2s ease;
+}
+
+.header-action-item:hover i {
+  color: #ff5338;
+}
+
+.account-text-wrap {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.account-sub-label {
+  font-size: 0.725rem;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.account-main-label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #081726;
+}
+
+.header-badge-count {
+  background-color: #ff5338;
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 800;
+  border-radius: 50px;
+  padding: 2px 7px;
+  margin-left: 2px;
+}
+
+/* ---------------- Header Account Dropdown ---------------- */
+.header-account-dropdown {
+  position: relative;
+}
+
+.header-account-dropdown:hover > .header-account-menu,
+.header-account-dropdown .dropdown-menu.show {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.header-account-menu {
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  min-width: 250px;
+  background: #ffffff;
+  border-radius: 14px !important;
+  box-shadow: 0 12px 36px rgba(8, 23, 38, 0.14) !important;
+  padding: 10px;
+  border: 1px solid #eef2f6 !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1050;
+  top: 100%;
+  right: 0;
+}
+
+.header-account-menu .dropdown-item {
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 8px 12px;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  transition: all 0.15s ease;
+}
+
+.header-account-menu .dropdown-item:hover {
+  background-color: #fff1ee;
+  color: #ff5338;
+}
+
+.header-account-menu .dropdown-item i {
+  font-size: 1rem;
+}
+
+/* ---------------- Secondary Categories Navigation Bar ---------------- */
+.site-categories-bar {
+  background-color: #ffffff;
+  border-bottom: 1px solid #eef2f6;
+  padding: 10px 0;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.site-categories-bar::-webkit-scrollbar {
+  height: 4px;
+}
+.site-categories-bar::-webkit-scrollbar-thumb {
+  background-color: #e2e8f0;
+  border-radius: 4px;
+}
+
+.category-nav-list {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.category-nav-link {
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+  transition: color 0.2s ease;
+  padding: 4px 0;
+  display: inline-block;
+  position: relative;
+}
+
+.category-nav-link:hover {
+  color: #ff5338;
+}
+
+.category-nav-link.active {
+  color: #ff5338;
+  font-weight: 700;
+}
+
+.category-nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #ff5338;
+}
+
+/* ---------------- Trust Badges Bar (Cream/Peach) ---------------- */
+.site-trust-badges-bar {
+  background-color: #fdf7f2;
+  border-top: 1px solid #f9e8de;
+  border-bottom: 1px solid #f9e8de;
+  padding: 28px 0;
+}
+
+.trust-badge-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.trust-badge-circle-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  border: 1px solid #fed7cc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff5338;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(255, 83, 56, 0.12);
+}
+
+.trust-badge-heading {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #081726;
+  margin-bottom: 2px;
+}
+
+.trust-badge-desc {
+  font-size: 0.775rem;
+  color: #64748b;
+  margin: 0;
+}
+
+/* ---------------- Back To Top Bar ---------------- */
+.site-back-to-top-bar {
+  background-color: #0b1a2b;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: center;
+  padding: 12px 0;
+}
+
+.back-to-top-btn {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s ease;
+}
+
+.back-to-top-btn:hover {
+  color: #ff5338;
+}
+
+/* ---------------- Dark Navy Mega Footer ---------------- */
+.site-navy-footer {
+  background-color: #081726;
+  color: #94a3b8;
+  padding: 60px 0 30px;
+  font-size: 0.875rem;
+}
+
+.footer-brand-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #ffffff;
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-bottom: 14px;
+  text-decoration: none;
+}
+
+.footer-brand-tagline {
+  color: #94a3b8;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  max-width: 320px;
+  margin-bottom: 24px;
+}
+
+.footer-social-icons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-social-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.footer-social-circle:hover {
+  background-color: #ff5338;
+  border-color: #ff5338;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.footer-col-heading {
+  color: #ffffff;
+  font-size: 0.775rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.footer-links-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links-list li {
+  margin-bottom: 12px;
+}
+
+.footer-links-list a {
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: color 0.2s ease;
+}
+
+.footer-links-list a:hover {
+  color: #ffffff;
+}
+
+.footer-bottom-divider {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: 50px;
+  padding-top: 24px;
+}
+
+.footer-copyright-text {
+  color: #64748b;
+  font-size: 0.775rem;
+  margin: 0;
+}
+
+.footer-payment-methods {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.payment-method-pill {
+  background-color: #ffffff;
+  color: #081726;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+/* ---------------- Responsive Rules ---------------- */
+@media (max-width: 991.98px) {
+  .site-main-header {
+    padding: 12px 0;
+  }
+  .header-actions-group {
+    gap: 14px;
+  }
+  .account-sub-label {
+    display: none;
+  }
+  .category-nav-list {
+    gap: 18px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .site-top-bar {
+    display: none;
+  }
+  .header-search-form {
+    order: 3;
+    width: 100%;
+    margin-top: 12px;
+  }
+}

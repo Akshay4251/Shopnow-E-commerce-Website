@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Raise a Support Ticket - Seller Center</title>
+  <meta name="description" content="Submit a priority support ticket to the ShopNow merchant success and escalation desk." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Common & Seller CSS -->
+  <link rel="stylesheet" href="../../common/css/global.css" />
+  <link rel="stylesheet" href="../css/seller.css" />
+</head>
+<body class="seller-body">
+
+  <!-- Reusable Seller Header & Subnav -->
+  <div id="sellerHeader" data-active="support"></div>
+
+  <!-- Raise Ticket Content (Matching Figma Image 2 Screen 3) -->
+  <main class="seller-page-wrapper">
+    <div class="container">
+
+      <!-- Breadcrumbs -->
+      <nav aria-label="breadcrumb" class="mb-2">
+        <ol class="breadcrumb extra-small fw-bold mb-1">
+          <li class="breadcrumb-item"><a href="dashboard.html" class="text-decoration-none text-muted">Dashboard</a></li>
+          <li class="breadcrumb-item"><a href="support.html" class="text-decoration-none text-muted">Support</a></li>
+          <li class="breadcrumb-item active text-coral" aria-current="page">Raise a ticket</li>
+        </ol>
+      </nav>
+
+      <!-- Page Title Row -->
+      <div class="seller-page-title-row mb-4">
+        <div>
+          <h1 class="seller-page-title">Raise a ticket</h1>
+          <p class="text-secondary small mb-0">Tell us what happened and our seller support team will get back to you.</p>
+        </div>
+      </div>
+
+      <!-- Main Ticket Form Card -->
+      <div class="row justify-content-center mb-5">
+        <div class="col-12 col-lg-9">
+          <div class="seller-card-table p-4 p-md-5">
+            <h4 class="fw-bold text-dark mb-1">How can we help?</h4>
+            <p class="text-secondary small mb-4 pb-2 border-bottom">Include as much detail as possible so we can resolve your request faster.</p>
+
+            <form id="sellerRaiseTicketDetailedForm">
+              <!-- Subject -->
+              <div class="mb-4">
+                <label class="form-label extra-small fw-bold text-muted text-uppercase">Subject</label>
+                <input type="text" class="form-control" id="ticketSubject" placeholder="Briefly describe the issue" required />
+              </div>
+
+              <!-- Category Pills (Matching Figma Image 2 Screen 3) -->
+              <div class="mb-4">
+                <label class="form-label extra-small fw-bold text-muted text-uppercase d-block">Category</label>
+                <div class="d-flex flex-wrap gap-2" id="ticketCategoryPills">
+                  <div class="form-check form-check-inline p-0 m-0">
+                    <input type="radio" class="btn-check" name="ticketCategory" id="catOrders" value="Orders" checked />
+                    <label class="btn btn-outline-secondary rounded-pill px-3 py-1 extra-small fw-bold" for="catOrders">
+                      <i class="bi bi-receipt me-1"></i> Orders
+                    </label>
+                  </div>
+                  <div class="form-check form-check-inline p-0 m-0">
+                    <input type="radio" class="btn-check" name="ticketCategory" id="catPayments" value="Payments" />
+                    <label class="btn btn-outline-secondary rounded-pill px-3 py-1 extra-small fw-bold" for="catPayments">
+                      <i class="bi bi-credit-card me-1"></i> Payments
+                    </label>
+                  </div>
+                  <div class="form-check form-check-inline p-0 m-0">
+                    <input type="radio" class="btn-check" name="ticketCategory" id="catProducts" value="Products" />
+                    <label class="btn btn-outline-secondary rounded-pill px-3 py-1 extra-small fw-bold" for="catProducts">
+                      <i class="bi bi-box-seam me-1"></i> Products
+                    </label>
+                  </div>
+                  <div class="form-check form-check-inline p-0 m-0">
+                    <input type="radio" class="btn-check" name="ticketCategory" id="catAccount" value="Account" />
+                    <label class="btn btn-outline-secondary rounded-pill px-3 py-1 extra-small fw-bold" for="catAccount">
+                      <i class="bi bi-person me-1"></i> Account
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Priority Pills (Matching Figma Image 2 Screen 3) -->
+              <div class="mb-4">
+                <label class="form-label extra-small fw-bold text-muted text-uppercase d-block">Priority</label>
+                <div class="d-flex flex-wrap gap-2" id="ticketPriorityPills">
+                  <div class="form-check form-check-inline p-0 m-0">
+                    <input type="radio" class="btn-check" name="ticketPriority" id="priLow" value="Low" />
+                    <label class="btn btn-outline-secondary rounded-pill px-3 py-1 extra-small fw-bold" for="priLow">
+                      <i class="bi bi-circle me-1 text-success"></i> Low
+                    </label>
+                  </div>
+                  <div class="form-check form-check-inline p-0 m-0">
+                    <input type="radio" class="btn-check" name="ticketPriority" id="priMedium" value="Medium" checked />
+                    <label class="btn btn-outline-secondary rounded-pill px-3 py-1 extra-small fw-bold" for="priMedium">
+                      <i class="bi bi-record-circle me-1 text-warning"></i> Medium
+                    </label>
+                  </div>
+                  <div class="form-check form-check-inline p-0 m-0">
+                    <input type="radio" class="btn-check" name="ticketPriority" id="priHigh" value="High" />
+                    <label class="btn btn-outline-secondary rounded-pill px-3 py-1 extra-small fw-bold" for="priHigh">
+                      <i class="bi bi-exclamation-circle-fill me-1 text-danger"></i> High
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Description -->
+              <div class="mb-4">
+                <label class="form-label extra-small fw-bold text-muted text-uppercase">Description</label>
+                <textarea class="form-control" id="ticketDescription" rows="5" placeholder="Share an order ID, SKU, what you expected, and what you have already tried..." required></textarea>
+              </div>
+
+              <!-- Attachments Dropzone (Matching Figma Image 2 Screen 3) -->
+              <div class="mb-4">
+                <label class="form-label extra-small fw-bold text-muted text-uppercase d-block mb-1">Attachments</label>
+                <div class="seller-dropzone text-center p-4 rounded-3 border border-dashed bg-light">
+                  <i class="bi bi-cloud-arrow-up fs-2 text-coral mb-2 d-block"></i>
+                  <strong class="d-block text-dark small mb-1">Attach screenshots or files</strong>
+                  <span class="extra-small text-muted d-block">Drag and drop or browse from your device &bull; PNG, JPG, PDF up to 10 MB</span>
+                  <input type="file" class="d-none" id="ticketFileInput" />
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="d-flex align-items-center justify-content-end gap-2 pt-2">
+                <a href="support.html" class="btn btn-light border px-4">
+                  Cancel
+                </a>
+                <button type="submit" class="btn btn-coral-seller px-4" id="btnSubmitDetailedTicket">
+                  Submit ticket
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Reusable Seller Navy Footer -->
+  <div id="sellerFooter"></div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../common/js/global.js"></script>
+  <script src="../js/seller-nav.js"></script>
+  <script src="../js/seller.js"></script>
+</body>
+</html>

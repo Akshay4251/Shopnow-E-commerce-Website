@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Profile &amp; Settings - ShopNow Admin</title>
+  <meta name="description" content="Manage super administrator profile credentials, security protocols, API keys, and platform permissions." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Common & Admin CSS -->
+  <link rel="stylesheet" href="../../common/css/global.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body class="admin-body">
+
+  <div class="admin-layout">
+    <!-- Reusable Dark Navy Sidebar (Active Tab: profile) -->
+    <aside class="admin-sidebar" id="adminSidebar" data-active="profile"></aside>
+
+    <!-- Main Content Area -->
+    <div class="admin-main">
+      <!-- Reusable Top Header Bar -->
+      <header class="admin-topbar" id="adminTopBar"></header>
+
+      <!-- Profile Content (Matching Figma Image 6 Far Right) -->
+      <main class="admin-content">
+        <!-- Page Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h1 class="admin-page-title">Profile Management</h1>
+            <p class="admin-page-subtitle">Configure system administrator identity, multi-factor security, and global permissions.</p>
+          </div>
+          <button type="button" class="btn btn-coral-admin btn-sm px-4" onclick="ShopNowCommon.showToast('Administrator profile updated successfully.', 'success');">
+            <i class="bi bi-floppy-fill"></i> Save Changes
+          </button>
+        </div>
+
+        <!-- 2-Column Profile Layout -->
+        <div class="row g-4 mb-4">
+          <!-- Left: Identity Snapshot Card (4 Cols) -->
+          <div class="col-12 col-xl-4">
+            <div class="admin-card text-center mb-4">
+              <div class="admin-avatar mx-auto mb-3" style="width: 80px; height: 80px;">
+                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80" alt="Super Admin" />
+              </div>
+              <h5 class="fw-bold text-dark mb-1">Super Administrator</h5>
+              <span class="badge bg-secondary-subtle text-secondary extra-small fw-bold mb-3">ShopNow Headquarters &bull; Root Role</span>
+
+              <div class="extra-small text-secondary d-flex flex-column gap-2 text-start py-3 border-top border-bottom mb-3">
+                <div class="d-flex justify-content-between">
+                  <span>Email:</span>
+                  <strong class="text-dark">admin@demo.com</strong>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <span>Role:</span>
+                  <strong class="text-dark">System Super Admin</strong>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <span>Security:</span>
+                  <span class="text-success fw-bold">2FA Active</span>
+                </div>
+              </div>
+
+              <div class="p-2 bg-light rounded-3 border text-center">
+                <span class="extra-small text-muted d-block">Admin Since</span>
+                <strong class="text-dark small">January 2026 &bull; Global Permissions</strong>
+              </div>
+            </div>
+
+            <!-- Server & Environment Card -->
+            <div class="admin-card mb-0">
+              <span class="stat-label d-block mb-2"><i class="bi bi-hdd-network-fill text-coral me-1"></i> Infrastructure Status</span>
+              <div class="extra-small text-secondary d-flex flex-column gap-2">
+                <div class="d-flex justify-content-between">
+                  <span>MockAPI Connectivity:</span>
+                  <span class="text-success fw-bold">Healthy (7/7 endpoints)</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <span>CDN Media Delivery:</span>
+                  <span class="text-success fw-bold">Online (Cloudinary)</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <span>EmailJS Dispatch:</span>
+                  <span class="text-success fw-bold">Connected</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Profile & System Form (8 Cols) -->
+          <div class="col-12 col-xl-8">
+            <div class="admin-card mb-4">
+              <span class="stat-label d-block mb-3">Admin Credentials</span>
+
+              <div class="row g-3 mb-3">
+                <div class="col-12 col-sm-6">
+                  <label class="form-label extra-small fw-bold text-uppercase text-muted">First Name</label>
+                  <input type="text" class="form-control extra-small py-2" value="Super" />
+                </div>
+                <div class="col-12 col-sm-6">
+                  <label class="form-label extra-small fw-bold text-uppercase text-muted">Last Name</label>
+                  <input type="text" class="form-control extra-small py-2" value="Admin" />
+                </div>
+              </div>
+
+              <div class="row g-3 mb-4">
+                <div class="col-12 col-sm-6">
+                  <label class="form-label extra-small fw-bold text-uppercase text-muted">Email Address</label>
+                  <input type="email" class="form-control extra-small py-2" value="admin@demo.com" />
+                </div>
+                <div class="col-12 col-sm-6">
+                  <label class="form-label extra-small fw-bold text-uppercase text-muted">Contact Phone</label>
+                  <input type="tel" class="form-control extra-small py-2" value="+91 98200 11022" />
+                </div>
+              </div>
+
+              <span class="stat-label d-block mb-3">Security &amp; Session Policies</span>
+
+              <div class="list-group list-group-flush extra-small">
+                <div class="list-group-item d-flex justify-content-between align-items-center p-3">
+                  <div>
+                    <strong class="text-dark d-block">Two-Factor Authentication (2FA)</strong>
+                    <span class="text-muted">SMS &amp; Authenticator app verification required for admin actions.</span>
+                  </div>
+                  <div class="form-check form-switch m-0">
+                    <input class="form-check-input" type="checkbox" checked />
+                  </div>
+                </div>
+
+                <div class="list-group-item d-flex justify-content-between align-items-center p-3">
+                  <div>
+                    <strong class="text-dark d-block">Automatic Inactive Session Logout</strong>
+                    <span class="text-muted">Terminate active session after 30 minutes of idle status.</span>
+                  </div>
+                  <div class="form-check form-switch m-0">
+                    <input class="form-check-input" type="checkbox" checked />
+                  </div>
+                </div>
+
+                <div class="list-group-item d-flex justify-content-between align-items-center p-3">
+                  <div>
+                    <strong class="text-dark d-block">Audit Logging For All Approvals</strong>
+                    <span class="text-muted">Log timestamp and admin ID for seller KYC and refund payouts.</span>
+                  </div>
+                  <div class="form-check form-switch m-0">
+                    <input class="form-check-input" type="checkbox" checked />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../common/js/global.js"></script>
+  <script src="../js/admin-nav.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>

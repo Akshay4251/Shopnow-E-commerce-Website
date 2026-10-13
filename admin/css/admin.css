@@ -1,0 +1,521 @@
+/**
+ * ===================================================
+ * SHOPNOW - ADMIN MODULE DESIGN SYSTEM (admin.css)
+ * Premium Dark Navy (#081726) & Vibrant Coral (#ff5338)
+ * Desktop Sidebar + Top Header + Data Tables + Modals
+ * ===================================================
+ */
+
+:root {
+  --admin-sidebar-bg: #081726;
+  --admin-sidebar-hover: #132437;
+  --admin-sidebar-active: #ff5338;
+  --admin-primary: #ff5338;
+  --admin-primary-hover: #e04326;
+  --admin-bg: #f8fafc;
+  --admin-surface: #ffffff;
+  --admin-border: #e2e8f0;
+  --admin-text-main: #0f172a;
+  --admin-text-muted: #64748b;
+  --admin-success: #10b981;
+  --admin-warning: #f59e0b;
+  --admin-danger: #ef4444;
+  --admin-info: #0ea5e9;
+  --admin-purple: #8b5cf6;
+}
+
+body.admin-body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--admin-bg);
+  color: var(--admin-text-main);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ---------------- Layout Wrapper ---------------- */
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* ---------------- 1. Dark Navy Sidebar ---------------- */
+.admin-sidebar {
+  width: 260px;
+  min-width: 260px;
+  background-color: var(--admin-sidebar-bg);
+  color: #94a3b8;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+  transition: transform 0.3s ease;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.admin-sidebar-brand {
+  padding: 22px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.admin-brand-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #ff5338 0%, #ff7660 100%);
+  color: #ffffff;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 12px rgba(255, 83, 56, 0.35);
+}
+
+.admin-brand-name {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.admin-sidebar-menu {
+  list-style: none;
+  padding: 16px 12px;
+  margin: 0;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.admin-sidebar-menu li {
+  margin-bottom: 3px;
+}
+
+.admin-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.825rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.admin-nav-item i {
+  font-size: 1.1rem;
+  color: #64748b;
+  width: 20px;
+  text-align: center;
+  transition: color 0.2s ease;
+}
+
+.admin-nav-item:hover {
+  background-color: var(--admin-sidebar-hover);
+  color: #ffffff;
+}
+
+.admin-nav-item:hover i {
+  color: #ffffff;
+}
+
+.admin-nav-item.active {
+  background-color: var(--admin-sidebar-active);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(255, 83, 56, 0.35);
+}
+
+.admin-nav-item.active i {
+  color: #ffffff;
+}
+
+.admin-sidebar-footer {
+  padding: 14px 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.775rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-sidebar-footer a {
+  color: #64748b;
+  text-decoration: none;
+}
+
+.admin-sidebar-footer a:hover {
+  color: #ffffff;
+}
+
+/* ---------------- 2. Main Content Area ---------------- */
+.admin-main {
+  margin-left: 260px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: calc(100% - 260px);
+}
+
+/* ---------------- 3. Top Header Bar ---------------- */
+.admin-topbar {
+  background-color: var(--admin-surface);
+  border-bottom: 1px solid var(--admin-border);
+  padding: 12px 28px;
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+}
+
+.admin-search-form {
+  position: relative;
+  min-width: 280px;
+  max-width: 480px;
+}
+
+.admin-search-input {
+  width: 100%;
+  border-radius: 9999px;
+  border: 1px solid var(--admin-border);
+  padding: 8px 16px 8px 38px;
+  font-size: 0.85rem;
+  background-color: #f8fafc;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.admin-search-input:focus {
+  border-color: var(--admin-primary);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(255, 83, 56, 0.12);
+}
+
+.admin-search-icon {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+/* Profile Pill */
+.admin-profile-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  border: 1px solid var(--admin-border);
+  cursor: pointer;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.admin-profile-pill:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.admin-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #ffedd5;
+}
+
+.admin-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---------------- 4. Content Containers & Titles ---------------- */
+.admin-content {
+  padding: 24px 28px 60px;
+  flex-grow: 1;
+}
+
+.admin-page-header {
+  margin-bottom: 22px;
+}
+
+.admin-page-title {
+  font-family: var(--font-heading, 'Playfair Display', serif);
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #081726;
+  margin: 0 0 4px;
+}
+
+.admin-page-subtitle {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin: 0;
+}
+
+/* ---------------- 5. Cards & Tables ---------------- */
+.admin-card {
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid var(--admin-border);
+  padding: 22px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  margin-bottom: 22px;
+}
+
+.admin-stat-card {
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid var(--admin-border);
+  padding: 18px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  height: 100%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.stat-label {
+  font-size: 0.725rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  margin-bottom: 6px;
+}
+
+.stat-number {
+  font-size: 1.85rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #081726;
+  margin-bottom: 4px;
+}
+
+.stat-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+/* Table Design */
+.admin-table-card {
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid var(--admin-border);
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  margin-bottom: 22px;
+}
+
+.table-admin {
+  margin-bottom: 0;
+  vertical-align: middle;
+  font-size: 0.85rem;
+}
+
+.table-admin th {
+  background-color: #f8fafc;
+  color: #64748b;
+  font-size: 0.725rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 13px 18px;
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.table-admin td {
+  padding: 14px 18px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #081726;
+}
+
+.table-admin tr:last-child td {
+  border-bottom: none;
+}
+
+.table-admin tr:hover td {
+  background-color: #fafbfc;
+}
+
+/* ---------------- 6. Status Pills ---------------- */
+.badge-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 0.725rem;
+  font-weight: 700;
+}
+
+.badge-status-active,
+.badge-status-completed,
+.badge-status-delivered,
+.badge-status-approved {
+  background-color: #ecfdf5;
+  color: #047857;
+}
+
+.badge-status-pending,
+.badge-status-review {
+  background-color: #fff7ed;
+  color: #c2410c;
+}
+
+.badge-status-shipped,
+.badge-status-transit {
+  background-color: #f3e8ff;
+  color: #7e22ce;
+}
+
+.badge-status-blocked,
+.badge-status-rejected,
+.badge-status-cancelled {
+  background-color: #fef2f2;
+  color: #b91c1c;
+}
+
+/* ---------------- 7. Buttons & Utilities ---------------- */
+.btn-coral-admin {
+  background-color: var(--admin-primary);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border-radius: 8px;
+  padding: 8px 18px;
+  border: none;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(255, 83, 56, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btn-coral-admin:hover {
+  background-color: var(--admin-primary-hover);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.btn-outline-admin {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #081726;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border-radius: 8px;
+  padding: 7px 16px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-admin:hover {
+  background-color: #f8fafc;
+  border-color: #94a3b8;
+  color: #081726;
+}
+
+/* ---------------- 8. Promo & Card Banners ---------------- */
+.admin-promo-card {
+  background: linear-gradient(135deg, #081726 0%, #1e293b 100%);
+  color: #ffffff;
+  border-radius: 14px;
+  padding: 22px;
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-promo-card::after {
+  content: '';
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 140px;
+  height: 140px;
+  background: rgba(255, 83, 56, 0.15);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* ---------------- 9. Document Verification Cards ---------------- */
+.admin-doc-card {
+  border: 1px solid var(--admin-border);
+  border-radius: 10px;
+  padding: 16px;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.admin-doc-card:hover {
+  border-color: var(--admin-primary);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+/* ---------------- 10. Promotional Calendar Grid ---------------- */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.calendar-cell {
+  background: #ffffff;
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  padding: 10px;
+  min-height: 80px;
+  font-size: 0.75rem;
+}
+
+.calendar-cell.has-event {
+  border-color: var(--admin-primary);
+  background-color: #fff9f8;
+}
+
+/* Mobile Sidebar Toggle */
+@media (max-width: 991.98px) {
+  .admin-sidebar {
+    transform: translateX(-100%);
+  }
+
+  .admin-sidebar.show {
+    transform: translateX(0);
+  }
+
+  .admin-main {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .admin-content {
+    padding: 18px 16px 40px;
+  }
+}

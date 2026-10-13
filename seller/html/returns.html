@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Returns & Refunds - Seller Center</title>
+  <meta name="description" content="Process customer return requests, evaluate product issues, schedule pickups and authorize refunds on ShopNow." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Common & Seller CSS -->
+  <link rel="stylesheet" href="../../common/css/global.css" />
+  <link rel="stylesheet" href="../css/seller.css" />
+</head>
+<body class="seller-body">
+
+  <!-- Reusable Seller Header & Subnav -->
+  <div id="sellerHeader" data-active="returns"></div>
+
+  <!-- Returns Main Content -->
+  <main class="seller-page-wrapper">
+    <div class="container">
+
+      <!-- Breadcrumbs -->
+      <span class="d-block text-coral fw-bold extra-small letter-spacing-1 mb-2">SALES / RETURNS & REFUNDS</span>
+      <div class="seller-page-title-row mb-4">
+        <div>
+          <h1 class="seller-page-title">Returns and refunds</h1>
+          <p class="text-secondary small mb-0">Evaluate customer claims, approve courier pickups, or process store refunds.</p>
+        </div>
+      </div>
+
+      <!-- Status Filter Tabs (Matching Figma Image 4 Screen 3) -->
+      <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
+        <ul class="nav nav-pills gap-2" id="returnsFilterTabs">
+          <li class="nav-item">
+            <button class="nav-link active rounded-pill px-3 py-1 extra-small fw-bold text-dark bg-secondary-subtle" data-filter="all">All Returns (<span id="returnsCountAll">0</span>)</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link rounded-pill px-3 py-1 extra-small fw-bold text-secondary" data-filter="requested">Requested (<span id="returnsCountRequested">0</span>)</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link rounded-pill px-3 py-1 extra-small fw-bold text-secondary" data-filter="approved">Approved (<span id="returnsCountApproved">0</span>)</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link rounded-pill px-3 py-1 extra-small fw-bold text-secondary" data-filter="refunded">Refunded (<span id="returnsCountRefunded">0</span>)</button>
+          </li>
+        </ul>
+        <span class="text-muted extra-small">Return window: 7 days from delivery</span>
+      </div>
+
+      <!-- Filter Toolbar -->
+      <div class="seller-filter-toolbar">
+        <div class="flex-grow-1 position-relative" style="min-width: 240px;">
+          <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+          <input type="text" id="returnsSearchInput" class="form-control form-control-sm ps-5 rounded-pill" placeholder="Search by return ID, order ID, product name..." />
+        </div>
+
+        <select class="form-select form-select-sm w-auto rounded-pill" id="returnsReasonFilter">
+          <option value="all">All Reasons</option>
+          <option value="Damaged">Damaged / Broken</option>
+          <option value="Wrong Item">Wrong Item Received</option>
+          <option value="Quality">Quality / Glaze Issue</option>
+        </select>
+
+        <select class="form-select form-select-sm w-auto rounded-pill">
+          <option>Date: This month</option>
+          <option>Date: Last 30 days</option>
+          <option>Date: All time</option>
+        </select>
+      </div>
+
+      <!-- Returns Table (Matching Figma Image 4 Screen 3) -->
+      <div class="seller-card-table">
+        <div class="table-responsive">
+          <table class="table table-seller align-middle">
+            <thead>
+              <tr>
+                <th>Return ID</th>
+                <th>Order ID</th>
+                <th>Product</th>
+                <th>Return Reason</th>
+                <th>Date Requested</th>
+                <th>Return Status</th>
+                <th>Refund Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="returnsTableBody">
+              <!-- Hydrated dynamically from seller.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Reusable Seller Navy Footer -->
+  <div id="sellerFooter"></div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../common/js/global.js"></script>
+  <script src="../js/seller-nav.js"></script>
+  <script src="../js/seller.js"></script>
+</body>
+</html>

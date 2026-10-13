@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Failed - ShopNow</title>
+  <meta name="description" content="We couldn't process your payment. Retry or choose another payment method on ShopNow." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Common & Buyer CSS -->
+  <link rel="stylesheet" href="../../common/css/global.css" />
+  <link rel="stylesheet" href="../../common/css/header-footer.css" />
+  <link rel="stylesheet" href="../css/buyer.css" />
+</head>
+<body class="bg-light">
+
+  <!-- Minimal Header -->
+  <header class="checkout-header">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between">
+        <a href="../../common/html/home.html" class="brand-title">
+          <div class="brand-logo-icon">
+            <i class="bi bi-bag-fill"></i>
+          </div>
+          <span>ShopNow</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Payment Failed Main Content -->
+  <main class="buyer-page-wrapper">
+    <div class="container">
+      
+      <div class="d-flex justify-content-center py-4">
+        <div class="status-card-center">
+          
+          <div class="status-circle-icon failed">
+            <i class="bi bi-exclamation-triangle"></i>
+          </div>
+
+          <h1 class="status-card-title">Payment failed</h1>
+          <p class="status-card-subtitle">
+            We couldn't complete your payment. Check your card details and try again, or choose another payment method.
+          </p>
+
+          <!-- Order Summary Details -->
+          <div class="payment-order-box text-start mb-4">
+            <div class="payment-order-meta">
+              <strong id="failedOrderNumLabel">Order #SN-98241</strong>
+              <span>Total amount</span>
+            </div>
+            <div class="payment-order-amount" id="failedOrderAmount">₹ 5,040.00</div>
+          </div>
+
+          <!-- Dual Action Buttons -->
+          <div class="d-flex gap-3 justify-content-center">
+            <a href="payment.html" class="btn-coral-checkout flex-grow-1" id="btnFailedTryAgain">
+              Try again
+            </a>
+            <a href="checkout.html" class="btn-outline-continue flex-grow-1 text-center" id="btnFailedChooseAnother">
+              Choose another method
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Reusable Common Footer -->
+  <div id="siteFooter"></div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../common/js/global.js"></script>
+  <script src="../../common/js/header-footer.js"></script>
+  <script src="../js/buyer.js"></script>
+</body>
+</html>

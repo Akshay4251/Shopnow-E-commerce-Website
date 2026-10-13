@@ -67,34 +67,34 @@ $(document).ready(function () {
     const id = Math.floor(1000 + Math.random() * 9000);
 
     if (role === 'seller') {
-      $('#sellerFullName').val('Jordan Ross');
-      $('#sellerBizName').val(`Moonstone Handcraft #${id}`);
-      $('#sellerEmail').val(`seller${id}@moonstone.com`);
-      $('#sellerPhone').val(`+1 (555) 888-${id}`);
+      $('#sellerFullName').val('Aarav Sharma');
+      $('#sellerBizName').val(`CraftVeda Creations #${id}`);
+      $('#sellerEmail').val(`seller${id}@craftveda.in`);
+      $('#sellerPhone').val(`+91 98201 ${id}`);
       $('#sellerPassword, #sellerConfirmPw').val('Pass1234!');
-      $('#sellerBizAddress').val('100 Artisans Way, Suite 200, San Jose, CA');
-      $('#sellerTaxId').val(`TAX-US-${id}`);
+      $('#sellerBizAddress').val('402 Raheja Towers, Bandra Kurla Complex, Mumbai, MH');
+      $('#sellerTaxId').val(`27ABCDE${id}1Z5`);
       $('#sellerCategory').val('artisanal');
-      $('#sellerBankName').val('Global Merchant Bank');
-      $('#sellerAccountHolder').val('Moonstone Retail Pvt Ltd');
-      $('#sellerAccountNumber').val(`4920${id}48102938`);
-      $('#sellerRoutingNumber').val('BOFAUS3NXXX');
+      $('#sellerBankName').val('HDFC Bank');
+      $('#sellerAccountHolder').val('CraftVeda Retail Enterprises');
+      $('#sellerAccountNumber').val(`50100${id}92841`);
+      $('#sellerRoutingNumber').val('HDFC0000240');
     } else if (role === 'delivery') {
-      $('#agentName').val('David Miller');
-      $('#agentPhone').val(`+1 (555) 444-${id}`);
-      $('#agentEmail').val(`rider${id}@express-delivery.com`);
+      $('#agentName').val('Rajesh Verma');
+      $('#agentPhone').val(`+91 98334 ${id}`);
+      $('#agentEmail').val(`rider${id}@shopnow-delivery.in`);
       $('#agentVehicle').val('motorcycle');
-      $('#agentDL').val(`DL-NY-${id}`);
-      $('#agentRegNumber').val(`DL-02-AB-${id}`);
-      $('#agentCity').val('New York');
-      $('#agentEmergencyName').val('Claire Miller');
-      $('#agentEmergencyPhone').val(`+1 (555) 999-${id}`);
+      $('#agentDL').val(`MH-02-2023-${id}`);
+      $('#agentRegNumber').val(`MH-02-EM-${id}`);
+      $('#agentCity').val('Mumbai');
+      $('#agentEmergencyName').val('Sunita Verma');
+      $('#agentEmergencyPhone').val(`+91 98112 ${id}`);
       $('#agentPassword, #agentConfirmPw').val('Pass1234!');
     } else {
-      $('#buyerName').val('John Doe');
-      $('#buyerEmail').val(`johndoe${id}@example.com`);
-      $('#buyerPhone').val(`+1 (555) 019-${id}`);
-      $('#buyerAddress').val('123 Market Street, Apt 4B');
+      $('#buyerName').val('Priya Patel');
+      $('#buyerEmail').val(`priya${id}@example.in`);
+      $('#buyerPhone').val(`+91 98765 ${id}`);
+      $('#buyerAddress').val('Flat 502, Orchid Heights, Andheri West, Mumbai, MH');
       $('#buyerPassword, #buyerConfirmPassword').val('Pass1234!');
       $('#buyerPassword').trigger('input');
     }
@@ -104,44 +104,102 @@ $(document).ready(function () {
     }
   });
 
-  // Form Submission Handler
-  $('#figmaRegisterForm').on('submit', function (e) {
-    e.preventDefault();
+    // Form Submission Handler
+    $('#figmaRegisterForm').on('submit', async function (e) {
+      e.preventDefault();
 
-    const role = $('#regRole').val();
-    let name = '', email = '', password = '';
+      const role = $('#regRole').val();
+      let name = '', email = '', password = '';
+      let storeName = '', category = '', phone = '', vehicle = '', city = '', address = '';
 
-    if (role === 'seller') {
-      name = $('#sellerBizName').val() || $('#sellerFullName').val();
-      email = $('#sellerEmail').val();
-      password = $('#sellerPassword').val();
-    } else if (role === 'delivery') {
-      name = $('#agentName').val();
-      email = $('#agentEmail').val();
-      password = $('#agentPassword').val();
-    } else {
-      name = $('#buyerName').val();
-      email = $('#buyerEmail').val();
-      password = $('#buyerPassword').val();
-    }
+      if (role === 'seller') {
+        storeName = $('#sellerBizName').val().trim();
+        name = $('#sellerFullName').val().trim() || storeName;
+        email = $('#sellerEmail').val().trim();
+        password = $('#sellerPassword').val().trim();
+        phone = $('#sellerPhone').val().trim();
+        category = $('#sellerCategory').val();
+      } else if (role === 'delivery') {
+        name = $('#agentName').val().trim();
+        email = $('#agentEmail').val().trim();
+        password = $('#agentPassword').val().trim();
+        phone = $('#agentPhone').val().trim();
+        vehicle = $('#agentVehicle').val() || 'motorcycle';
+        city = $('#agentCity').val().trim() || 'Mumbai';
+      } else {
+        name = $('#buyerName').val().trim();
+        email = $('#buyerEmail').val().trim();
+        password = $('#buyerPassword').val().trim();
+        phone = $('#buyerPhone').val().trim();
+        address = $('#buyerAddress').val().trim();
+      }
 
-    if (!email || !password) {
-      showRegAlert('Please fill in mandatory email and password fields.', 'danger');
-      return;
-    }
+      if (!email || !password) {
+        showRegAlert('Please fill in mandatory email and password fields.', 'danger');
+        return;
+      }
 
-    const newUser = { id: 'USER-' + Date.now(), name, email, password, role };
-    if (typeof ShopNowCommon !== 'undefined') {
-      const users = ShopNowCommon.getStorage('shopnow_users') || [];
-      users.push(newUser);
-      ShopNowCommon.saveStorage('shopnow_users', users);
-      ShopNowCommon.showToast(`Account created for ${name}! Redirecting to Sign In...`, 'success');
-    }
+      const $submitBtn = $('#regSubmitBtn');
+      $submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2"></span>Creating account...');
 
-    setTimeout(function () {
-      window.location.href = 'login.html';
-    }, 1400);
-  });
+      const newUser = {
+        id: 'USER-' + Date.now(),
+        name,
+        email: email.toLowerCase(),
+        password,
+        role,
+        storeName: storeName || (name ? `${name}'s Store` : 'My Store'),
+        category,
+        phone,
+        vehicle,
+        city,
+        address,
+        createdAt: new Date().toISOString()
+      };
+
+      // Save locally immediately
+      const users = (typeof ShopNowCommon !== 'undefined' ? ShopNowCommon.getStorage('shopnow_users') : null) || [];
+      const existingIdx = users.findIndex(u => u.email && u.email.toLowerCase() === newUser.email && (!u.role || u.role === role));
+      if (existingIdx !== -1) {
+        users[existingIdx] = newUser;
+      } else {
+        users.push(newUser);
+      }
+      if (typeof ShopNowCommon !== 'undefined') {
+        ShopNowCommon.saveStorage('shopnow_users', users);
+      }
+
+      // Sync to MockAPI asynchronously
+      if (typeof ShopNowAPI !== 'undefined') {
+        try {
+          await ShopNowAPI.createUser(newUser);
+        } catch (err) {
+          console.warn('[Register] MockAPI sync notice:', err);
+        }
+      }
+
+      // Automatically establish user session directly upon registration
+      if (typeof ShopNowCommon !== 'undefined') {
+        ShopNowCommon.setCurrentUser(newUser);
+        ShopNowCommon.showToast(`Welcome to ShopNow, ${name}! Your account is registered and logged in.`, 'success');
+      } else {
+        localStorage.setItem('shopnow_current_user', JSON.stringify(newUser));
+      }
+
+      // Redirect immediately to role-specific dashboard / landing page
+      setTimeout(function () {
+        if (role === 'seller') {
+          window.location.href = '../../seller/html/dashboard.html';
+        } else if (role === 'delivery') {
+          window.location.href = '../../delivery-agent/html/dashboard.html';
+        } else if (role === 'admin') {
+          window.location.href = '../../admin/html/dashboard.html';
+        } else {
+          // Buyer default
+          window.location.href = 'home.html';
+        }
+      }, 800);
+    });
 
   function showRegAlert(msg, type) {
     const $alert = $('#regAlert');

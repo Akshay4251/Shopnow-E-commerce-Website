@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Delivery Agent Dashboard - ShopNow</title>
+  <meta name="description" content="Driver fleet portal for tracking assigned parcels, route navigation, and delivery status updates." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Common & Delivery Agent CSS -->
+  <link rel="stylesheet" href="../../common/css/global.css" />
+  <link rel="stylesheet" href="../css/delivery.css" />
+</head>
+<body class="delivery-body">
+
+  <div class="delivery-layout">
+    <!-- Reusable Dark Navy Sidebar -->
+    <aside class="delivery-sidebar" id="deliverySidebar" data-active="dashboard"></aside>
+
+    <!-- Main Content Area -->
+    <div class="delivery-main">
+      <!-- Reusable Top Header Bar -->
+      <header class="delivery-topbar" id="deliveryTopBar"></header>
+
+      <!-- Dashboard Body Content (Matching Figma Image 1 Screen 1) -->
+      <main class="delivery-content">
+        <!-- Greeting Header -->
+        <div class="delivery-page-header">
+          <h1 class="delivery-page-title" id="deliveryAgentGreeting">Welcome Back, Agent</h1>
+          <p class="delivery-page-subtitle">Here is what's happening with your deliveries today.</p>
+        </div>
+
+        <!-- 3 Metric Cards Strip -->
+        <div class="row g-3 mb-4">
+          <!-- Metric 1: Assigned Orders -->
+          <div class="col-12 col-md-4">
+            <div class="delivery-stat-card">
+              <div>
+                <span class="stat-card-label">Assigned Orders</span>
+                <div class="stat-card-number" id="kpiAgentAssignedOrders">0</div>
+                <span class="badge bg-success-subtle text-success stat-card-badge">
+                  <i class="bi bi-arrow-up-right"></i> Active Queue
+                </span>
+              </div>
+              <div class="stat-card-icon bg-warning-subtle text-warning-emphasis">
+                <i class="bi bi-box-seam"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Metric 2: In Transit -->
+          <div class="col-12 col-md-4">
+            <div class="delivery-stat-card">
+              <div>
+                <span class="stat-card-label">In Transit</span>
+                <div class="stat-card-number" id="kpiAgentInTransit">0</div>
+                <span class="badge bg-purple-subtle text-purple stat-card-badge" style="background-color: #f3e8ff; color: #7e22ce;">
+                  On the road
+                </span>
+              </div>
+              <div class="stat-card-icon bg-purple-subtle text-purple" style="background-color: #f3e8ff; color: #7e22ce;">
+                <i class="bi bi-truck"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Metric 3: Avg. Delivery Time -->
+          <div class="col-12 col-md-4">
+            <div class="delivery-stat-card">
+              <div>
+                <span class="stat-card-label">Avg. Delivery Time</span>
+                <div class="stat-card-number" id="kpiAgentAvgDeliveryTime">28m</div>
+                <span class="badge bg-success-subtle text-success stat-card-badge">
+                  <i class="bi bi-check2-circle"></i> On schedule
+                </span>
+              </div>
+              <div class="stat-card-icon bg-coral-subtle text-coral" style="background-color: #fef2ee; color: #ff5338;">
+                <i class="bi bi-stopwatch"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grid: Current Assignments Table & Active Route Widget -->
+        <div class="row g-4 mb-4">
+          <!-- Left: Current Assignments Table (8 Cols) -->
+          <div class="col-12 col-xl-8">
+            <div class="delivery-table-card">
+              <div class="p-4 border-bottom d-flex align-items-center justify-content-between">
+                <div>
+                  <h5 class="fw-bold text-dark mb-0">Current Assignments</h5>
+                  <span class="extra-small text-muted">Live tracking of your active delivery queue</span>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                  <a href="assigned-orders.html" class="btn btn-sm btn-link text-coral text-decoration-none fw-bold extra-small">
+                    View all &rarr;
+                  </a>
+                </div>
+              </div>
+
+              <div class="table-responsive">
+                <table class="table table-delivery align-middle">
+                  <thead>
+                    <tr>
+                      <th>Order ID</th>
+                      <th>Customer</th>
+                      <th>Delivery Address</th>
+                      <th>Status</th>
+                      <th>ETA</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="deliveryDashboardAssignmentsBody">
+                    <!-- Hydrated dynamically from delivery.js -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Bottom Highlights: Route Optimized & Safety Alert -->
+            <div class="row g-3">
+              <div class="col-12 col-md-6">
+                <div class="dark-widget-card d-flex align-items-center justify-content-between">
+                  <div>
+                    <span class="dark-widget-tag"><i class="bi bi-lightning-charge-fill me-1"></i> AI Dispatched</span>
+                    <h6 class="fw-bold mb-1 text-white">Route Optimized</h6>
+                    <p class="extra-small text-secondary mb-0">14 stops sequence-mapped for zero backtrack miles today.</p>
+                  </div>
+                  <div class="ms-3 fs-3 text-coral">
+                    <i class="bi bi-compass"></i>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 col-md-6">
+                <div class="delivery-card p-3 h-100 d-flex align-items-center justify-content-between bg-warning-subtle border-warning-subtle mb-0">
+                  <div>
+                    <span class="extra-small fw-bold text-warning-emphasis text-uppercase d-block mb-1">
+                      <i class="bi bi-cloud-rain-heavy-fill me-1"></i> Weather Alert
+                    </span>
+                    <strong class="text-dark small d-block">Heavy rain near Western Express Highway</strong>
+                    <span class="extra-small text-secondary">Drive with reduced speed; maintain extra braking distance.</span>
+                  </div>
+                  <div class="ms-3 fs-3 text-warning">
+                    <i class="bi bi-shield-exclamation"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Active Navigation Card (4 Cols - Matching Figma) -->
+          <div class="col-12 col-xl-4">
+            <div class="delivery-card p-0 overflow-hidden h-100 d-flex flex-column">
+              <!-- Header -->
+              <div class="p-3 border-bottom d-flex align-items-center justify-content-between bg-light">
+                <strong class="text-dark small">Active Run</strong>
+                <span class="badge bg-success text-white extra-small"><i class="bi bi-broadcast me-1"></i> LIVE GPS</span>
+              </div>
+
+              <!-- Map Image Visual Mockup -->
+              <div class="position-relative flex-grow-1" style="min-height: 240px; background: #e2e8f0; overflow: hidden;">
+                <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=600&q=80" alt="Navigation Map" class="w-100 h-100 object-fit-cover" />
+                
+                <!-- Overlay Pin Badge -->
+                <div class="position-absolute top-50 start-50 translate-middle p-2 bg-dark text-white rounded-3 shadow extra-small d-flex align-items-center gap-2">
+                  <span class="online-dot"></span>
+                  <span>Next Stop: <strong>1.2 km</strong></span>
+                </div>
+              </div>
+
+              <!-- Destination Footer -->
+              <div class="p-4 bg-white border-top">
+                <span class="extra-small text-muted d-block text-uppercase fw-bold mb-1">Next Destination</span>
+                <h6 class="fw-bold text-dark mb-1">Plot 42, MIDC Road No. 11</h6>
+                <p class="extra-small text-secondary mb-3">Andheri East, Mumbai 400069 &bull; Expected in 6 mins</p>
+                
+                <a href="location.html" class="btn btn-coral-delivery w-100 justify-content-center">
+                  <i class="bi bi-cursor-fill"></i> Start Navigation
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../common/js/global.js"></script>
+  <script src="../js/delivery-nav.js"></script>
+  <script src="../js/delivery.js"></script>
+</body>
+</html>

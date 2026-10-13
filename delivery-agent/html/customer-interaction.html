@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customer Interaction - Delivery Fleet - ShopNow</title>
+  <meta name="description" content="Customer dispatch communication hub, quick SMS templates, direct caller, and delivery instructions history." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Common & Delivery Agent CSS -->
+  <link rel="stylesheet" href="../../common/css/global.css" />
+  <link rel="stylesheet" href="../css/delivery.css" />
+</head>
+<body class="delivery-body">
+
+  <div class="delivery-layout">
+    <!-- Reusable Dark Navy Sidebar (Active Tab: interaction) -->
+    <aside class="delivery-sidebar" id="deliverySidebar" data-active="interaction"></aside>
+
+    <!-- Main Content Area -->
+    <div class="delivery-main">
+      <!-- Reusable Top Header Bar -->
+      <header class="delivery-topbar" id="deliveryTopBar"></header>
+
+      <!-- Customer Interaction Content (Matching Figma Image 2 Screen 5) -->
+      <main class="delivery-content">
+        <!-- Page Header & Action Buttons -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+          <div>
+            <h1 class="delivery-page-title">Customer Interaction</h1>
+            <p class="delivery-page-subtitle">Manage communications and view history for Sarah Jenkins.</p>
+          </div>
+
+          <div class="d-flex align-items-center gap-2">
+            <button type="button" class="btn btn-outline-secondary btn-sm px-3 fw-bold" id="btnViewAllActivity">
+              <i class="bi bi-clock-history me-1"></i> View all activity
+            </button>
+            <button type="button" class="btn btn-coral-delivery btn-sm px-3" data-bs-toggle="modal" data-bs-target="#newLogEntryModal">
+              <i class="bi bi-plus-lg"></i> New Log Entry
+            </button>
+          </div>
+        </div>
+
+        <!-- 2-Column Communication Layout -->
+        <div class="row g-4">
+          <!-- Left Column: Customer Profile & Address Info (5 Cols) -->
+          <div class="col-12 col-xl-5">
+            <!-- Sarah Jenkins Profile Card -->
+            <div class="delivery-card mb-4">
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="delivery-avatar" style="width: 52px; height: 52px;">
+                  <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=120&q=80" alt="Sarah Jenkins" />
+                </div>
+                <div>
+                  <div class="d-flex align-items-center gap-2">
+                    <h5 class="fw-bold text-dark mb-0">Sarah Jenkins</h5>
+                    <span class="badge bg-warning-subtle text-warning-emphasis extra-small fw-bold">Gold Member</span>
+                  </div>
+                  <span class="extra-small text-muted d-block">
+                    LIVE ORDER <strong>#ORD-98104</strong> &bull; <i class="bi bi-star-fill text-warning"></i> 4.9 Customer Rating
+                  </span>
+                </div>
+              </div>
+
+              <!-- Contact & Stats -->
+              <div class="extra-small text-secondary d-flex flex-column gap-2 py-3 border-top border-bottom mb-3">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span><i class="bi bi-telephone-fill text-muted me-2"></i>Phone:</span>
+                  <a href="tel:+919820145892" class="fw-bold text-dark text-decoration-none">+91 98201 45892</a>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span><i class="bi bi-envelope-fill text-muted me-2"></i>Email:</span>
+                  <strong class="text-dark">sarah.j@example.com</strong>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span><i class="bi bi-cart-check-fill text-muted me-2"></i>Order Volume:</span>
+                  <span class="fw-bold text-dark">23 orders &bull; Avg: ₹ 1,450</span>
+                </div>
+              </div>
+
+              <!-- Delivery Preferences Box -->
+              <div class="p-3 bg-light rounded-3 mb-3 border">
+                <span class="extra-small fw-bold text-muted text-uppercase d-block mb-1">Delivery Preferences</span>
+                <p class="extra-small text-dark fw-semibold mb-0">
+                  "Text Only, No Calls after 8PM. Please leave behind porch planter if no response."
+                </p>
+              </div>
+
+              <div class="d-flex gap-2">
+                <a href="tel:+919820145892" class="btn btn-outline-delivery btn-sm flex-grow-1 justify-content-center">
+                  <i class="bi bi-telephone-fill text-success"></i> Call Customer
+                </a>
+                <button type="button" class="btn btn-outline-secondary btn-sm flex-grow-1" data-bs-toggle="modal" data-bs-target="#editPreferencesModal">
+                  <i class="bi bi-pencil-square"></i> Edit Prefs
+                </button>
+              </div>
+            </div>
+
+            <!-- Primary Address Card (Satellite Preview) -->
+            <div class="delivery-card p-0 overflow-hidden mb-0">
+              <div class="p-3 bg-light border-bottom d-flex align-items-center justify-content-between">
+                <span class="stat-card-label mb-0"><i class="bi bi-pin-map-fill text-coral me-1"></i> Primary Address</span>
+                <span class="badge bg-secondary-subtle text-secondary extra-small">Residential</span>
+              </div>
+
+              <!-- Map Satellite View Visual Mockup -->
+              <div class="position-relative" style="height: 160px; background-color: #cbd5e1;">
+                <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=600&q=80" alt="Address View" class="w-100 h-100 object-fit-cover" />
+                <div class="position-absolute top-50 start-50 translate-middle p-2 bg-dark text-white rounded-pill shadow-sm extra-small">
+                  <i class="bi bi-house-door-fill text-coral me-1"></i> Apt 4B Entrance
+                </div>
+              </div>
+
+              <div class="p-4 bg-white">
+                <strong class="text-dark small d-block mb-1">Plot 42, MIDC Road No. 11</strong>
+                <span class="extra-small text-muted d-block mb-3">Andheri East, Mumbai 400069</span>
+
+                <div class="row g-2 extra-small">
+                  <div class="col-6">
+                    <div class="p-2 bg-light rounded-2 border">
+                      <span class="text-muted d-block">Gate Code</span>
+                      <strong class="text-dark fs-6">#4912</strong>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="p-2 bg-light rounded-2 border">
+                      <span class="text-muted d-block">Building Level</span>
+                      <strong class="text-dark fs-6">Level P2</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Interaction Hub & Communication History (7 Cols) -->
+          <div class="col-12 col-xl-7">
+            <!-- Interaction Hub Card (Matching Figma Screen 5) -->
+            <div class="delivery-card p-0 overflow-hidden mb-4">
+              <!-- Orange Top Banner -->
+              <div class="px-4 py-3 bg-coral text-white d-flex align-items-center justify-content-between" style="background-color: #ff5338;">
+                <strong class="small text-white"><i class="bi bi-chat-square-dots-fill me-2"></i>Interaction Hub</strong>
+                <span class="badge bg-white text-coral extra-small fw-bold">LIVE SESSION</span>
+              </div>
+
+              <!-- Hub Navigation Tabs -->
+              <ul class="nav nav-tabs px-3 pt-2 bg-light border-bottom">
+                <li class="nav-item">
+                  <button class="nav-link active fw-bold extra-small text-dark border-bottom-0" data-bs-toggle="tab" data-bs-target="#tabQuickMessage">Quick Message</button>
+                </li>
+                <li class="nav-item">
+                  <button class="nav-link fw-bold extra-small text-secondary" data-bs-toggle="tab" data-bs-target="#tabVoiceCall">Voice Call</button>
+                </li>
+                <li class="nav-item">
+                  <button class="nav-link fw-bold extra-small text-secondary" data-bs-toggle="tab" data-bs-target="#tabInternalNotes">Internal Notes</button>
+                </li>
+              </ul>
+
+              <!-- Tab Contents -->
+              <div class="tab-content p-4">
+                <div class="tab-pane fade show active" id="tabQuickMessage">
+                  <form id="customerInteractionSendForm">
+                    <!-- Text Message Input -->
+                    <div class="mb-3">
+                      <textarea id="interactionMsgInput" class="form-control rounded-3 border-light-subtle extra-small" rows="3" placeholder="Type your message to the customer here..."></textarea>
+                    </div>
+
+                    <!-- Actions & Send Button -->
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                      <div class="d-flex align-items-center gap-3 extra-small">
+                        <button type="button" class="btn btn-link p-0 text-coral text-decoration-none fw-semibold" id="btnBrowseTemplates">
+                          <i class="bi bi-card-text me-1"></i> Use Template
+                        </button>
+                        <button type="button" class="btn btn-link p-0 text-secondary text-decoration-none fw-semibold" id="btnAttachPhoto">
+                          <i class="bi bi-paperclip me-1"></i> Attach File
+                        </button>
+                      </div>
+
+                      <button type="submit" class="btn btn-coral-delivery btn-sm px-4">
+                        <i class="bi bi-send-fill"></i> Send SMS
+                      </button>
+                    </div>
+                  </form>
+
+                  <!-- Quick Response Templates Pills (Matching Figma) -->
+                  <div>
+                    <span class="extra-small fw-bold text-muted text-uppercase d-block mb-2">Quick Response Templates</span>
+                    <div class="d-flex flex-wrap gap-2">
+                      <button type="button" class="btn btn-sm btn-light border rounded-pill extra-small template-pill" data-text="Hello Sarah, I am 5 minutes away from your location.">
+                        Arriving in 5m
+                      </button>
+                      <button type="button" class="btn btn-sm btn-light border rounded-pill extra-small template-pill" data-text="I have arrived at your door with your order!">
+                        At your door
+                      </button>
+                      <button type="button" class="btn btn-sm btn-light border rounded-pill extra-small template-pill" data-text="Hello, could you please confirm the gate entry code?">
+                        Gate code needed
+                      </button>
+                      <button type="button" class="btn btn-sm btn-light border rounded-pill extra-small template-pill" data-text="Hi Sarah, please confirm if Suite 102 is building B.">
+                        Address verification
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Tab 2: Voice Call -->
+                <div class="tab-pane fade" id="tabVoiceCall">
+                  <div class="p-4 text-center">
+                    <div class="mb-3">
+                      <div class="d-inline-flex p-3 bg-success-subtle text-success rounded-circle fs-3">
+                        <i class="bi bi-telephone-outbound-fill"></i>
+                      </div>
+                    </div>
+                    <h6 class="fw-bold text-dark mb-1">Direct Driver-Customer Bridge</h6>
+                    <p class="extra-small text-muted mb-3">Calls are masked to protect customer and driver personal numbers.</p>
+                    <a href="tel:+919820145892" class="btn btn-success btn-sm px-4 rounded-pill">
+                      <i class="bi bi-telephone-fill me-1"></i> Dial Protected Line
+                    </a>
+                  </div>
+                </div>
+
+                <!-- Tab 3: Internal Notes -->
+                <div class="tab-pane fade" id="tabInternalNotes">
+                  <div class="mb-3">
+                    <label class="extra-small text-muted fw-bold text-uppercase d-block mb-1">Driver &amp; Dispatcher Log</label>
+                    <textarea class="form-control extra-small" rows="3" placeholder="Add private notes visible only to central dispatch and the next delivery driver..."></textarea>
+                  </div>
+                  <button type="button" class="btn btn-dark btn-sm extra-small" onclick="ShopNowCommon.showToast('Internal note saved to order history.', 'success');">
+                    Save Note
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Communication History Feed Card -->
+            <div class="delivery-card mb-0">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="stat-card-label mb-0"><i class="bi bi-chat-dots-fill text-coral me-1"></i> Communication History</span>
+                <span class="extra-small text-muted"><i class="bi bi-funnel me-1"></i> All Messages</span>
+              </div>
+
+              <!-- History Log Stream -->
+              <div id="customerInteractionLog">
+                <!-- Message 1: Outbound SMS -->
+                <div class="p-3 bg-light rounded-3 border mb-2">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <strong class="text-dark small"><i class="bi bi-chat-text-fill text-coral me-1"></i> SMS from Alex Rivera (You)</strong>
+                    <span class="extra-small text-muted">Today, 10:15 AM</span>
+                  </div>
+                  <p class="small text-secondary mb-0">
+                    "Hello Sarah. I am 5 minutes away from your location. Please ensure the gate code is updated."
+                  </p>
+                </div>
+
+                <!-- Message 2: Call Log -->
+                <div class="p-3 bg-light rounded-3 border mb-2">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <strong class="text-dark small"><i class="bi bi-telephone-fill text-success me-1"></i> Call with Sarah Jenkins</strong>
+                    <span class="extra-small text-muted">Yesterday, 2:30 PM &bull; 1m 45s</span>
+                  </div>
+                  <p class="small text-secondary mb-0">
+                    "Confirmed drop-off instructions. Customer requested in-house placement behind the shoe cabinet at the front porch."
+                  </p>
+                </div>
+
+                <!-- Message 3: System Event -->
+                <div class="p-3 bg-white rounded-3 border border-dashed mb-0">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <strong class="text-dark extra-small"><i class="bi bi-check-circle-fill text-success me-1"></i> System Notification</strong>
+                    <span class="extra-small text-muted">Oct 24, 2026, 10:45 AM</span>
+                  </div>
+                  <p class="extra-small text-muted mb-0">
+                    Delivery #ORD-98101 successfully completed and verified with photo proof.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- New Log Entry Modal -->
+  <div class="modal fade" id="newLogEntryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 shadow">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold text-dark">Add Communication Log</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body py-4">
+          <div class="mb-3">
+            <label class="form-label extra-small fw-bold text-uppercase text-muted">Interaction Type</label>
+            <select class="form-select extra-small" id="logTypeSelect">
+              <option value="call">Phone Call (Inbound/Outbound)</option>
+              <option value="sms">SMS Text Exchange</option>
+              <option value="in_person">In-Person Handover Notes</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label extra-small fw-bold text-uppercase text-muted">Summary Notes</label>
+            <textarea class="form-control extra-small" id="logNotesInput" rows="3" placeholder="Enter conversation details..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer border-0 pt-0">
+          <button type="button" class="btn btn-light extra-small px-3" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-coral-delivery extra-small px-4" onclick="
+            ShopNowCommon.showToast('Log entry recorded into history.', 'success');
+            bootstrap.Modal.getInstance(document.getElementById('newLogEntryModal')).hide();
+          ">Save Entry</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Preferences Modal -->
+  <div class="modal fade" id="editPreferencesModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 shadow">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold text-dark">Customer Delivery Preferences</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body py-4">
+          <div class="mb-3">
+            <label class="form-label extra-small fw-bold text-uppercase text-muted">Delivery Notes</label>
+            <textarea class="form-control extra-small" rows="3">Text Only, No Calls after 8PM. Please leave behind porch planter if no response.</textarea>
+          </div>
+        </div>
+        <div class="modal-footer border-0 pt-0">
+          <button type="button" class="btn btn-light extra-small px-3" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-coral-delivery extra-small px-4" onclick="
+            ShopNowCommon.showToast('Delivery preferences saved.', 'success');
+            bootstrap.Modal.getInstance(document.getElementById('editPreferencesModal')).hide();
+          ">Update</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../common/js/global.js"></script>
+  <script src="../js/delivery-nav.js"></script>
+  <script src="../js/delivery.js"></script>
+</body>
+</html>

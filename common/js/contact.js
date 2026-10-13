@@ -70,11 +70,16 @@ $(document).ready(function () {
     function finishSubmission() {
       $btn.prop('disabled', false).html('<i class="bi bi-send me-2"></i> Send message');
 
-      // Save ticket to local storage
-      if (typeof ShopNowCommon !== 'undefined') {
+      // Save ticket to MockAPI & local storage
+      if (typeof ShopNowAPI !== 'undefined') {
+        ShopNowAPI.createSupportTicket(ticket);
+      } else if (typeof ShopNowCommon !== 'undefined') {
         const tickets = ShopNowCommon.getStorage('shopnow_support_tickets') || [];
         tickets.push(ticket);
         ShopNowCommon.saveStorage('shopnow_support_tickets', tickets);
+      }
+
+      if (typeof ShopNowCommon !== 'undefined') {
         ShopNowCommon.showToast(`Thank you, ${fullName}! Ticket #${ticketId} created.`, 'success');
       }
 

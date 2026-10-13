@@ -17,9 +17,13 @@
 
   <!-- Common CSS System -->
   <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/header-footer.css" />
   <link rel="stylesheet" href="../css/home.css" />
 </head>
 <body>
+
+  <!-- Reusable Common Header -->
+  <div id="siteHeader" data-active="trending"></div>
 
   <!-- ==================== HERO SECTION (EXACT FIGMA MATCHING) ==================== -->
   <section class="hero-section" id="home-hero">
@@ -69,7 +73,7 @@
             <div class="hero-card-text-content">
               <span class="hero-tag-coral-text mb-1 d-block">TODAY ONLY · ENDS 23:59</span>
               <h2 class="hero-card-blue-title">Up to 40% off tech</h2>
-              <a href="#trending-products" class="hero-card-blue-link">Shop flash deals &rarr;</a>
+              <a href="../../buyer/html/catalog.html?filter=deals" class="hero-card-blue-link">Shop flash deals &rarr;</a>
             </div>
             <!-- Tech bundle image -->
             <img src="https://res.cloudinary.com/dpva4smxo/image/upload/v1791382193/Deal_image_assjib.png" alt="Tech Drops" class="hero-tech-img" />
@@ -105,7 +109,7 @@
           <h2 class="heading-lg font-serif mb-1">Worth adding to cart</h2>
           <p class="subtitle mb-0">Handpicked items, top-rated by shoppers and updated daily—curated right here.</p>
         </div>
-        <a href="#home-hero" class="btn-white-outline-pill">See all deals</a>
+        <a href="../../buyer/html/catalog.html?filter=deals" class="btn-white-outline-pill">See all deals</a>
       </div>
 
       <div class="row g-4" id="trendingProductsContainer">
@@ -126,7 +130,7 @@
             <div class="feature-banner-overlay-content">
               <span class="feature-banner-tag-white mb-2">INSPIRING HOMES</span>
               <h2 class="heading-lg text-white font-serif mb-3">Small changes. Better spaces.</h2>
-              <a href="#trending-products" class="text-white font-weight-700 text-decoration-none d-inline-flex align-items-center gap-2 fs-6">
+              <a href="../../buyer/html/catalog.html?category=Decor" class="text-white font-weight-700 text-decoration-none d-inline-flex align-items-center gap-2 fs-6">
                 Explore living collection <i class="bi bi-arrow-right"></i>
               </a>
             </div>
@@ -139,7 +143,7 @@
             <div class="p-4">
               <span class="hero-tag-coral-text d-block mb-1">BEAUTY FAVORITE</span>
               <h2 class="heading-md font-serif mb-2">Your five-minute glow routine</h2>
-              <a href="#trending-products" class="text-dark font-weight-700 text-decoration-none small">View products &rarr;</a>
+              <a href="../../buyer/html/catalog.html?category=Skincare" class="text-dark font-weight-700 text-decoration-none small">View products &rarr;</a>
             </div>
             <div class="feature-beauty-img-box">
               <img src="https://res.cloudinary.com/dpva4smxo/image/upload/v1791382198/Story_image_q0j8gc.png" alt="Woman Glowing Skincare" />
@@ -159,44 +163,44 @@
           <span class="hero-tag-coral-text mb-1 d-block">BRANDS TO KNOW</span>
           <h2 class="heading-lg font-serif mb-0">The names on everyone's list</h2>
         </div>
-        <a href="#trending-products" class="btn-white-outline-pill">Browse all brands</a>
+        <a href="../../buyer/html/catalog.html" class="btn-white-outline-pill">Browse all brands</a>
       </div>
 
       <div class="row g-3">
         <!-- 1. AERFORM -->
         <div class="col-6 col-md-2-4">
-          <div class="brand-spotlight-card brand-card-aerform">
+          <a href="../../buyer/html/catalog.html?brand=AERFORM" class="brand-spotlight-card brand-card-aerform text-decoration-none d-block">
             <h4 class="brand-title">AERFORM</h4>
             <p class="brand-sub">Performance, reconsidered</p>
-          </div>
+          </a>
         </div>
         <!-- 2. KIN HOME -->
         <div class="col-6 col-md-2-4">
-          <div class="brand-spotlight-card brand-card-kinhome">
+          <a href="../../buyer/html/catalog.html?brand=KIN HOME" class="brand-spotlight-card brand-card-kinhome text-decoration-none d-block">
             <h4 class="brand-title">KIN HOME</h4>
             <p class="brand-sub">Objects for slower living</p>
-          </div>
+          </a>
         </div>
         <!-- 3. LUMEN -->
         <div class="col-6 col-md-2-4">
-          <div class="brand-spotlight-card brand-card-lumen">
+          <a href="../../buyer/html/catalog.html?brand=LUMEN" class="brand-spotlight-card brand-card-lumen text-decoration-none d-block">
             <h4 class="brand-title">LUMEN</h4>
             <p class="brand-sub">Skincare with clarity</p>
-          </div>
+          </a>
         </div>
         <!-- 4. NOMAD -->
         <div class="col-6 col-md-2-4">
-          <div class="brand-spotlight-card brand-card-nomad">
+          <a href="../../buyer/html/catalog.html?brand=NOMAD" class="brand-spotlight-card brand-card-nomad text-decoration-none d-block">
             <h4 class="brand-title">NOMAD</h4>
             <p class="brand-sub">Built to go further</p>
-          </div>
+          </a>
         </div>
         <!-- 5. SONORA -->
         <div class="col-6 col-md-2-4">
-          <div class="brand-spotlight-card brand-card-sonora">
+          <a href="../../buyer/html/catalog.html?brand=SONORA" class="brand-spotlight-card brand-card-sonora text-decoration-none d-block">
             <h4 class="brand-title">SONORA</h4>
             <p class="brand-sub">Hear every detail</p>
-          </div>
+          </a>
         </div>
       </div>
     </div>
@@ -336,12 +340,16 @@
     </div>
   </section>
 
+  <!-- Reusable Common Footer -->
+  <div id="siteFooter"></div>
+
   <!-- jQuery & Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <!-- Common JS System -->
   <script src="../js/global.js"></script>
+  <script src="../js/header-footer.js"></script>
   <script src="../js/home.js"></script>
 </body>
 </html>

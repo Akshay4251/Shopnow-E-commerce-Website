@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Details - Delivery Fleet - ShopNow</title>
+  <meta name="description" content="View assigned dispatch package details, pickup and dropoff routes, customer instructions, and accept delivery order." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Common & Delivery Agent CSS -->
+  <link rel="stylesheet" href="../../common/css/global.css" />
+  <link rel="stylesheet" href="../css/delivery.css" />
+</head>
+<body class="delivery-body">
+
+  <div class="delivery-layout">
+    <!-- Reusable Dark Navy Sidebar (Active Tab: orders) -->
+    <aside class="delivery-sidebar" id="deliverySidebar" data-active="orders"></aside>
+
+    <!-- Main Content Area -->
+    <div class="delivery-main">
+      <!-- Reusable Top Header Bar -->
+      <header class="delivery-topbar" id="deliveryTopBar"></header>
+
+      <!-- Order Details Content (Matching Figma Image 1 Screen 3) -->
+      <main class="delivery-content">
+        <!-- Breadcrumb / Back Link -->
+        <div class="mb-2">
+          <a href="assigned-orders.html" class="text-secondary extra-small text-decoration-none fw-semibold">
+            <i class="bi bi-chevron-left"></i> Back to Assigned Orders
+          </a>
+        </div>
+
+        <!-- Page Header & Earning Strip -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+          <div>
+            <div class="d-flex align-items-center gap-2 mb-1">
+              <h1 class="delivery-page-title mb-0">Order Details</h1>
+              <span class="badge bg-warning-subtle text-warning-emphasis fw-bold extra-small text-uppercase">Incoming Request</span>
+            </div>
+            <p class="delivery-page-subtitle" id="detailOrderCode">#ORD-98104 - Assigned to you</p>
+          </div>
+
+          <!-- Estimated Earnings & Duration Cards -->
+          <div class="d-flex align-items-center gap-3">
+            <div class="bg-white px-3 py-2 rounded-3 border shadow-sm text-end">
+              <span class="extra-small fw-bold text-muted text-uppercase d-block">Estimated Earning</span>
+              <span class="fs-4 fw-bold text-coral lh-1" id="detailEstimatedEarning">₹ 120.00</span>
+            </div>
+            <div class="bg-white px-3 py-2 rounded-3 border shadow-sm text-end">
+              <span class="extra-small fw-bold text-muted text-uppercase d-block">Est. Duration</span>
+              <span class="fs-4 fw-bold text-dark lh-1" id="detailEstimatedDuration">24 mins</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main 2-Column Layout -->
+        <div class="row g-4">
+          <!-- Left Column: Map Route Preview & Route Info (7 Cols) -->
+          <div class="col-12 col-xl-7">
+            <!-- Map Preview Card -->
+            <div class="delivery-card p-0 overflow-hidden mb-4">
+              <div class="position-relative" style="height: 280px; background-color: #cbd5e1;">
+                <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=1000&q=80" alt="Route Map" class="w-100 h-100 object-fit-cover" />
+                
+                <!-- Floating Distance Tag -->
+                <div class="position-absolute top-0 end-0 m-3 px-3 py-1 bg-white rounded-pill shadow-sm extra-small fw-bold text-dark d-flex align-items-center gap-1">
+                  <i class="bi bi-geo-alt-fill text-coral"></i>
+                  <span>5.2 km (Est. Route)</span>
+                </div>
+
+                <!-- Pickup & Dropoff Visual Badges -->
+                <div class="position-absolute bottom-0 start-0 m-3 d-flex gap-2">
+                  <span class="badge bg-dark text-white p-2 extra-small"><i class="bi bi-shop me-1"></i> Pickup</span>
+                  <span class="badge bg-coral text-white p-2 extra-small" style="background-color: #ff5338;"><i class="bi bi-pin-map-fill me-1"></i> Delivery</span>
+                </div>
+              </div>
+
+              <!-- Route Step Sequence Info -->
+              <div class="p-4 bg-white">
+                <h6 class="fw-bold text-dark mb-3"><i class="bi bi-signpost-split-fill text-coral me-2"></i>Route Information</h6>
+                
+                <div class="delivery-timeline">
+                  <!-- Pickup Step -->
+                  <div class="delivery-timeline-step done">
+                    <div class="delivery-timeline-node"><i class="bi bi-check2"></i></div>
+                    <div class="ps-2">
+                      <span class="extra-small fw-bold text-muted text-uppercase d-block">Pickup Location</span>
+                      <strong class="text-dark small d-block">ShopNow Fulfillment Hub</strong>
+                      <span class="extra-small text-secondary">Lower Parel Logistics Hub, Mumbai, MH 400013</span>
+                    </div>
+                  </div>
+
+                  <!-- Drop-off Step -->
+                  <div class="delivery-timeline-step active">
+                    <div class="delivery-timeline-node"><i class="bi bi-geo-alt-fill"></i></div>
+                    <div class="ps-2">
+                      <span class="extra-small fw-bold text-coral text-uppercase d-block">Drop-off Destination</span>
+                      <strong class="text-dark small d-block" id="detailCustomerAddress">Plot 42, MIDC Road No. 11, Andheri East, Mumbai 400069</strong>
+                      <span class="extra-small text-secondary">Parkside Heights &bull; Doorbell: Jenkins</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Customer Details & Package Summary Cards -->
+            <div class="row g-3">
+              <!-- Customer Details Card -->
+              <div class="col-12 col-md-6">
+                <div class="delivery-card h-100 mb-0">
+                  <span class="stat-card-label"><i class="bi bi-person-fill text-coral me-1"></i> Customer Details</span>
+                  <div class="d-flex align-items-center gap-3 my-3">
+                    <div class="delivery-avatar" style="width: 44px; height: 44px;">
+                      <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=120&q=80" alt="Customer" />
+                    </div>
+                    <div>
+                      <strong class="text-dark d-block" id="detailCustomerName">Sarah Jenkins</strong>
+                      <span class="extra-small text-muted"><i class="bi bi-star-fill text-warning me-1"></i> 4.9 &bull; Gold Member</span>
+                    </div>
+                  </div>
+                  <a href="tel:+919820145892" class="btn btn-outline-delivery w-100 justify-content-center">
+                    <i class="bi bi-telephone-fill text-success"></i> Call Customer
+                  </a>
+                </div>
+              </div>
+
+              <!-- Package Summary Card -->
+              <div class="col-12 col-md-6">
+                <div class="delivery-card h-100 mb-0">
+                  <span class="stat-card-label"><i class="bi bi-box2-fill text-coral me-1"></i> Package Summary</span>
+                  <div class="extra-small text-secondary d-flex flex-column gap-2 mt-3">
+                    <div class="d-flex justify-content-between">
+                      <span>Total Items:</span>
+                      <strong class="text-dark">2 Items</strong>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                      <span>Total Weight:</span>
+                      <strong class="text-dark">3.7 kg</strong>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                      <span>Order Value:</span>
+                      <strong class="text-dark">₹ 1,499.00</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Order Contents & Schedule (5 Cols) -->
+          <div class="col-12 col-xl-5">
+            <!-- Order Contents Card -->
+            <div class="delivery-card mb-4">
+              <h6 class="fw-bold text-dark mb-3"><i class="bi bi-receipt text-coral me-2"></i>Order Contents</h6>
+              
+              <div class="p-3 bg-light rounded-3 mb-2 d-flex justify-content-between align-items-center">
+                <div>
+                  <strong class="text-dark small d-block">Family Feast Combo</strong>
+                  <span class="extra-small text-muted">2.1 kg &bull; Prepared food / Sealed pack</span>
+                </div>
+                <span class="badge bg-secondary-subtle text-secondary">x1</span>
+              </div>
+
+              <div class="p-3 bg-light rounded-3 mb-3 d-flex justify-content-between align-items-center">
+                <div>
+                  <strong class="text-dark small d-block">Large Beverage Pack</strong>
+                  <span class="extra-small text-muted">1.5 kg &bull; Cold storage required</span>
+                </div>
+                <span class="badge bg-secondary-subtle text-secondary">x1</span>
+              </div>
+
+              <!-- Special Delivery Notes Box (Matching Figma) -->
+              <div class="p-3 bg-warning-subtle border border-warning-subtle rounded-3">
+                <span class="extra-small fw-bold text-warning-emphasis d-block mb-1">
+                  <i class="bi bi-exclamation-triangle-fill me-1"></i> Special Delivery Notes
+                </span>
+                <p class="extra-small text-secondary mb-0">
+                  Please leave at the front door and ring doorbell twice. Gate code: <strong>#4912</strong>.
+                </p>
+              </div>
+            </div>
+
+            <!-- Delivery Schedule Card -->
+            <div class="delivery-card mb-4">
+              <h6 class="fw-bold text-dark mb-3"><i class="bi bi-clock-history text-coral me-2"></i>Delivery Schedule</h6>
+              
+              <div class="p-3 border rounded-3 mb-2 d-flex align-items-center justify-content-between">
+                <div>
+                  <span class="extra-small text-muted text-uppercase d-block">Target Pickup</span>
+                  <strong class="text-dark">by 10:45 AM</strong>
+                </div>
+                <i class="bi bi-box-arrow-up text-coral fs-5"></i>
+              </div>
+
+              <div class="p-3 border rounded-3 mb-3 d-flex align-items-center justify-content-between">
+                <div>
+                  <span class="extra-small text-muted text-uppercase d-block">Target Drop-off</span>
+                  <strong class="text-dark">by 1:05 PM</strong>
+                </div>
+                <i class="bi bi-geo-alt-fill text-success fs-5"></i>
+              </div>
+
+              <p class="extra-small text-muted mb-0">
+                <i class="bi bi-info-circle me-1"></i> Complete on or before the target time to maintain your 4.9+ rating and earn peak hour incentive bonuses.
+              </p>
+            </div>
+
+            <!-- Acceptance & Rejection Actions (Matching Figma) -->
+            <div class="delivery-card mb-0">
+              <div class="d-flex flex-column gap-2">
+                <button type="button" class="btn btn-coral-delivery py-3 justify-content-center fs-6" id="btnAcceptDeliveryOrder">
+                  <i class="bi bi-check-circle-fill"></i> Accept Delivery Order
+                </button>
+                <button type="button" class="btn btn-outline-secondary py-2 justify-content-center" id="btnRejectDeliveryOrder">
+                  <i class="bi bi-x-circle"></i> Reject Order
+                </button>
+              </div>
+              <p class="extra-small text-center text-muted mt-3 mb-0">
+                Note: Rejecting multiple orders consecutively may lower dispatch priority.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../common/js/global.js"></script>
+  <script src="../js/delivery-nav.js"></script>
+  <script src="../js/delivery.js"></script>
+</body>
+</html>

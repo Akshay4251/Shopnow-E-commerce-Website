@@ -23,6 +23,21 @@
 </head>
 <body>
 
+  <!-- Top Navigation Bar -->
+  <header class="py-3 border-bottom bg-white">
+    <div class="container d-flex justify-content-between align-items-center">
+      <a href="home.html" class="d-flex align-items-center gap-2 text-decoration-none">
+        <div class="brand-logo-icon" style="width: 36px; height: 36px; background-color: #ff5338; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.1rem;">
+          <i class="bi bi-bag-fill"></i>
+        </div>
+        <span class="fw-bold fs-4 text-dark font-serif">ShopNow</span>
+      </a>
+      <a href="home.html" class="text-muted text-decoration-none small d-flex align-items-center gap-1">
+        <i class="bi bi-arrow-left"></i> Back to Marketplace
+      </a>
+    </div>
+  </header>
+
   <!-- ==================== MAIN LOGIN AREA ==================== -->
   <main class="login-page-wrapper">
     <div class="container">
@@ -148,7 +163,7 @@
               <div class="mb-3 text-start">
                 <div class="d-flex justify-content-between align-items-center mb-1">
                   <label class="form-label font-weight-600 small mb-0">Password</label>
-                  <a href="#" class="small text-coral fw-semibold text-decoration-none" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">Forgot password?</a>
+                  <a href="javascript:void(0)" class="small text-coral fw-semibold text-decoration-none" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">Forgot password?</a>
                 </div>
                 <div class="input-capsule-group">
                   <i class="bi bi-lock input-capsule-icon"></i>
@@ -238,7 +253,7 @@
           </form>
         </div>
         <div class="modal-footer border-0 pt-0 text-center justify-content-center">
-          <small class="text-muted">Remembered your password? <a href="#" data-bs-dismiss="modal" class="text-coral fw-bold text-decoration-none">Back to Log In</a></small>
+          <small class="text-muted">Remembered your password? <a href="javascript:void(0)" data-bs-dismiss="modal" class="text-coral fw-bold text-decoration-none">Back to Log In</a></small>
         </div>
       </div>
     </div>

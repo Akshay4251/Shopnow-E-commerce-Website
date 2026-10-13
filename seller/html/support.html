@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seller Support Hub - Seller Center</title>
+  <meta name="description" content="Search help articles, chat live with seller specialists, and manage support tickets on ShopNow." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Common & Seller CSS -->
+  <link rel="stylesheet" href="../../common/css/global.css" />
+  <link rel="stylesheet" href="../css/seller.css" />
+</head>
+<body class="seller-body">
+
+  <!-- Reusable Seller Header & Subnav -->
+  <div id="sellerHeader" data-active="support"></div>
+
+  <!-- Support Home Content (Matching Figma Image 2 Screen 1) -->
+  <main class="seller-page-wrapper">
+    <div class="container">
+
+      <!-- Breadcrumbs -->
+      <nav aria-label="breadcrumb" class="mb-2">
+        <ol class="breadcrumb extra-small fw-bold mb-1">
+          <li class="breadcrumb-item"><a href="dashboard.html" class="text-decoration-none text-muted">Dashboard</a></li>
+          <li class="breadcrumb-item active text-coral" aria-current="page">Support</li>
+        </ol>
+      </nav>
+
+      <!-- Hero Header Section (Matching Figma Image 2 Screen 1) -->
+      <div class="seller-hero-banner text-center py-5 mb-4" style="background-color: #0b1a2b;">
+        <span class="seller-hero-tag text-uppercase fw-bold text-coral extra-small letter-spacing-1">SELLER SUPPORT</span>
+        <h1 class="seller-hero-title mb-2 text-white">How can we help?</h1>
+        <p class="text-secondary small mb-4">Find quick answers or connect with our seller support team.</p>
+
+        <!-- Search Form in Hero -->
+        <div class="mx-auto" style="max-width: 580px;">
+          <form class="d-flex align-items-center gap-2" id="sellerSupportSearchForm" onsubmit="event.preventDefault();">
+            <div class="input-group">
+              <span class="input-group-text bg-white border-end-0 rounded-start-pill ps-3">
+                <i class="bi bi-search text-muted"></i>
+              </span>
+              <input type="text" class="form-control border-start-0 rounded-end-pill py-2" placeholder="Search help articles..." />
+            </div>
+            <button type="submit" class="btn btn-coral-seller rounded-pill px-4">Search</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- 3 Quick Action Cards (Matching Figma Image 2 Screen 1) -->
+      <div class="row g-4 mb-5">
+        <!-- 1. Start Chat -->
+        <div class="col-12 col-md-4">
+          <div class="seller-card-table p-4 h-100 d-flex flex-column justify-content-between">
+            <div>
+              <div class="quick-link-icon-circle bg-coral-subtle text-coral mb-3" style="width: 44px; height: 44px; font-size: 1.3rem;">
+                <i class="bi bi-chat-dots-fill"></i>
+              </div>
+              <h5 class="fw-bold mb-2">Start chat</h5>
+              <p class="text-secondary small mb-4">Get real-time help from a ShopNow support specialist.</p>
+            </div>
+            <div>
+              <a href="support-chat.html" class="btn btn-coral-seller w-100 justify-content-center">
+                Start chat
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Chat History -->
+        <div class="col-12 col-md-4">
+          <div class="seller-card-table p-4 h-100 d-flex flex-column justify-content-between">
+            <div>
+              <div class="quick-link-icon-circle bg-light text-dark border mb-3" style="width: 44px; height: 44px; font-size: 1.3rem;">
+                <i class="bi bi-clock-history"></i>
+              </div>
+              <h5 class="fw-bold mb-2">Chat history</h5>
+              <p class="text-secondary small mb-4">Review your previous customer care and support guidance.</p>
+            </div>
+            <div>
+              <a href="support-chat.html" class="btn btn-outline-seller w-100 justify-content-center">
+                View history
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Raise a Ticket -->
+        <div class="col-12 col-md-4">
+          <div class="seller-card-table p-4 h-100 d-flex flex-column justify-content-between">
+            <div>
+              <div class="quick-link-icon-circle bg-light text-dark border mb-3" style="width: 44px; height: 44px; font-size: 1.3rem;">
+                <i class="bi bi-ticket-perforated-fill"></i>
+              </div>
+              <h5 class="fw-bold mb-2">Raise a ticket</h5>
+              <p class="text-secondary small mb-4">Send us the details and track your inquiry from one place.</p>
+            </div>
+            <div>
+              <a href="raise-ticket.html" class="btn btn-outline-seller w-100 justify-content-center">
+                Raise ticket
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- My Tickets Section (Matching Figma Image 2 Screen 1) -->
+      <div class="mb-4">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <div>
+            <span class="extra-small text-coral fw-bold text-uppercase letter-spacing-1 d-block mb-1">TRACK REQUESTS</span>
+            <h4 class="fw-bold mb-0">My tickets</h4>
+          </div>
+          <div>
+            <a href="raise-ticket.html" class="extra-small fw-bold text-coral text-decoration-none">
+              View all tickets &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- Tickets Table -->
+        <div class="seller-card-table mb-4">
+          <div class="table-responsive">
+            <table class="table table-seller align-middle">
+              <thead>
+                <tr>
+                  <th>Ticket ID</th>
+                  <th>Subject</th>
+                  <th>Category</th>
+                  <th>Status</th>
+                  <th>Last Updated</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="sellerTicketsTableBody">
+                <tr>
+                  <td><strong class="text-dark">SN-TK-0741</strong></td>
+                  <td><span class="text-dark fw-semibold small">Order marked delivered by courier has not reached customer</span></td>
+                  <td><span class="badge bg-light text-secondary border">Orders</span></td>
+                  <td><span class="status-badge processing">Open</span></td>
+                  <td><span class="extra-small text-muted">Today 10:42 AM</span></td>
+                  <td><a href="support-chat.html" class="btn btn-sm btn-outline-seller py-1 px-3">View</a></td>
+                </tr>
+                <tr>
+                  <td><strong class="text-dark">SN-TK-0740</strong></td>
+                  <td><span class="text-dark fw-semibold small">Payout for September cycle is still pending</span></td>
+                  <td><span class="badge bg-light text-secondary border">Payments</span></td>
+                  <td><span class="status-badge shipped">In progress</span></td>
+                  <td><span class="extra-small text-muted">Yesterday 7:15 PM</span></td>
+                  <td><a href="support-chat.html" class="btn btn-sm btn-outline-seller py-1 px-3">View</a></td>
+                </tr>
+                <tr>
+                  <td><strong class="text-dark">SN-TK-0739</strong></td>
+                  <td><span class="text-dark fw-semibold small">Product listing images are not updating</span></td>
+                  <td><span class="badge bg-light text-secondary border">Products</span></td>
+                  <td><span class="status-badge delivered">Resolved</span></td>
+                  <td><span class="extra-small text-muted">28 Sep, 3:10 PM</span></td>
+                  <td><a href="support-chat.html" class="btn btn-sm btn-outline-seller py-1 px-3">View</a></td>
+                </tr>
+                <tr>
+                  <td><strong class="text-dark">SN-TK-0737</strong></td>
+                  <td><span class="text-dark fw-semibold small">Unable to change return address</span></td>
+                  <td><span class="badge bg-light text-secondary border">Account</span></td>
+                  <td><span class="status-badge delivered">Resolved</span></td>
+                  <td><span class="extra-small text-muted">25 Sep, 11:20 AM</span></td>
+                  <td><a href="support-chat.html" class="btn btn-sm btn-outline-seller py-1 px-3">View</a></td>
+                </tr>
+                <tr>
+                  <td><strong class="text-dark">SN-TK-0736</strong></td>
+                  <td><span class="text-dark fw-semibold small">Shipping fee difference for rural area</span></td>
+                  <td><span class="badge bg-light text-secondary border">Shipping</span></td>
+                  <td><span class="status-badge delivered">Resolved</span></td>
+                  <td><span class="extra-small text-muted">21 Sep, 9:12 AM</span></td>
+                  <td><a href="support-chat.html" class="btn btn-sm btn-outline-seller py-1 px-3">View</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Reusable Seller Navy Footer -->
+  <div id="sellerFooter"></div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../common/js/global.js"></script>
+  <script src="../js/seller-nav.js"></script>
+  <script src="../js/seller.js"></script>
+</body>
+</html>

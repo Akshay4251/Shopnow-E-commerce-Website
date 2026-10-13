@@ -23,6 +23,21 @@
 </head>
 <body>
 
+  <!-- Top Navigation Bar -->
+  <header class="py-3 border-bottom bg-white">
+    <div class="container d-flex justify-content-between align-items-center">
+      <a href="home.html" class="d-flex align-items-center gap-2 text-decoration-none">
+        <div class="brand-logo-icon" style="width: 36px; height: 36px; background-color: #ff5338; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.1rem;">
+          <i class="bi bi-bag-fill"></i>
+        </div>
+        <span class="fw-bold fs-4 text-dark font-serif">ShopNow</span>
+      </a>
+      <a href="home.html" class="text-muted text-decoration-none small d-flex align-items-center gap-1">
+        <i class="bi bi-arrow-left"></i> Back to Marketplace
+      </a>
+    </div>
+  </header>
+
   <!-- ==================== MAIN REGISTRATION AREA ==================== -->
   <main class="register-page-wrapper">
     <div class="container">
@@ -140,7 +155,7 @@
                       </div>
                       <div class="col-12">
                         <label class="form-label font-weight-600 small">Phone number *</label>
-                        <input type="tel" class="form-control form-control-custom" id="buyerPhone" placeholder="+1 (555) 019-2834" required />
+                        <input type="tel" class="form-control form-control-custom" id="buyerPhone" placeholder="+91 98201 45892" required />
                       </div>
                       <div class="col-md-6">
                         <label class="form-label font-weight-600 small">Password *</label>
@@ -159,7 +174,7 @@
                       </div>
                       <div class="col-12">
                         <label class="form-label font-weight-600 small">Address *</label>
-                        <input type="text" class="form-control form-control-custom" id="buyerAddress" placeholder="123 Market Street, Apt 4B" required />
+                        <input type="text" class="form-control form-control-custom" id="buyerAddress" placeholder="Flat 402, Green Meadows, Andheri East, Mumbai" required />
                       </div>
                     </div>
                   </div>
@@ -181,7 +196,7 @@
                       </div>
                       <div class="col-md-6">
                         <label class="form-label font-weight-600 small">Phone number *</label>
-                        <input type="tel" class="form-control form-control-custom" id="sellerPhone" placeholder="+1 (555) 888-0000" />
+                        <input type="tel" class="form-control form-control-custom" id="sellerPhone" placeholder="+91 98192 83718" />
                       </div>
                       <div class="col-md-6">
                         <label class="form-label font-weight-600 small">Password *</label>
@@ -193,20 +208,20 @@
                       </div>
                       <div class="col-12">
                         <label class="form-label font-weight-600 small">Registered Business Address *</label>
-                        <input type="text" class="form-control form-control-custom" id="sellerBizAddress" placeholder="100 Artisans Way, Suite 200, San Jose, CA" />
+                        <input type="text" class="form-control form-control-custom" id="sellerBizAddress" placeholder="100 Artisans Way, Pune, Maharashtra" />
                       </div>
                       <div class="col-md-6">
-                        <label class="form-label font-weight-600 small">Tax ID / Business Reg # *</label>
-                        <input type="text" class="form-control form-control-custom" id="sellerTaxId" placeholder="TAX-US-9981240" />
+                        <label class="form-label font-weight-600 small">Tax ID / PAN *</label>
+                        <input type="text" class="form-control form-control-custom" id="sellerTaxId" placeholder="ABCDE1234F" />
                       </div>
                       <div class="col-md-6">
                         <label class="form-label font-weight-600 small">Store Category *</label>
                         <select class="form-select form-control-custom" id="sellerCategory">
-                          <option value="artisanal">Handmade & Artisanal</option>
-                          <option value="electronics">Electronics & Tech</option>
-                          <option value="fashion">Fashion & Apparel</option>
-                          <option value="home">Home & Living</option>
-                          <option value="beauty">Beauty & Personal Care</option>
+                          <option value="artisanal">Handmade &amp; Artisanal</option>
+                          <option value="electronics">Electronics &amp; Tech</option>
+                          <option value="fashion">Fashion &amp; Apparel</option>
+                          <option value="home">Home &amp; Living</option>
+                          <option value="beauty">Beauty &amp; Personal Care</option>
                         </select>
                       </div>
 
@@ -215,7 +230,7 @@
                       </div>
                       <div class="col-md-6">
                         <label class="form-label font-weight-600 small">Bank Name *</label>
-                        <input type="text" class="form-control form-control-custom" id="sellerBankName" placeholder="Global Merchant Bank" />
+                        <input type="text" class="form-control form-control-custom" id="sellerBankName" placeholder="HDFC Bank" />
                       </div>
                       <div class="col-md-6">
                         <label class="form-label font-weight-600 small">Account Holder Name *</label>
@@ -223,11 +238,11 @@
                       </div>
                       <div class="col-md-6">
                         <label class="form-label font-weight-600 small">Account Number *</label>
-                        <input type="text" class="form-control form-control-custom" id="sellerAccountNumber" placeholder="4920194810293840" />
+                        <input type="text" class="form-control form-control-custom" id="sellerAccountNumber" placeholder="50100481029381" />
                       </div>
                       <div class="col-md-6">
-                        <label class="form-label font-weight-600 small">Routing Number / IFSC *</label>
-                        <input type="text" class="form-control form-control-custom" id="sellerRoutingNumber" placeholder="BOFAUS3NXXX" />
+                        <label class="form-label font-weight-600 small">IFSC Code *</label>
+                        <input type="text" class="form-control form-control-custom" id="sellerRoutingNumber" placeholder="HDFC0001234" />
                       </div>
                     </div>
                   </div>
@@ -241,7 +256,7 @@
                       </div>
                       <div class="col-md-6">
                         <label class="form-label font-weight-600 small">Mobile number *</label>
-                        <input type="tel" class="form-control form-control-custom" id="agentPhone" placeholder="+1 (555) 444-9999" />
+                        <input type="tel" class="form-control form-control-custom" id="agentPhone" placeholder="+91 98334 45566" />
                       </div>
                       <div class="col-12">
                         <label class="form-label font-weight-600 small">Email address *</label>
@@ -258,15 +273,15 @@
                       </div>
                       <div class="col-md-6">
                         <label class="form-label font-weight-600 small">Driving License Number *</label>
-                        <input type="text" class="form-control form-control-custom" id="agentDL" placeholder="DL-NY-9981245" />
+                        <input type="text" class="form-control form-control-custom" id="agentDL" placeholder="DL-MH-2024-0091245" />
                       </div>
                       <div class="col-md-6">
                         <label class="form-label font-weight-600 small">Vehicle Registration # *</label>
-                        <input type="text" class="form-control form-control-custom" id="agentRegNumber" placeholder="DL-02-AB-4819" />
+                        <input type="text" class="form-control form-control-custom" id="agentRegNumber" placeholder="MH-02-AB-4819" />
                       </div>
                       <div class="col-md-6">
                         <label class="form-label font-weight-600 small">Primary Service City *</label>
-                        <input type="text" class="form-control form-control-custom" id="agentCity" placeholder="New York" />
+                        <input type="text" class="form-control form-control-custom" id="agentCity" placeholder="Mumbai" />
                       </div>
                       <div class="col-md-6">
                         <label class="form-label font-weight-600 small">Emergency Contact Name *</label>
@@ -274,7 +289,7 @@
                       </div>
                       <div class="col-md-6">
                         <label class="form-label font-weight-600 small">Emergency Contact Phone *</label>
-                        <input type="tel" class="form-control form-control-custom" id="agentEmergencyPhone" placeholder="+1 (555) 999-1122" />
+                        <input type="tel" class="form-control form-control-custom" id="agentEmergencyPhone" placeholder="+91 98450 12345" />
                       </div>
                       <div class="col-md-6">
                         <label class="form-label font-weight-600 small">Password *</label>
@@ -291,7 +306,7 @@
                   <div class="form-check my-4">
                     <input class="form-check-input" type="checkbox" id="agreeTerms" checked required />
                     <label class="form-check-label text-muted small" for="agreeTerms">
-                      I agree to ShopNow's <a href="#" class="text-dark fw-semibold">Terms of Service</a> and <a href="#" class="text-dark fw-semibold">Privacy Policy</a>.
+                      I agree to ShopNow's <a href="javascript:void(0)" onclick="ShopNowCommon.showToast('Terms of Service: ShopNow complies with Indian IT and Consumer Protection Rules', 'info')" class="text-dark fw-semibold">Terms of Service</a> and <a href="javascript:void(0)" onclick="ShopNowCommon.showToast('Privacy Policy: All data secured within Indian jurisdiction', 'info')" class="text-dark fw-semibold">Privacy Policy</a>.
                     </label>
                   </div>
 
@@ -329,7 +344,7 @@
             </div>
             <div>
               <span class="d-block font-weight-700 text-dark">Fast free delivery</span>
-              <small class="text-muted">On orders of $50 or more</small>
+              <small class="text-muted">On orders of ₹ 499 or more</small>
             </div>
           </div>
         </div>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Return &amp; Refund Management - ShopNow Admin</title>
+  <meta name="description" content="Manage customer returns, inspect product defect claims, authorize reverse pickups, and process instant buyer refunds." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Common & Admin CSS -->
+  <link rel="stylesheet" href="../../common/css/global.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body class="admin-body">
+
+  <div class="admin-layout">
+    <!-- Reusable Dark Navy Sidebar (Active Tab: returns) -->
+    <aside class="admin-sidebar" id="adminSidebar" data-active="returns"></aside>
+
+    <!-- Main Content Area -->
+    <div class="admin-main">
+      <!-- Reusable Top Header Bar -->
+      <header class="admin-topbar" id="adminTopBar"></header>
+
+      <!-- Return & Refund Content (Matching Figma Image 4 Left & Image 5) -->
+      <main class="admin-content">
+        <!-- Page Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h1 class="admin-page-title">Return &amp; Refund Management</h1>
+            <p class="admin-page-subtitle">Review buyer dispute claims, approve reverse pickups, and disburse bank refunds.</p>
+          </div>
+        </div>
+
+        <!-- 4 Metric Cards -->
+        <div class="row g-3 mb-4">
+          <div class="col-6 col-md-3">
+            <div class="admin-stat-card">
+              <div>
+                <span class="stat-label">Return Requests</span>
+                <div class="stat-number text-warning">28</div>
+                <span class="extra-small text-muted">Awaiting QC inspection</span>
+              </div>
+              <div class="stat-icon bg-warning-subtle text-warning"><i class="bi bi-box-arrow-in-left"></i></div>
+            </div>
+          </div>
+
+          <div class="col-6 col-md-3">
+            <div class="admin-stat-card">
+              <div>
+                <span class="stat-label">In Transit (Pickup)</span>
+                <div class="stat-number text-purple" style="color: #7e22ce;">14</div>
+                <span class="extra-small text-muted">Reverse delivery active</span>
+              </div>
+              <div class="stat-icon bg-purple-subtle text-purple" style="background-color: #f3e8ff; color: #7e22ce;"><i class="bi bi-truck"></i></div>
+            </div>
+          </div>
+
+          <div class="col-6 col-md-3">
+            <div class="admin-stat-card">
+              <div>
+                <span class="stat-label">Refunds Processing</span>
+                <div class="stat-number text-coral">9</div>
+                <span class="extra-small text-muted">Payment gateway queue</span>
+              </div>
+              <div class="stat-icon bg-danger-subtle text-danger"><i class="bi bi-wallet2"></i></div>
+            </div>
+          </div>
+
+          <div class="col-6 col-md-3">
+            <div class="admin-stat-card">
+              <div>
+                <span class="stat-label">Settled / Closed</span>
+                <div class="stat-number text-success">318</div>
+                <span class="extra-small text-success fw-bold"><i class="bi bi-check2"></i> 99.2% resolution</span>
+              </div>
+              <div class="stat-icon bg-success-subtle text-success"><i class="bi bi-check2-all"></i></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section Navigation Tabs -->
+        <ul class="nav nav-tabs mb-4">
+          <li class="nav-item">
+            <button class="nav-link active fw-bold extra-small text-dark" data-bs-toggle="tab" data-bs-target="#tabReturns">Return Requests (28)</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link fw-bold extra-small text-secondary" data-bs-toggle="tab" data-bs-target="#tabRefunds">Refund Processing (9)</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link fw-bold extra-small text-secondary" data-bs-toggle="tab" data-bs-target="#tabAuditHistory">Resolution History</button>
+          </li>
+        </ul>
+
+        <div class="tab-content">
+          <!-- Tab 1: Return Requests -->
+          <div class="tab-pane fade show active" id="tabReturns">
+            <div class="admin-table-card mb-4">
+              <div class="table-responsive">
+                <table class="table table-admin align-middle">
+                  <thead>
+                    <tr>
+                      <th>Return ID</th>
+                      <th>Order ID</th>
+                      <th>Customer</th>
+                      <th>Product</th>
+                      <th>Reason</th>
+                      <th>Status</th>
+                      <th class="text-end">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong class="text-coral">RET-901</strong></td>
+                      <td>#ORD-104</td>
+                      <td><strong>Renu Soni</strong></td>
+                      <td>Running Shoes (Size 9)</td>
+                      <td>Size does not fit</td>
+                      <td><span class="badge-status badge-status-review">Pending Inspection</span></td>
+                      <td class="text-end">
+                        <button class="btn btn-sm btn-success py-1 px-2 me-1" onclick="ShopNowCommon.showToast('Return RET-901 approved! Courier assigned for pickup.', 'success'); $(this).closest('tr').remove();">
+                          <i class="bi bi-check2"></i> Approve
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger py-1 px-2" onclick="ShopNowCommon.showToast('Return RET-901 rejected.', 'danger'); $(this).closest('tr').remove();">
+                          <i class="bi bi-x"></i> Reject
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><strong class="text-coral">RET-902</strong></td>
+                      <td>#ORD-098</td>
+                      <td><strong>Pooja Jain</strong></td>
+                      <td>Ceramic Coffee Mug</td>
+                      <td>Damaged in transit</td>
+                      <td><span class="badge-status badge-status-approved">Pickup Scheduled</span></td>
+                      <td class="text-end">
+                        <button class="btn btn-sm btn-outline-admin py-1 px-2" onclick="ShopNowCommon.showToast('Reverse pickup tracking opened.', 'info');">
+                          Track Pickup
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 2: Refund Processing -->
+          <div class="tab-pane fade" id="tabRefunds">
+            <div class="admin-table-card mb-4">
+              <div class="table-responsive">
+                <table class="table table-admin align-middle">
+                  <thead>
+                    <tr>
+                      <th>Refund ID</th>
+                      <th>Order ID</th>
+                      <th>Recipient</th>
+                      <th>Refund Amount</th>
+                      <th>Original Method</th>
+                      <th>Status</th>
+                      <th class="text-end">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong class="text-coral">REF-441</strong></td>
+                      <td>#ORD-105</td>
+                      <td><strong>Varun Verma</strong></td>
+                      <td><strong>₹ 1,299</strong></td>
+                      <td>UPI (GPay)</td>
+                      <td><span class="badge-status badge-status-review">Awaiting Approval</span></td>
+                      <td class="text-end">
+                        <button class="btn btn-sm btn-coral-admin py-1 px-3" onclick="ShopNowCommon.showToast('Refund of ₹ 1,299 disbursed to Varun Verma UPI.', 'success'); $(this).closest('tr').find('.badge-status').removeClass('badge-status-review').addClass('badge-status-completed').text('Refunded'); $(this).remove();">
+                          Disburse Refund
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 3: Resolution History -->
+          <div class="tab-pane fade" id="tabAuditHistory">
+            <div class="admin-card">
+              <h6 class="fw-bold text-dark mb-3">Settled Claims Log</h6>
+              <div class="extra-small text-muted">Over 318 claims settled with zero pending customer escalations.</div>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../common/js/global.js"></script>
+  <script src="../js/admin-nav.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>

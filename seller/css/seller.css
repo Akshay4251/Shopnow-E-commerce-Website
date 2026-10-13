@@ -1,0 +1,1059 @@
+/* ===================================================
+   SHOPNOW - SELLER PORTAL STYLES (FIGMA MATCHING)
+   Modules: Dashboard, Products, Inventory, Orders, 
+   Shipping, Reviews, Returns, Reports, Profile, 
+   Notifications, Support
+   =================================================== */
+
+/* ---------------- Layout & Wrappers ---------------- */
+.seller-body {
+  background-color: #f8fafc;
+  color: #081726;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.seller-page-wrapper {
+  flex-grow: 1;
+  padding: 28px 0 60px;
+}
+
+/* ---------------- Brand Logo & Badges ---------------- */
+.brand-logo-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.brand-logo-icon {
+  width: 40px;
+  height: 40px;
+  background-color: #ff5338;
+  color: #ffffff;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  box-shadow: 0 4px 14px rgba(255, 83, 56, 0.35);
+}
+
+.brand-logo-text {
+  font-family: var(--font-sans, 'Inter', sans-serif);
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: #081726;
+}
+
+.payment-method-pill {
+  background-color: #ffffff;
+  color: #081726;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+  display: inline-block;
+}
+
+/* ---------------- Seller Header ---------------- */
+.seller-top-bar {
+  background-color: #081726;
+  color: #94a3b8;
+  font-size: 0.775rem;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.seller-top-bar-text {
+  letter-spacing: 0.02em;
+}
+
+.seller-main-header {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 14px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.seller-search-form {
+  position: relative;
+  max-width: 520px;
+  width: 100%;
+}
+
+.seller-search-input {
+  width: 100%;
+  border: 1px solid #e2e8f0;
+  border-radius: 9999px;
+  padding: 9px 18px 9px 40px;
+  font-size: 0.875rem;
+  background-color: #f1f5f9;
+  transition: all 0.2s ease;
+}
+
+.seller-search-input:focus {
+  outline: none;
+  background-color: #ffffff;
+  border-color: #ff5338;
+  box-shadow: 0 0 0 3px rgba(255, 83, 56, 0.12);
+}
+
+.seller-search-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  font-size: 0.95rem;
+  pointer-events: none;
+}
+
+.seller-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.seller-notif-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #475569;
+  font-size: 1.1rem;
+  position: relative;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.seller-notif-btn:hover {
+  background-color: #f8fafc;
+  color: #ff5338;
+}
+
+.seller-notif-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 10px;
+  height: 10px;
+  background-color: #ff5338;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+}
+
+.seller-profile-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 12px 4px 4px;
+  border-radius: 9999px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  text-decoration: none;
+  color: #081726;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.seller-profile-pill:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.seller-avatar-initials {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #fef08a;
+  color: #854d0e;
+  font-weight: 800;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.seller-profile-info {
+  text-align: left;
+  line-height: 1.2;
+}
+
+.seller-profile-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: block;
+}
+
+.seller-profile-store {
+  font-size: 0.725rem;
+  color: #64748b;
+  display: block;
+}
+
+/* ---------------- Seller Sub-Navigation Bar ---------------- */
+.seller-nav-bar {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.01);
+}
+
+.seller-nav-list {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.seller-nav-link {
+  display: inline-block;
+  padding: 14px 4px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #64748b;
+  text-decoration: none;
+  border-bottom: 2.5px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.seller-nav-link:hover {
+  color: #081726;
+}
+
+.seller-nav-link.active {
+  color: #ff5338;
+  border-bottom-color: #ff5338;
+  font-weight: 700;
+}
+
+/* ---------------- 1. DASHBOARD STYLES ---------------- */
+.seller-hero-banner {
+  background-color: #0b1a2b;
+  border-radius: 20px;
+  padding: 40px;
+  color: #ffffff;
+  margin-bottom: 24px;
+  overflow: hidden;
+  position: relative;
+}
+
+.seller-hero-tag {
+  display: inline-block;
+  color: #ff5338;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+
+.seller-hero-title {
+  font-family: var(--font-heading, 'Playfair Display', serif);
+  font-size: 2.4rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  color: #ffffff;
+}
+
+.seller-hero-sub {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  margin-bottom: 24px;
+}
+
+.seller-hero-img-box {
+  border-radius: 14px;
+  overflow: hidden;
+  max-height: 220px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.seller-hero-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Metric Cards Strip */
+.seller-stats-strip {
+  background-color: #0b1a2b;
+  border-radius: 16px;
+  padding: 24px 32px;
+  margin-bottom: 32px;
+  color: #ffffff;
+}
+
+.seller-stat-column {
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0 20px;
+}
+
+.seller-stat-column:first-child {
+  padding-left: 0;
+}
+
+.seller-stat-column:last-child {
+  border-right: none;
+  padding-right: 0;
+}
+
+.seller-stat-value {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+
+.seller-stat-label {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+/* Section Title Rows */
+.seller-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 16px;
+}
+
+.seller-section-title {
+  font-family: var(--font-heading, 'Playfair Display', serif);
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: #081726;
+  margin: 0;
+}
+
+.seller-view-all-link {
+  color: #ff5338;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+.seller-view-all-link:hover {
+  text-decoration: underline;
+}
+
+/* Seller Tables */
+.seller-card-table {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+  margin-bottom: 32px;
+}
+
+.table-seller {
+  margin-bottom: 0;
+  font-size: 0.875rem;
+  vertical-align: middle;
+}
+
+.table-seller th {
+  background-color: #f8fafc;
+  color: #64748b;
+  font-size: 0.775rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 14px 20px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.table-seller td {
+  padding: 16px 20px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #081726;
+}
+
+.table-seller tr:last-child td {
+  border-bottom: none;
+}
+
+.table-seller tr:hover td {
+  background-color: #fafbfc;
+}
+
+/* Product Table Image Layout */
+.seller-product-thumb-box,
+.cart-item-thumb-box {
+  width: 54px;
+  height: 54px;
+  min-width: 54px;
+  max-width: 54px;
+  border-radius: 12px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.seller-product-thumb-box:hover,
+.cart-item-thumb-box:hover {
+  border-color: #ff5338;
+  box-shadow: 0 2px 8px rgba(255, 83, 56, 0.15);
+}
+
+.seller-product-thumb-box img,
+.cart-item-thumb-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.2s ease;
+}
+
+.seller-product-thumb-box:hover img,
+.cart-item-thumb-box:hover img {
+  transform: scale(1.06);
+}
+
+/* Image Dropzone & Previews */
+.seller-dropzone {
+  border: 2px dashed #cbd5e1;
+  border-radius: 14px;
+  padding: 24px 16px;
+  text-align: center;
+  background-color: #f8fafc;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.seller-dropzone:hover,
+.seller-dropzone.dragover {
+  border-color: #ff5338;
+  background-color: #fff7f5;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.spin {
+  display: inline-block;
+  animation: spin 1s linear infinite;
+}
+
+.uploaded-thumbs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.uploaded-thumb-box {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  background-color: #f8fafc;
+}
+
+.uploaded-thumb-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.uploaded-thumb-remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.75);
+  color: #ffffff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.uploaded-thumb-remove:hover {
+  background: #ff5338;
+}
+
+/* Status Pills */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 0.775rem;
+  font-weight: 700;
+}
+
+.status-badge.processing {
+  background-color: #fff7ed;
+  color: #c2410c;
+}
+
+.status-badge.shipped {
+  background-color: #f3e8ff;
+  color: #7e22ce;
+}
+
+.status-badge.delivered {
+  background-color: #ecfdf5;
+  color: #047857;
+}
+
+.status-badge.cancelled {
+  background-color: #fef2f2;
+  color: #b91c1c;
+}
+
+.status-badge.low-stock {
+  background-color: #fef2f2;
+  color: #dc2626;
+}
+
+.status-badge.in-stock {
+  background-color: #ecfdf5;
+  color: #059669;
+}
+
+.status-badge.active {
+  background-color: #ecfdf5;
+  color: #059669;
+}
+
+.status-badge.draft {
+  background-color: #f1f5f9;
+  color: #64748b;
+}
+
+/* Split Cards: Low Stock Alerts & Latest Reviews */
+.seller-alert-card {
+  border-radius: 16px;
+  padding: 24px;
+  height: 100%;
+}
+
+.seller-alert-card.peach {
+  background-color: #fef9ee;
+  border: 1px solid #fde68a;
+}
+
+.seller-alert-card.lavender {
+  background-color: #f5f3ff;
+  border: 1px solid #ddd6fe;
+}
+
+.seller-subcard-tag {
+  font-size: 0.725rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #92400e;
+  margin-bottom: 4px;
+}
+
+.seller-alert-card.lavender .seller-subcard-tag {
+  color: #6d28d9;
+}
+
+.seller-subcard-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #081726;
+  margin-bottom: 18px;
+}
+
+.low-stock-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.low-stock-item-row:last-child {
+  border-bottom: none;
+}
+
+.low-stock-thumb {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 8px;
+  background-color: #ffffff;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.low-stock-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.low-stock-tag {
+  color: #dc2626;
+  font-weight: 800;
+  font-size: 0.775rem;
+}
+
+.review-feed-item {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.review-feed-item:last-child {
+  border-bottom: none;
+}
+
+.review-stars-gold {
+  color: #f59e0b;
+  font-size: 0.85rem;
+}
+
+/* Quick Links Grid */
+.seller-quick-link-card {
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  padding: 20px;
+  text-decoration: none;
+  color: #081726;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: all 0.2s ease;
+}
+
+.seller-quick-link-card:hover {
+  transform: translateY(-2px);
+  border-color: #ff5338;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
+}
+
+.quick-link-icon-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background-color: #fef2ee;
+  color: #ff5338;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  margin-bottom: 12px;
+}
+
+.quick-link-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  margin-bottom: 2px;
+}
+
+.quick-link-desc {
+  font-size: 0.775rem;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+/* ---------------- 2. PRODUCTS & INVENTORY ---------------- */
+.seller-page-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.seller-page-title {
+  font-family: var(--font-heading, 'Playfair Display', serif);
+  font-size: 2rem;
+  font-weight: 800;
+  color: #081726;
+  margin: 0;
+}
+
+.seller-filter-toolbar {
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-coral-seller {
+  background-color: #ff5338;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.875rem;
+  border-radius: 10px;
+  padding: 10px 20px;
+  border: none;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 12px rgba(255, 83, 56, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btn-coral-seller:hover {
+  background-color: #e04326;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.btn-outline-seller {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #081726;
+  font-weight: 700;
+  font-size: 0.875rem;
+  border-radius: 10px;
+  padding: 9px 18px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-seller:hover {
+  background-color: #f8fafc;
+  border-color: #94a3b8;
+  color: #081726;
+}
+
+/* Image Upload Dropzone */
+.seller-dropzone {
+  border: 2px dashed #cbd5e1;
+  border-radius: 14px;
+  padding: 36px 20px;
+  text-align: center;
+  background-color: #fafbfc;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.seller-dropzone:hover {
+  border-color: #ff5338;
+  background-color: #fff9f6;
+}
+
+.dropzone-icon {
+  font-size: 2.2rem;
+  color: #ff5338;
+  margin-bottom: 10px;
+}
+
+.uploaded-thumbs-grid {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.uploaded-thumb-box {
+  width: 72px;
+  height: 72px;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid #e2e8f0;
+}
+
+.uploaded-thumb-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.uploaded-thumb-remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+}
+
+/* ---------------- 3. REPORTS & CHARTS ---------------- */
+.seller-chart-container {
+  padding: 20px 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  height: 220px;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 16px;
+}
+
+.chart-bar-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.chart-bar-pill {
+  width: 22px;
+  border-radius: 6px 6px 0 0;
+  background: linear-gradient(180deg, #ff5338 0%, #e04326 100%);
+  transition: height 0.4s ease;
+  position: relative;
+}
+
+.chart-bar-pill:hover {
+  filter: brightness(1.1);
+}
+
+.chart-bar-label {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-top: 8px;
+  font-weight: 600;
+}
+
+/* Distribution Bars */
+.dist-bar-item {
+  margin-bottom: 16px;
+}
+
+.dist-bar-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #081726;
+  margin-bottom: 6px;
+}
+
+.dist-bar-track {
+  width: 100%;
+  height: 12px;
+  border-radius: 9999px;
+  background-color: #f1f5f9;
+  overflow: hidden;
+}
+
+.dist-bar-fill {
+  height: 100%;
+  border-radius: 9999px;
+}
+
+/* ---------------- 4. ORDER DETAILS & STEPPERS ---------------- */
+.fulfillment-stepper {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin: 30px 10px 20px;
+}
+
+.fulfillment-line {
+  position: absolute;
+  top: 18px;
+  left: 5%;
+  width: 90%;
+  height: 3px;
+  background: #e2e8f0;
+  z-index: 1;
+}
+
+.fulfillment-line-fill {
+  height: 100%;
+  background: #10b981;
+}
+
+.fulfillment-step-node {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.fulfillment-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 3px solid #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.fulfillment-step-node.done .fulfillment-circle {
+  background: #10b981;
+  border-color: #10b981;
+  color: #ffffff;
+}
+
+.fulfillment-step-node.active .fulfillment-circle {
+  background: #081726;
+  border-color: #081726;
+  color: #ffffff;
+}
+
+/* ---------------- 5. SELLER FOOTER ---------------- */
+.seller-navy-footer {
+  background-color: #081726;
+  color: #cbd5e1;
+  padding: 48px 0 24px;
+  margin-top: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.seller-footer-title {
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+.seller-footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.seller-footer-links li {
+  margin-bottom: 8px;
+}
+
+.seller-footer-links a {
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: color 0.2s ease;
+}
+
+.seller-footer-links a:hover {
+  color: #ff5338;
+}
+
+.seller-bottom-divider {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 24px;
+  margin-top: 36px;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+/* ---------------- 6. VERTICAL TRACKING & RETURN TIMELINE ---------------- */
+.tracking-timeline {
+  position: relative;
+  padding-left: 28px;
+}
+
+.tracking-timeline::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  bottom: 20px;
+  left: 12px;
+  width: 2px;
+  background: #e2e8f0;
+}
+
+.tracking-step {
+  position: relative;
+  padding-bottom: 24px;
+}
+
+.tracking-step:last-child {
+  padding-bottom: 0;
+}
+
+.tracking-node {
+  position: absolute;
+  left: -28px;
+  top: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: #64748b;
+  z-index: 2;
+  transition: all 0.2s ease;
+}
+
+.tracking-step.done .tracking-node {
+  background: #10b981;
+  border-color: #10b981;
+  color: #ffffff;
+}
+
+.tracking-step.active .tracking-node {
+  background: #ff5338;
+  border-color: #ff5338;
+  color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(255, 83, 56, 0.2);
+}
+
+.tracking-content {
+  padding-left: 6px;
+}
+
+.seller-map-card {
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+

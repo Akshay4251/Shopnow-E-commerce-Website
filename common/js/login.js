@@ -88,6 +88,58 @@ $(document).ready(function () {
     }
   });
 
+  // Auto-sync users from MockAPI on page load to ensure newly registered users exist in local cache
+  if (typeof ShopNowAPI !== 'undefined' && ShopNowAPI.getUsers) {
+    ShopNowAPI.getUsers().then(function (apiUsers) {
+      if (Array.isArray(apiUsers) && apiUsers.length > 0) {
+        let localUsers = (typeof ShopNowCommon !== 'undefined' ? ShopNowCommon.getStorage('shopnow_users') : null) || [];
+        apiUsers.forEach(function (u) {
+          const idx = localUsers.findIndex(function (lu) {
+            return lu.email && lu.email.toLowerCase() === (u.email || '').toLowerCase();
+          });
+          if (idx >= 0) {
+            localUsers[idx] = Object.assign({}, localUsers[idx], u);
+          } else {
+            localUsers.push(u);
+          }
+        });
+        if (typeof ShopNowCommon !== 'undefined') {
+          ShopNowCommon.saveStorage('shopnow_users', localUsers);
+        }
+      }
+    }).catch(function (err) {
+      console.warn('MockAPI users sync:', err);
+    });
+  }
+
+  // Auto-detect role and pre-filled email from URL (e.g. from registration or cart/wishlist redirect)
+  const urlParams = new URLSearchParams(window.location.search);
+  const paramRole = urlParams.get('role');
+  const paramEmail = urlParams.get('email');
+  const paramRedirect = urlParams.get('redirect');
+
+  if (paramRole && ROLE_DATA[paramRole]) {
+    $(`#loginRoleBar .role-tab-btn[data-role="${paramRole}"]`).trigger('click');
+  } else if (paramRedirect === 'cart' || paramRedirect === 'wishlist') {
+    $(`#loginRoleBar .role-tab-btn[data-role="buyer"]`).trigger('click');
+  }
+
+  if (paramEmail) {
+    $('#loginEmail').val(paramEmail);
+  }
+  if (urlParams.get('registered') === 'true') {
+    if (typeof ShopNowCommon !== 'undefined') {
+      ShopNowCommon.showToast(`Registration completed! Please enter your password to sign into your ${paramRole ? paramRole.toUpperCase() : ''} account.`, 'success');
+    }
+  }
+
+  if (urlParams.get('auth_required') === 'true') {
+    showLoginAlert('Please log in with your account to access this page.', 'warning');
+    if (typeof ShopNowCommon !== 'undefined') {
+      ShopNowCommon.showToast('Please log in to continue.', 'warning');
+    }
+  }
+
   // Password Visibility Toggle
   $('#toggleLoginPw').on('click', function () {
     const $pw = $('#loginPassword');
@@ -110,19 +162,56 @@ $(document).ready(function () {
     }
 
     const demo = ROLE_DATA[role];
-    if (demo && email === demo.email && password === demo.password) {
-      const user = { name: demo.name, email: demo.email, role: role };
-      if (typeof ShopNowCommon !== 'undefined') {
-        ShopNowCommon.setCurrentUser(user);
-        ShopNowCommon.showToast(`Welcome back, ${user.name}! Logging in as ${role.toUpperCase()}...`, 'success');
+    let matchedUser = null;
+
+    if (demo && email.toLowerCase() === demo.email.toLowerCase() && password === demo.password) {
+      matchedUser = Object.assign({}, demo, { role: role });
+    } else {
+      const storedUsers = (typeof ShopNowCommon !== 'undefined' ? ShopNowCommon.getStorage('shopnow_users') : null) || [];
+      const found = storedUsers.find(function (u) {
+        return u.email && u.email.toLowerCase() === email.toLowerCase() && u.password === password && (!u.role || u.role === role);
+      });
+      if (found) {
+        matchedUser = Object.assign({}, found, { role: found.role || role });
       }
-      showLoginAlert(`Welcome back, ${user.name}! Accessing ${role.toUpperCase()} account...`, 'success');
+    }
+
+    if (matchedUser) {
+      if (typeof ShopNowCommon !== 'undefined') {
+        ShopNowCommon.setCurrentUser(matchedUser);
+        ShopNowCommon.showToast(`Welcome back, ${matchedUser.name}! Logging in as ${role.toUpperCase()}...`, 'success');
+      }
+      showLoginAlert(`Welcome back, ${matchedUser.name}! Accessing ${role.toUpperCase()} account...`, 'success');
 
       setTimeout(function () {
-        window.location.href = 'home.html';
-      }, 1200);
+        if (paramRedirect) {
+          const target = decodeURIComponent(paramRedirect);
+          if (target === 'cart') {
+            window.location.href = '../../buyer/html/cart.html';
+            return;
+          } else if (target === 'wishlist') {
+            window.location.href = '../../buyer/html/wishlist.html';
+            return;
+          } else if (target.startsWith('http') || target.startsWith('/') || target.endsWith('.html')) {
+            window.location.href = target;
+            return;
+          }
+        }
+
+        if (role === 'buyer') {
+          window.location.href = '../../buyer/html/dashboard.html';
+        } else if (role === 'seller') {
+          window.location.href = '../../seller/html/dashboard.html';
+        } else if (role === 'delivery') {
+          window.location.href = '../../delivery-agent/html/dashboard.html';
+        } else if (role === 'admin') {
+          window.location.href = '../../admin/html/dashboard.html';
+        } else {
+          window.location.href = 'home.html';
+        }
+      }, 1000);
     } else {
-      showLoginAlert(`Invalid credentials for ${role.toUpperCase()}. Click "Auto-fill demo" above.`, 'danger');
+      showLoginAlert(`Invalid credentials for ${role.toUpperCase()}. Click "Auto-fill demo" above or Register.`, 'danger');
     }
   });
 

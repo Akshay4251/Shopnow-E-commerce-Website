@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analytics & Reports - Seller Center</title>
+  <meta name="description" content="View store revenue, monthly sales trends, best-selling products, and deep-dive fulfillment reports on ShopNow." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Common & Seller CSS -->
+  <link rel="stylesheet" href="../../common/css/global.css" />
+  <link rel="stylesheet" href="../css/seller.css" />
+</head>
+<body class="seller-body">
+
+  <!-- Reusable Seller Header & Subnav -->
+  <div id="sellerHeader" data-active="reports"></div>
+
+  <!-- Reports Main Content -->
+  <main class="seller-page-wrapper">
+    <div class="container">
+
+      <!-- Breadcrumbs -->
+      <span class="d-block text-coral fw-bold extra-small letter-spacing-1 mb-2">ANALYTICS / PERFORMANCE</span>
+      <div class="seller-page-title-row mb-4">
+        <div>
+          <h1 class="seller-page-title">Reports</h1>
+          <p class="text-secondary small mb-0">Track your sales revenue and performance to accelerate your shop.</p>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <div class="input-group input-group-sm">
+            <span class="input-group-text bg-white"><i class="bi bi-calendar3"></i></span>
+            <select class="form-select form-select-sm rounded-end">
+              <option>01 Apr &ndash; 12 Oct 2026</option>
+              <option>Last 30 Days</option>
+              <option>Last 90 Days</option>
+              <option>This Financial Year</option>
+            </select>
+          </div>
+          <button type="button" class="btn btn-outline-seller" id="btnExportReportsCsv">
+            <i class="bi bi-download"></i> Export CSV
+          </button>
+        </div>
+      </div>
+
+      <!-- 4 Top Metrics Strip (Matching Figma Image 5 Screen 2) -->
+      <div class="seller-stats-strip mb-4">
+        <div class="row text-center text-md-start g-3">
+          <div class="col-6 col-md-3 seller-stat-column">
+            <div class="seller-stat-value" id="kpiReportsTotalRevenue">Rs 0</div>
+            <div class="seller-stat-label">Total Revenue</div>
+          </div>
+          <div class="col-6 col-md-3 seller-stat-column">
+            <div class="seller-stat-value" id="kpiReportsTotalOrders">0</div>
+            <div class="seller-stat-label">Total Orders</div>
+          </div>
+          <div class="col-6 col-md-3 seller-stat-column">
+            <div class="seller-stat-value" id="kpiReportsAvgOrderValue">Rs 0</div>
+            <div class="seller-stat-label">Avg Order Value</div>
+          </div>
+          <div class="col-6 col-md-3 seller-stat-column">
+            <div class="seller-stat-value" id="kpiReportsItemsSold">0</div>
+            <div class="seller-stat-label">Items Sold</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Revenue By Month Chart Card (Matching Figma Image 5 Screen 2) -->
+      <div class="seller-card-table p-4 mb-4">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+          <div>
+            <h5 class="fw-bold mb-1">Revenue by month</h5>
+            <span class="extra-small text-muted">Monthly gross sales, calculated from April to October 2026</span>
+          </div>
+          <div class="d-flex align-items-center gap-3 extra-small">
+            <span class="d-flex align-items-center gap-1"><span style="width: 12px; height: 12px; background: #ff5338; border-radius: 3px;"></span> Gross Sales</span>
+            <span class="d-flex align-items-center gap-1"><span style="width: 12px; height: 12px; background: #081726; border-radius: 3px;"></span> Net Profit</span>
+            <span class="d-flex align-items-center gap-1"><span style="width: 12px; height: 12px; background: #8b5cf6; border-radius: 3px;"></span> Returns</span>
+          </div>
+        </div>
+
+        <!-- CSS Bar Chart (Figma Bar Chart Representation) -->
+        <div class="seller-chart-container">
+          <!-- Apr -->
+          <div class="chart-bar-wrap">
+            <div class="d-flex align-items-end gap-1 h-100">
+              <div class="chart-bar-pill" style="height: 48%; background: #ff5338;" title="Gross: Rs 48,000"></div>
+              <div class="chart-bar-pill" style="height: 38%; background: #081726;" title="Net: Rs 38,000"></div>
+              <div class="chart-bar-pill" style="height: 10%; background: #8b5cf6;" title="Returns: Rs 3,000"></div>
+            </div>
+            <span class="chart-bar-label">Apr</span>
+          </div>
+
+          <!-- May -->
+          <div class="chart-bar-wrap">
+            <div class="d-flex align-items-end gap-1 h-100">
+              <div class="chart-bar-pill" style="height: 62%; background: #ff5338;" title="Gross: Rs 62,000"></div>
+              <div class="chart-bar-pill" style="height: 50%; background: #081726;" title="Net: Rs 50,000"></div>
+              <div class="chart-bar-pill" style="height: 12%; background: #8b5cf6;" title="Returns: Rs 4,200"></div>
+            </div>
+            <span class="chart-bar-label">May</span>
+          </div>
+
+          <!-- Jun -->
+          <div class="chart-bar-wrap">
+            <div class="d-flex align-items-end gap-1 h-100">
+              <div class="chart-bar-pill" style="height: 55%; background: #ff5338;" title="Gross: Rs 55,000"></div>
+              <div class="chart-bar-pill" style="height: 44%; background: #081726;" title="Net: Rs 44,000"></div>
+              <div class="chart-bar-pill" style="height: 8%; background: #8b5cf6;" title="Returns: Rs 2,500"></div>
+            </div>
+            <span class="chart-bar-label">Jun</span>
+          </div>
+
+          <!-- Jul -->
+          <div class="chart-bar-wrap">
+            <div class="d-flex align-items-end gap-1 h-100">
+              <div class="chart-bar-pill" style="height: 72%; background: #ff5338;" title="Gross: Rs 72,000"></div>
+              <div class="chart-bar-pill" style="height: 58%; background: #081726;" title="Net: Rs 58,000"></div>
+              <div class="chart-bar-pill" style="height: 14%; background: #8b5cf6;" title="Returns: Rs 5,100"></div>
+            </div>
+            <span class="chart-bar-label">Jul</span>
+          </div>
+
+          <!-- Aug -->
+          <div class="chart-bar-wrap">
+            <div class="d-flex align-items-end gap-1 h-100">
+              <div class="chart-bar-pill" style="height: 68%; background: #ff5338;" title="Gross: Rs 68,000"></div>
+              <div class="chart-bar-pill" style="height: 54%; background: #081726;" title="Net: Rs 54,000"></div>
+              <div class="chart-bar-pill" style="height: 10%; background: #8b5cf6;" title="Returns: Rs 3,800"></div>
+            </div>
+            <span class="chart-bar-label">Aug</span>
+          </div>
+
+          <!-- Sep -->
+          <div class="chart-bar-wrap">
+            <div class="d-flex align-items-end gap-1 h-100">
+              <div class="chart-bar-pill" style="height: 85%; background: #ff5338;" title="Gross: Rs 85,000"></div>
+              <div class="chart-bar-pill" style="height: 68%; background: #081726;" title="Net: Rs 68,000"></div>
+              <div class="chart-bar-pill" style="height: 15%; background: #8b5cf6;" title="Returns: Rs 5,400"></div>
+            </div>
+            <span class="chart-bar-label">Sep</span>
+          </div>
+
+          <!-- Oct (Current Month) -->
+          <div class="chart-bar-wrap">
+            <div class="d-flex align-items-end gap-1 h-100">
+              <div class="chart-bar-pill" style="height: 94%; background: #ff5338;" title="Gross: Rs 1,24,500"></div>
+              <div class="chart-bar-pill" style="height: 76%; background: #081726;" title="Net: Rs 99,600"></div>
+              <div class="chart-bar-pill" style="height: 11%; background: #8b5cf6;" title="Returns: Rs 4,100"></div>
+            </div>
+            <span class="chart-bar-label fw-bold text-coral">Oct</span>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center pt-2">
+          <span class="extra-small text-muted">October 2026 is projecting a +34% MoM peak in festive sales volume.</span>
+          <span class="extra-small fw-bold text-success"><i class="bi bi-arrow-up-right"></i> +28.4% overall growth</span>
+        </div>
+      </div>
+
+      <!-- Top Selling Products Table (Matching Figma Image 5 Screen 2) -->
+      <div class="seller-card-table mb-4">
+        <div class="p-4 border-bottom d-flex align-items-center justify-content-between">
+          <h5 class="fw-bold mb-0">Top selling products</h5>
+          <span class="extra-small text-muted">Ranked by overall sales quantity</span>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-seller align-middle">
+            <thead>
+              <tr>
+                <th width="70">Rank</th>
+                <th>Product</th>
+                <th>Units Sold</th>
+                <th>Total Revenue</th>
+                <th>Conversion Rate</th>
+              </tr>
+            </thead>
+            <tbody id="reportsTopSellingTableBody">
+              <tr>
+                <td><span class="badge bg-warning-subtle text-warning-emphasis fw-bold rounded-pill px-2">#1</span></td>
+                <td>
+                  <div class="d-flex align-items-center gap-3">
+                    <div class="cart-item-thumb-box" style="width: 44px; height: 44px;">
+                      <img src="https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_2_k3wqpn.png" alt="Speckled ceramic mug" />
+                    </div>
+                    <div>
+                      <strong class="text-dark d-block">Speckled ceramic mug</strong>
+                      <span class="extra-small text-muted">Home & Living &bull; Tableware</span>
+                    </div>
+                  </div>
+                </td>
+                <td><strong>118 units</strong></td>
+                <td><strong class="text-dark">Rs 1,05,020</strong></td>
+                <td><span class="badge bg-success-subtle text-success">4.8%</span></td>
+              </tr>
+              <tr>
+                <td><span class="badge bg-secondary-subtle text-secondary fw-bold rounded-pill px-2">#2</span></td>
+                <td>
+                  <div class="d-flex align-items-center gap-3">
+                    <div class="cart-item-thumb-box" style="width: 44px; height: 44px;">
+                      <img src="https://res.cloudinary.com/dpva4smxo/image/upload/v1791382197/Product_image_ucgxvy.png" alt="Linen cushion cover" />
+                    </div>
+                    <div>
+                      <strong class="text-dark d-block">Linen cushion cover</strong>
+                      <span class="extra-small text-muted">Home Decor &bull; Cushions</span>
+                    </div>
+                  </div>
+                </td>
+                <td><strong>92 units</strong></td>
+                <td><strong class="text-dark">Rs 1,19,508</strong></td>
+                <td><span class="badge bg-success-subtle text-success">3.9%</span></td>
+              </tr>
+              <tr>
+                <td><span class="badge bg-secondary-subtle text-secondary fw-bold rounded-pill px-2">#3</span></td>
+                <td>
+                  <div class="d-flex align-items-center gap-3">
+                    <div class="cart-item-thumb-box" style="width: 44px; height: 44px;">
+                      <img src="https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_3_jh8ziq.png" alt="Handwoven storage basket" />
+                    </div>
+                    <div>
+                      <strong class="text-dark d-block">Handwoven storage basket</strong>
+                      <span class="extra-small text-muted">Storage &bull; Baskets</span>
+                    </div>
+                  </div>
+                </td>
+                <td><strong>78 units</strong></td>
+                <td><strong class="text-dark">Rs 1,28,700</strong></td>
+                <td><span class="badge bg-success-subtle text-success">3.4%</span></td>
+              </tr>
+              <tr>
+                <td><span class="badge bg-light text-muted fw-bold rounded-pill px-2">#4</span></td>
+                <td>
+                  <div class="d-flex align-items-center gap-3">
+                    <div class="cart-item-thumb-box" style="width: 44px; height: 44px;">
+                      <img src="https://res.cloudinary.com/dpva4smxo/image/upload/v1791382197/Product_image_5_mqgoba.png" alt="Amber glass candle" />
+                    </div>
+                    <div>
+                      <strong class="text-dark d-block">Amber glass candle</strong>
+                      <span class="extra-small text-muted">Decor &bull; Candles</span>
+                    </div>
+                  </div>
+                </td>
+                <td><strong>64 units</strong></td>
+                <td><strong class="text-dark">Rs 41,536</strong></td>
+                <td><span class="badge bg-success-subtle text-success">2.9%</span></td>
+              </tr>
+              <tr>
+                <td><span class="badge bg-light text-muted fw-bold rounded-pill px-2">#5</span></td>
+                <td>
+                  <div class="d-flex align-items-center gap-3">
+                    <div class="cart-item-thumb-box" style="width: 44px; height: 44px;">
+                      <img src="https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_4_dh5fbk.png" alt="Terracotta planter" />
+                    </div>
+                    <div>
+                      <strong class="text-dark d-block">Terracotta planter</strong>
+                      <span class="extra-small text-muted">Garden &bull; Planters</span>
+                    </div>
+                  </div>
+                </td>
+                <td><strong>52 units</strong></td>
+                <td><strong class="text-dark">Rs 56,680</strong></td>
+                <td><span class="badge bg-success-subtle text-success">2.7%</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Other Reports Cards Section (Matching Figma Image 5 Screen 2) -->
+      <h5 class="fw-bold mb-3">Other reports</h5>
+      <div class="row g-4 mb-4">
+        <!-- Order Report Card -->
+        <div class="col-12 col-md-6">
+          <div class="seller-card-table p-4 h-100 d-flex flex-column justify-content-between">
+            <div class="d-flex align-items-start gap-3 mb-3">
+              <div class="quick-link-icon-circle bg-primary-subtle text-primary">
+                <i class="bi bi-receipt"></i>
+              </div>
+              <div>
+                <h6 class="fw-bold mb-1">Order report</h6>
+                <p class="text-secondary small mb-0">Detailed breakdown of fulfillment velocity, dispatch status, cancellations, and customer locations.</p>
+              </div>
+            </div>
+            <div>
+              <a href="order-report.html" class="btn btn-outline-seller">
+                View report <i class="bi bi-arrow-right ms-1"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stock Report Card -->
+        <div class="col-12 col-md-6">
+          <div class="seller-card-table p-4 h-100 d-flex flex-column justify-content-between">
+            <div class="d-flex align-items-start gap-3 mb-3">
+              <div class="quick-link-icon-circle bg-warning-subtle text-warning-emphasis">
+                <i class="bi bi-boxes"></i>
+              </div>
+              <div>
+                <h6 class="fw-bold mb-1">Stock report</h6>
+                <p class="text-secondary small mb-0">Monitor catalog inventory depth, safety stock alerts, and turn-over cycles to prevent out-of-stock spikes.</p>
+              </div>
+            </div>
+            <div>
+              <a href="stock-report.html" class="btn btn-outline-seller">
+                View report <i class="bi bi-arrow-right ms-1"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Reusable Seller Navy Footer -->
+  <div id="sellerFooter"></div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../common/js/global.js"></script>
+  <script src="../js/seller-nav.js"></script>
+  <script src="../js/seller.js"></script>
+</body>
+</html>

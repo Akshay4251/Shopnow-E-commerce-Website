@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Products Catalogue - Seller Center</title>
+  <meta name="description" content="Manage your product listings, edit pricing and stock, and publish new items on ShopNow." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Common & Seller CSS -->
+  <link rel="stylesheet" href="../../common/css/global.css" />
+  <link rel="stylesheet" href="../css/seller.css" />
+</head>
+<body class="seller-body">
+
+  <!-- Reusable Seller Header & Subnav -->
+  <div id="sellerHeader" data-active="products"></div>
+
+  <!-- Products Main Content -->
+  <main class="seller-page-wrapper">
+    <div class="container">
+
+      <!-- Breadcrumbs -->
+      <span class="d-block text-coral fw-bold extra-small letter-spacing-1 mb-2">CATALOGUE / PRODUCTS</span>
+
+      <!-- Title & Add Product Action -->
+      <div class="seller-page-title-row">
+        <div>
+          <h1 class="seller-page-title">Products</h1>
+          <span class="text-muted small" id="sellerProductsCountHeader">Showing 1-8 of 24 products</span>
+        </div>
+        <a href="add-product.html" class="btn-coral-seller">
+          <i class="bi bi-plus-lg"></i> Add product
+        </a>
+      </div>
+
+      <!-- Filter Toolbar (Matching Figma Image 2 Screen 1) -->
+      <div class="seller-filter-toolbar">
+        <div class="flex-grow-1 position-relative" style="min-width: 240px;">
+          <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+          <input type="text" class="form-control form-control-sm ps-5 rounded-pill" id="sellerProductSearch" placeholder="Search by name or SKU..." />
+        </div>
+
+        <select class="form-select form-select-sm w-auto rounded-pill" id="filterCategory">
+          <option value="all" selected>All Categories</option>
+          <option value="Home & Living">Home &amp; Living</option>
+          <option value="Home Decor">Home Decor</option>
+          <option value="Storage">Storage</option>
+          <option value="Decor">Decor</option>
+          <option value="Garden">Garden</option>
+        </select>
+
+        <select class="form-select form-select-sm w-auto rounded-pill" id="filterStock">
+          <option value="all" selected>All Stock</option>
+          <option value="in">In Stock (>5)</option>
+          <option value="low">Low Stock (≤5)</option>
+        </select>
+
+        <select class="form-select form-select-sm w-auto rounded-pill" id="filterStatus">
+          <option value="all" selected>All Status</option>
+          <option value="Active">Active</option>
+          <option value="Draft">Draft</option>
+        </select>
+      </div>
+
+      <!-- Products Table (Matching Figma Image 2 Screen 1) -->
+      <div class="seller-card-table">
+        <div class="table-responsive">
+          <table class="table table-seller align-middle">
+            <thead>
+              <tr>
+                <th width="40"><input type="checkbox" class="form-check-input" /></th>
+                <th style="min-width: 280px;">Product</th>
+                <th>SKU</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="sellerProductsTableBody">
+              <!-- Dynamically hydrated via seller.js -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Table Pagination Footer -->
+        <div class="d-flex justify-content-between align-items-center p-3 border-top bg-light small">
+          <span class="text-muted">Page 1 of 3</span>
+          <nav aria-label="Page navigation">
+            <ul class="pagination pagination-sm mb-0">
+              <li class="page-item disabled"><a class="page-link" href="javascript:void(0)">&laquo;</a></li>
+              <li class="page-item active"><a class="page-link" href="javascript:void(0)">1</a></li>
+              <li class="page-item"><a class="page-link" href="javascript:void(0)">2</a></li>
+              <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
+              <li class="page-item"><a class="page-link" href="javascript:void(0)">&raquo;</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Delete Product Confirmation Modal (Matching Figma Image 2 Screen 3) -->
+  <div class="modal fade" id="deleteProductModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 shadow">
+        <div class="modal-header border-0 pb-0">
+          <div class="d-flex align-items-center gap-2 text-danger">
+            <i class="bi bi-exclamation-triangle-fill fs-5"></i>
+            <h5 class="modal-title fw-bold">Delete product?</h5>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body py-3">
+          <p class="text-muted small mb-2">
+            Are you sure you want to delete <strong class="text-dark" id="deleteProductTitleText">this product</strong>?
+          </p>
+          <p class="extra-small text-muted mb-0">
+            This action will permanently remove the product from your store catalogue and deactivate all customer links.
+          </p>
+        </div>
+        <div class="modal-footer border-0 pt-0">
+          <button type="button" class="btn btn-sm btn-light px-3" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-sm btn-danger px-3" id="btnConfirmDeleteProduct">Delete product</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reusable Seller Footer -->
+  <div id="sellerFooter"></div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../common/js/global.js"></script>
+  <script src="../js/seller-nav.js"></script>
+  <script src="../js/seller.js"></script>
+</body>
+</html>

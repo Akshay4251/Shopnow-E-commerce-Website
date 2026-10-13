@@ -17,10 +17,14 @@
 
   <!-- Common CSS System -->
   <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/header-footer.css" />
   <link rel="stylesheet" href="../css/home.css" />
   <link rel="stylesheet" href="../css/about.css" />
 </head>
 <body>
+
+  <!-- Reusable Common Header -->
+  <div id="siteHeader" data-active="trending"></div>
 
   <!-- ==================== ABOUT HERO SECTION ==================== -->
   <section class="about-hero-section">
@@ -247,7 +251,7 @@
           <h2 class="heading-lg font-serif mb-2">Different perspectives. One shared ambition.</h2>
           <p class="subtitle text-muted mb-0">More than 9,000 people across 28 markets are building the next chapter of commerce together.</p>
         </div>
-        <a href="#" class="btn btn-outline-pill flex-shrink-0">Explore careers</a>
+        <a href="register.html" class="btn btn-outline-pill flex-shrink-0">Explore careers</a>
       </div>
 
       <!-- 3-Cards Row (5-4-3 Asymmetrical Widths matching Figma) -->
@@ -287,60 +291,8 @@
     </div>
   </section>
 
-  <!-- ==================== TRUST BADGES ROW (WHITE BACKGROUND) ==================== -->
-  <div class="trust-badges-bar bg-white border-top">
-    <div class="container">
-      <div class="row g-4 text-center text-md-start">
-        <div class="col-6 col-md-3">
-          <div class="trust-badge-item justify-content-center justify-content-md-start">
-            <div class="trust-badge-icon">
-              <i class="bi bi-truck"></i>
-            </div>
-            <div>
-              <span class="d-block font-weight-700 text-dark">Fast free delivery</span>
-              <small class="text-muted">On orders of $50 or more</small>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-6 col-md-3">
-          <div class="trust-badge-item justify-content-center justify-content-md-start">
-            <div class="trust-badge-icon">
-              <i class="bi bi-arrow-counterclockwise"></i>
-            </div>
-            <div>
-              <span class="d-block font-weight-700 text-dark">Easy 30-day returns</span>
-              <small class="text-muted">Return tags included with item</small>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-6 col-md-3">
-          <div class="trust-badge-item justify-content-center justify-content-md-start">
-            <div class="trust-badge-icon">
-              <i class="bi bi-shield-check"></i>
-            </div>
-            <div>
-              <span class="d-block font-weight-700 text-dark">Secure checkout</span>
-              <small class="text-muted">Encrypted payments & data</small>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-6 col-md-3">
-          <div class="trust-badge-item justify-content-center justify-content-md-start">
-            <div class="trust-badge-icon">
-              <i class="bi bi-headset"></i>
-            </div>
-            <div>
-              <span class="d-block font-weight-700 text-dark">Always-on support</span>
-              <small class="text-muted">24/7 help desk ready for you</small>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- Reusable Common Footer -->
+  <div id="siteFooter"></div>
 
   <!-- jQuery & Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -348,6 +300,7 @@
 
   <!-- Common JS System -->
   <script src="../js/global.js"></script>
+  <script src="../js/header-footer.js"></script>
   <script src="../js/about.js"></script>
 </body>
 </html>

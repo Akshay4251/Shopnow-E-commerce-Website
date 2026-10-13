@@ -33,20 +33,34 @@ All design tokens are defined globally in `common/css/global.css`:
 
 The application uses an **offline-first hybrid data strategy** combining MockAPI endpoints and `localStorage` caching.
 
-### 1. Active API Endpoints
-- **Categories API**: `https://6ac630bdbea0e72cf5c8ada0.mockapi.io/api/v1/categories`
-- **Products API**: `https://6ac630bdbea0e72cf5c8ada0.mockapi.io/api/v1/products`
+### 1. Active MockAPI REST Endpoints
+Base URL: `https://6ac630bdbea0e72cf5c8ada0.mockapi.io/api/v1`
 
-### 2. LocalStorage Keys
-- `shopnow_categories`: Cached categories dataset
-- `shopnow_products`: Cached trending products dataset
+- **Products**: `GET/POST/PUT/DELETE /products`
+- **Categories**: `GET/POST /categories`
+- **Users**: `GET/POST/PUT /users`
+- **Addresses**: `GET/POST/PUT/DELETE /addresses`
+- **Orders**: `GET/POST/PUT /orders`
+- **Returns**: `GET/POST/PUT /returns`
+- **Notifications**: `GET/POST/PUT /notifications`
+- **Support Tickets**: `GET/POST /support_tickets`
+- **Reviews**: `GET/POST /reviews`
+
+### 2. LocalStorage Persistence Keys
+- `shopnow_categories`: Cached categories list
+- `shopnow_products`: Cached product catalog
+- `shopnow_current_user`: Active logged-in user profile & role session
+- `shopnow_cart`: Shopping cart items & selected quantities
+- `shopnow_wishlist`: Saved favorite items
+- `shopnow_addresses`: Saved delivery locations & defaults
+- `shopnow_orders`: Order history, status milestones & timestamps
+- `shopnow_returns`: Return requests, status steppers & refunds
 - `shopnow_support_tickets`: Submitted customer support tickets
-- `shopnow_current_user`: Active logged-in user session
 
 ### 3. Data Flow Order
 1. **Instant Render**: Reads cached data from `localStorage` for zero loading delay.
-2. **Network Sync**: Fetches fresh data asynchronously from MockAPI endpoints.
-3. **Local JSON Fallback**: If network fails and `localStorage` is empty, reads from local fallbacks (`common/resources/categories.json` & `products.json`).
+2. **Network Sync**: Fetches fresh data asynchronously from MockAPI endpoints and syncs mutations via REST (`POST`/`PUT`/`DELETE`).
+3. **Local JSON Fallback**: If network fails and `localStorage` is empty, uses embedded seeds and local JSON (`common/resources/`).
 
 ---
 

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cancel Order - ShopNow</title>
+  <meta name="description" content="Request immediate cancellation for an upcoming ShopNow order before shipment." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Common & Buyer CSS -->
+  <link rel="stylesheet" href="../../common/css/global.css" />
+  <link rel="stylesheet" href="../../common/css/header-footer.css" />
+  <link rel="stylesheet" href="../css/buyer.css" />
+</head>
+<body>
+
+  <!-- Reusable Common Header -->
+  <div id="siteHeader" data-active="trending"></div>
+
+  <!-- Main Cancel Order View -->
+  <main class="buyer-page-wrapper">
+    <div class="container" style="max-width: 780px;">
+
+      <!-- Breadcrumbs -->
+      <span class="d-block text-coral fw-bold extra-small letter-spacing-1 mb-2">ACCOUNT / YOUR ORDERS</span>
+      <h1 class="buyer-page-title mb-1">Cancel order</h1>
+      <p class="buyer-page-subtitle mb-4">Choose the items you wish to cancel and let us know why.</p>
+
+      <form id="cancelOrderForm">
+        <!-- Product Item Preview Card -->
+        <div class="card border-1 rounded-4 shadow-sm mb-4 p-3">
+          <div class="d-flex align-items-center gap-3">
+            <div class="cart-item-thumb-box" style="width: 80px; height: 80px;">
+              <img src="https://res.cloudinary.com/dpva4smxo/image/upload/v1791382197/Product_image_ucgxvy.png" alt="Product" id="cancelProductImg" />
+            </div>
+            <div class="flex-grow-1">
+              <span class="badge bg-secondary-subtle text-secondary mb-1" id="cancelOrderNumBadge">Order #SN-98104</span>
+              <h5 class="fw-bold text-dark mb-1 fs-6" id="cancelProductTitle">Textured Cashmere Blend Sweater</h5>
+              <div class="small text-muted">Quantity: 1 &bull; Price: <strong class="text-dark" id="cancelProductPrice">₹ 1,899.00</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cancellation Form Fields -->
+        <div class="card border-1 rounded-4 shadow-sm mb-4 p-4">
+          <div class="mb-3">
+            <label for="cancelReasonSelect" class="form-label fw-bold small text-dark">Reason for cancellation *</label>
+            <select class="form-select" id="cancelReasonSelect" required>
+              <option value="" disabled selected>Select a reason</option>
+              <option value="mistake">Order created by mistake</option>
+              <option value="price">Found a better price elsewhere</option>
+              <option value="shipping">Estimated shipping takes too long</option>
+              <option value="address">Need to change delivery address</option>
+              <option value="other">Other reason</option>
+            </select>
+          </div>
+
+          <div class="mb-4">
+            <label for="cancelCommentsInput" class="form-label fw-bold small text-dark">Additional comments (optional)</label>
+            <textarea class="form-control" id="cancelCommentsInput" rows="3" placeholder="Tell us more about why you're cancelling..."></textarea>
+          </div>
+
+          <!-- Refund Notice Box (Matching Figma orange alert) -->
+          <div class="summary-delivery-banner mb-0">
+            <i class="bi bi-info-circle fs-5"></i>
+            <div>
+              <strong class="d-block text-dark">Refund details</strong>
+              <span>A full refund of <strong id="cancelRefundAmountText">₹ 1,899.00</strong> will be credited to your original payment method in 3–5 business days.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="d-flex flex-wrap gap-3">
+          <button type="submit" class="btn-coral-checkout flex-grow-1" id="btnConfirmCancelSubmit">
+            Confirm cancellation
+          </button>
+          <a href="orders.html" class="btn-outline-continue flex-grow-1 text-center">
+            Keep order
+          </a>
+        </div>
+      </form>
+
+    </div>
+  </main>
+
+  <!-- Reusable Common Footer -->
+  <div id="siteFooter"></div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../common/js/global.js"></script>
+  <script src="../../common/js/header-footer.js"></script>
+  <script src="../js/buyer.js"></script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Commission &amp; Payouts - ShopNow Admin</title>
+  <meta name="description" content="Manage platform take rates, configure merchant fee tiers, audit commission revenues, and disburse bank transfers." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Common & Admin CSS -->
+  <link rel="stylesheet" href="../../common/css/global.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body class="admin-body">
+
+  <div class="admin-layout">
+    <!-- Reusable Dark Navy Sidebar (Active Tab: payouts) -->
+    <aside class="admin-sidebar" id="adminSidebar" data-active="payouts"></aside>
+
+    <!-- Main Content Area -->
+    <div class="admin-main">
+      <!-- Reusable Top Header Bar -->
+      <header class="admin-topbar" id="adminTopBar"></header>
+
+      <!-- Commission & Payout Content (Matching Figma Image 4 Far Right) -->
+      <main class="admin-content">
+        <!-- Page Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h1 class="admin-page-title">Commission &amp; Payouts</h1>
+            <p class="admin-page-subtitle">Track marketplace revenue cuts, manage seller fee tiers, and release funds.</p>
+          </div>
+          <button type="button" class="btn btn-coral-admin btn-sm px-3" onclick="ShopNowCommon.showToast('Batch payouts initiated for all eligible sellers.', 'success');">
+            <i class="bi bi-cash-stack"></i> Disburse All Due
+          </button>
+        </div>
+
+        <!-- 3 Metric Cards Strip -->
+        <div class="row g-3 mb-4">
+          <div class="col-12 col-md-4">
+            <div class="admin-stat-card">
+              <div>
+                <span class="stat-label">Total Commission Earned</span>
+                <div class="stat-number text-coral">₹ 78,000</div>
+                <span class="extra-small text-success fw-bold"><i class="bi bi-arrow-up-right"></i> Platform Net Revenue</span>
+              </div>
+              <div class="stat-icon bg-coral-subtle text-coral" style="background-color: #fef2ee; color: #ff5338;"><i class="bi bi-percent"></i></div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-4">
+            <div class="admin-stat-card">
+              <div>
+                <span class="stat-label">Pending Merchant Payouts</span>
+                <div class="stat-number text-warning">₹ 99,500</div>
+                <span class="extra-small text-muted">Scheduled for weekly batch</span>
+              </div>
+              <div class="stat-icon bg-warning-subtle text-warning"><i class="bi bi-clock-history"></i></div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-4">
+            <div class="admin-stat-card">
+              <div>
+                <span class="stat-label">Disbursed This Quarter</span>
+                <div class="stat-number text-success">₹ 4,20,500</div>
+                <span class="extra-small text-success fw-bold"><i class="bi bi-check2"></i> 100% on schedule</span>
+              </div>
+              <div class="stat-icon bg-success-subtle text-success"><i class="bi bi-bank2"></i></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seller Payouts Ledger Table -->
+        <div class="admin-table-card mb-4">
+          <div class="p-3 border-bottom d-flex justify-content-between align-items-center">
+            <h6 class="fw-bold text-dark mb-0">Merchant Settlement Ledger</h6>
+            <span class="extra-small text-muted">Standard Commission: 10% on Gross Sales</span>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-admin align-middle">
+              <thead>
+                <tr>
+                  <th>Store Name</th>
+                  <th>Owner</th>
+                  <th>Gross Sales</th>
+                  <th>Platform Cut (10%)</th>
+                  <th>Net Payout Due</th>
+                  <th>Status</th>
+                  <th class="text-end">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong class="text-dark">Tech World</strong></td>
+                  <td>Amit Verma</td>
+                  <td>₹ 5,20,000</td>
+                  <td class="text-coral fw-bold">₹ 52,000</td>
+                  <td><strong class="text-dark">₹ 45,000</strong></td>
+                  <td><span class="badge-status badge-status-review">Pending</span></td>
+                  <td class="text-end">
+                    <button class="btn btn-sm btn-coral-admin py-1 px-3" onclick="ShopNowCommon.showToast('Transferred ₹ 45,000 to Tech World HDFC account.', 'success'); $(this).closest('tr').find('.badge-status').removeClass('badge-status-review').addClass('badge-status-completed').text('Disbursed'); $(this).remove();">
+                      Disburse Payout
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong class="text-dark">Fashion Hub</strong></td>
+                  <td>Rohit Sharma</td>
+                  <td>₹ 1,45,000</td>
+                  <td class="text-coral fw-bold">₹ 14,500</td>
+                  <td><strong class="text-dark">₹ 24,500</strong></td>
+                  <td><span class="badge-status badge-status-review">Pending</span></td>
+                  <td class="text-end">
+                    <button class="btn btn-sm btn-coral-admin py-1 px-3" onclick="ShopNowCommon.showToast('Transferred ₹ 24,500 to Fashion Hub ICICI account.', 'success'); $(this).closest('tr').find('.badge-status').removeClass('badge-status-review').addClass('badge-status-completed').text('Disbursed'); $(this).remove();">
+                      Disburse Payout
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../common/js/global.js"></script>
+  <script src="../js/admin-nav.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>

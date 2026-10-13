@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Assigned Orders - Delivery Fleet - ShopNow</title>
+  <meta name="description" content="Manage your active delivery load, tracking status, parcel details, and assigned route stops." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Common & Delivery Agent CSS -->
+  <link rel="stylesheet" href="../../common/css/global.css" />
+  <link rel="stylesheet" href="../css/delivery.css" />
+</head>
+<body class="delivery-body">
+
+  <div class="delivery-layout">
+    <!-- Reusable Dark Navy Sidebar (Active Tab: orders) -->
+    <aside class="delivery-sidebar" id="deliverySidebar" data-active="orders"></aside>
+
+    <!-- Main Content Area -->
+    <div class="delivery-main">
+      <!-- Reusable Top Header Bar -->
+      <header class="delivery-topbar" id="deliveryTopBar"></header>
+
+      <!-- Assigned Orders Content (Matching Figma Image 1 Screen 2) -->
+      <main class="delivery-content">
+        <!-- Top Header & Stat Counters -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+          <div>
+            <h1 class="delivery-page-title">Assigned Orders</h1>
+            <p class="delivery-page-subtitle">Manage your current delivery load and tracking status.</p>
+          </div>
+
+          <!-- Top Right Stat Badges Strip -->
+          <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center gap-2 bg-white px-3 py-2 rounded-3 border shadow-sm">
+              <span class="extra-small fw-bold text-muted text-uppercase">Total Active</span>
+              <span class="fs-5 fw-bold text-dark lh-1" id="badgeTotalActive">24</span>
+            </div>
+            <div class="d-flex align-items-center gap-2 bg-white px-3 py-2 rounded-3 border shadow-sm">
+              <i class="bi bi-box-arrow-in-down text-coral"></i>
+              <span class="extra-small fw-bold text-muted text-uppercase">Pickup Ready</span>
+              <span class="fs-5 fw-bold text-coral lh-1" id="badgeReadyPickup">08</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter & Search Toolbar -->
+        <div class="delivery-card p-3 mb-4">
+          <div class="row g-2 align-items-center">
+            <!-- Search Input -->
+            <div class="col-12 col-md-5 col-lg-6">
+              <div class="position-relative">
+                <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                <input type="text" id="assignedOrdersSearchInput" class="form-control ps-5 py-2 border-light-subtle rounded-3" placeholder="Search by Order ID or Customer Name..." />
+              </div>
+            </div>
+
+            <!-- Status Filter -->
+            <div class="col-6 col-md-3 col-lg-3">
+              <select class="form-select py-2 border-light-subtle rounded-3" id="assignedOrdersStatusFilter">
+                <option value="all" selected>All Status</option>
+                <option value="In transit">In Transit</option>
+                <option value="Out for Delivery">Out for Delivery</option>
+                <option value="Pending">Pending</option>
+                <option value="Delivered">Delivered</option>
+              </select>
+            </div>
+
+            <!-- Date Range Selector -->
+            <div class="col-6 col-md-4 col-lg-3 d-flex gap-2">
+              <div class="input-group">
+                <span class="input-group-text bg-white border-light-subtle"><i class="bi bi-calendar-event text-muted"></i></span>
+                <input type="text" class="form-control py-2 border-light-subtle bg-white" value="Oct 24 - Oct 30" readonly />
+              </div>
+              <button class="btn btn-outline-secondary px-3" type="button" title="More filters" id="btnFilterTrigger">
+                <i class="bi bi-sliders"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Assigned Orders Table Card -->
+        <div class="delivery-table-card mb-4">
+          <div class="table-responsive">
+            <table class="table table-delivery align-middle">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Customer &amp; Address</th>
+                  <th>Status</th>
+                  <th>Items</th>
+                  <th>Est. Delivery</th>
+                  <th class="text-end pe-4">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="assignedOrdersTableBody">
+                <!-- Dynamically populated by delivery.js -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination Bar -->
+          <div class="p-3 bg-white border-top d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2">
+            <span class="extra-small text-muted">Showing 5 of 24 active assignments</span>
+            <nav aria-label="Order pagination">
+              <ul class="pagination pagination-sm mb-0">
+                <li class="page-item disabled"><a class="page-link" href="javascript:void(0)"><i class="bi bi-chevron-left"></i> Previous</a></li>
+                <li class="page-item active"><a class="page-link" href="javascript:void(0)">1</a></li>
+                <li class="page-item"><a class="page-link" href="javascript:void(0)">2</a></li>
+                <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
+                <li class="page-item"><a class="page-link" href="javascript:void(0)">Next <i class="bi bi-chevron-right"></i></a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+
+        <!-- Bottom 3 Highlight Cards (Matching Figma Screen 2 Bottom) -->
+        <div class="row g-4">
+          <!-- Card 1: Morning Delivery Run (Dark Navy) -->
+          <div class="col-12 col-lg-4">
+            <div class="dark-widget-card d-flex flex-column justify-content-between">
+              <div>
+                <span class="dark-widget-tag"><i class="bi bi-compass-fill me-1"></i> Sequence Dispatched</span>
+                <h5 class="fw-bold mb-2 text-white">Morning Delivery Run</h5>
+                <p class="extra-small text-secondary mb-4">14 stops sequence-mapped for a simple, fast efficiency route with minimum driving time.</p>
+              </div>
+              <a href="location.html" class="btn btn-coral-delivery w-100 justify-content-center">
+                <i class="bi bi-map-fill"></i> View Run Route
+              </a>
+            </div>
+          </div>
+
+          <!-- Card 2: Performance -->
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="delivery-card h-100 mb-0 d-flex flex-column justify-content-between">
+              <div>
+                <span class="stat-card-label"><i class="bi bi-speedometer2 text-coral me-1"></i> Fleet Performance</span>
+                <div class="d-flex align-items-baseline gap-2 mb-2">
+                  <span class="stat-card-number mb-0">89%</span>
+                  <span class="text-success fw-bold small"><i class="bi bi-arrow-up-right"></i> On-Time</span>
+                </div>
+                <p class="extra-small text-muted mb-0">You're exceeding your delivery goal by <strong>+12%</strong>. Keep up the high delivery velocity!</p>
+              </div>
+              
+              <!-- Mini Progress Bar -->
+              <div class="mt-4 pt-3 border-top">
+                <div class="d-flex justify-content-between extra-small text-muted mb-1">
+                  <span>Current Shift Target</span>
+                  <span class="fw-bold text-dark">89 / 100</span>
+                </div>
+                <div class="progress" style="height: 6px;">
+                  <div class="progress-bar" role="progressbar" style="width: 89%; background-color: #10b981;" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Quick Tips -->
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="delivery-card h-100 mb-0">
+              <span class="stat-card-label"><i class="bi bi-lightbulb-fill text-warning me-1"></i> Quick Tips</span>
+              <ul class="list-unstyled extra-small text-secondary d-flex flex-column gap-2 mb-0 mt-2">
+                <li class="d-flex align-items-start gap-2">
+                  <i class="bi bi-check-circle-fill text-coral mt-1"></i>
+                  <span><strong>Verify customer ID</strong> for high-value orders above ₹ 5,000.</span>
+                </li>
+                <li class="d-flex align-items-start gap-2">
+                  <i class="bi bi-check-circle-fill text-coral mt-1"></i>
+                  <span><strong>Capture photo proof</strong> for front-door and concierge drop-offs.</span>
+                </li>
+                <li class="d-flex align-items-start gap-2">
+                  <i class="bi bi-check-circle-fill text-coral mt-1"></i>
+                  <span><strong>Use navigation audio</strong> to keep eyes on the road during rush hours.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../common/js/global.js"></script>
+  <script src="../js/delivery-nav.js"></script>
+  <script src="../js/delivery.js"></script>
+</body>
+</html>

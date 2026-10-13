@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Promotions &amp; Offers - ShopNow Admin</title>
+  <meta name="description" content="Manage marketplace coupons, multi-step promotional offer creator, flash discounts, and campaign schedules." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Common & Admin CSS -->
+  <link rel="stylesheet" href="../../common/css/global.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body class="admin-body">
+
+  <div class="admin-layout">
+    <!-- Reusable Dark Navy Sidebar (Active Tab: promotions) -->
+    <aside class="admin-sidebar" id="adminSidebar" data-active="promotions"></aside>
+
+    <!-- Main Content Area -->
+    <div class="admin-main">
+      <!-- Reusable Top Header Bar -->
+      <header class="admin-topbar" id="adminTopBar"></header>
+
+      <!-- Promotions Content (Matching Figma Collages 7, 8, 9) -->
+      <main class="admin-content">
+        <!-- Page Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h1 class="admin-page-title">Promotional Campaigns</h1>
+            <p class="admin-page-subtitle">Schedule platform coupons, run seasonal sales, and manage buyer incentives.</p>
+          </div>
+          <button type="button" class="btn btn-coral-admin btn-sm px-3" data-bs-toggle="modal" data-bs-target="#createOfferModal">
+            <i class="bi bi-plus-lg"></i> Create Offer
+          </button>
+        </div>
+
+        <!-- 3 Campaign Banner Cards Strip (Matching Figma Frame 7) -->
+        <div class="row g-3 mb-4">
+          <!-- Card 1: Diwali Dhamaka -->
+          <div class="col-12 col-md-4">
+            <div class="p-3 rounded-4 text-white position-relative overflow-hidden shadow-sm" style="background: linear-gradient(135deg, #081726 0%, #1e293b 100%);">
+              <span class="badge bg-warning text-dark extra-small fw-bold mb-2">MEGA FESTIVE</span>
+              <h5 class="fw-bold text-white mb-1">Diwali Dhamaka</h5>
+              <p class="extra-small text-white-50 mb-3">50% Flat Off across Electronics &amp; Apparel</p>
+              <div class="d-flex justify-content-between align-items-center extra-small border-top border-secondary border-opacity-25 pt-2">
+                <span>Code: <strong class="text-coral">DIWALI50</strong></span>
+                <span class="text-success fw-bold">Active Now</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Festive Specials -->
+          <div class="col-12 col-md-4">
+            <div class="p-3 rounded-4 text-white position-relative overflow-hidden shadow-sm" style="background: linear-gradient(135deg, #ff5338 0%, #ff7660 100%);">
+              <span class="badge bg-white text-coral extra-small fw-bold mb-2">STOREWIDE</span>
+              <h5 class="fw-bold text-white mb-1">Festive Specials</h5>
+              <p class="extra-small text-white-75 mb-3">25% Off on min. spend ₹ 999</p>
+              <div class="d-flex justify-content-between align-items-center extra-small border-top border-white border-opacity-25 pt-2">
+                <span>Code: <strong class="text-white">FESTIVE25</strong></span>
+                <span class="text-white fw-bold">Live</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Winter Carnival -->
+          <div class="col-12 col-md-4">
+            <div class="p-3 rounded-4 text-white position-relative overflow-hidden shadow-sm" style="background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);">
+              <span class="badge bg-white text-dark extra-small fw-bold mb-2">UPCOMING</span>
+              <h5 class="fw-bold text-white mb-1">Winter Carnival</h5>
+              <p class="extra-small text-white-75 mb-3">Flat ₹ 200 Cashback for verified shoppers</p>
+              <div class="d-flex justify-content-between align-items-center extra-small border-top border-white border-opacity-25 pt-2">
+                <span>Code: <strong class="text-white">WINTER10</strong></span>
+                <span class="text-white fw-bold">Starts Dec 01</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Offers Table Card (Matching Figma Frame 2 - Offer List) -->
+        <div class="admin-table-card mb-4">
+          <div class="p-3 border-bottom d-flex justify-content-between align-items-center">
+            <h6 class="fw-bold text-dark mb-0">All Offers &amp; Coupons</h6>
+            <span class="extra-small text-muted">Real-time discount validations on buyer cart</span>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-admin align-middle">
+              <thead>
+                <tr>
+                  <th>Offer ID</th>
+                  <th>Campaign Name</th>
+                  <th>Coupon Code</th>
+                  <th>Discount</th>
+                  <th>Min Spend</th>
+                  <th>Valid Till</th>
+                  <th>Status</th>
+                  <th class="text-end">Action</th>
+                </tr>
+              </thead>
+              <tbody id="adminOffersTableBody">
+                <!-- Dynamically populated from admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Promotional Calendar View (Matching Figma Frame 7 Bottom) -->
+        <div class="admin-card">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 class="fw-bold text-dark mb-0"><i class="bi bi-calendar3 text-coral me-2"></i>Campaign Schedule (November 2026)</h6>
+            <span class="extra-small text-muted">3 Active scheduled marketing blasts</span>
+          </div>
+
+          <div class="calendar-grid">
+            <div class="calendar-cell text-muted"><span class="fw-bold">1</span></div>
+            <div class="calendar-cell text-muted"><span class="fw-bold">2</span></div>
+            <div class="calendar-cell text-muted"><span class="fw-bold">3</span></div>
+            <div class="calendar-cell has-event">
+              <span class="fw-bold text-coral">4</span>
+              <span class="badge bg-coral text-white d-block extra-small mt-1" style="font-size: 0.65rem;">Diwali Dhamaka</span>
+            </div>
+            <div class="calendar-cell has-event"><span class="fw-bold text-coral">5</span></div>
+            <div class="calendar-cell has-event"><span class="fw-bold text-coral">6</span></div>
+            <div class="calendar-cell text-muted"><span class="fw-bold">7</span></div>
+            <div class="calendar-cell text-muted"><span class="fw-bold">8</span></div>
+            <div class="calendar-cell text-muted"><span class="fw-bold">9</span></div>
+            <div class="calendar-cell has-event">
+              <span class="fw-bold text-dark">10</span>
+              <span class="badge bg-dark text-white d-block extra-small mt-1" style="font-size: 0.65rem;">Festive 25%</span>
+            </div>
+            <div class="calendar-cell text-muted"><span class="fw-bold">11</span></div>
+            <div class="calendar-cell text-muted"><span class="fw-bold">12</span></div>
+            <div class="calendar-cell text-muted"><span class="fw-bold">13</span></div>
+            <div class="calendar-cell text-muted"><span class="fw-bold">14</span></div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- 4-Step Create Offer Wizard Modal (Matching Figma Create Offer Step 1-4) -->
+  <div class="modal fade" id="createOfferModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 shadow">
+        <div class="modal-header border-bottom p-4">
+          <div>
+            <h5 class="modal-title fw-bold text-dark mb-0">Create Promotional Campaign</h5>
+            <span class="extra-small text-muted">Follow the 4-step wizard to publish marketing discounts across the marketplace.</span>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body p-4">
+          <!-- Wizard Stepper Indicator -->
+          <div class="d-flex justify-content-between mb-4 pb-3 border-bottom extra-small fw-bold">
+            <span class="wizard-step-tab active text-coral" data-step="1">1. Campaign Info</span>
+            <span class="wizard-step-tab text-muted" data-step="2">2. Discount Rules</span>
+            <span class="wizard-step-tab text-muted" data-step="3">3. Eligibility</span>
+            <span class="wizard-step-tab text-muted" data-step="4">4. Schedule &amp; Launch</span>
+          </div>
+
+          <!-- Step 1: Info -->
+          <div class="wizard-step-pane" id="wizardStep1">
+            <div class="mb-3">
+              <label class="form-label extra-small fw-bold text-uppercase text-muted">Campaign Name *</label>
+              <input type="text" class="form-control extra-small py-2" id="offerNameInput" placeholder="e.g. Flash Friday Sale" required />
+            </div>
+            <div class="mb-3">
+              <label class="form-label extra-small fw-bold text-uppercase text-muted">Coupon Code *</label>
+              <input type="text" class="form-control extra-small py-2 font-monospace text-uppercase" id="offerCodeInput" placeholder="FLASH50" required />
+            </div>
+            <div class="text-end">
+              <button type="button" class="btn btn-coral-admin btn-wizard-next" data-next="2">Next: Discount Rules &rarr;</button>
+            </div>
+          </div>
+
+          <!-- Step 2: Discount -->
+          <div class="wizard-step-pane d-none" id="wizardStep2">
+            <div class="row g-3 mb-3">
+              <div class="col-6">
+                <label class="form-label extra-small fw-bold text-uppercase text-muted">Discount Value *</label>
+                <input type="text" class="form-control extra-small py-2" id="offerDiscountInput" placeholder="30% OFF or ₹ 300 Flat" required />
+              </div>
+              <div class="col-6">
+                <label class="form-label extra-small fw-bold text-uppercase text-muted">Min Cart Value</label>
+                <input type="text" class="form-control extra-small py-2" value="₹ 999" />
+              </div>
+            </div>
+            <div class="d-flex justify-content-between">
+              <button type="button" class="btn btn-light btn-wizard-prev" data-prev="1">&larr; Back</button>
+              <button type="button" class="btn btn-coral-admin btn-wizard-next" data-next="3">Next: Eligibility &rarr;</button>
+            </div>
+          </div>
+
+          <!-- Step 3: Eligibility -->
+          <div class="wizard-step-pane d-none" id="wizardStep3">
+            <div class="mb-3">
+              <label class="form-label extra-small fw-bold text-uppercase text-muted">Target Audience</label>
+              <select class="form-select extra-small py-2">
+                <option selected>All Registered Shoppers</option>
+                <option>New Customers Only (1st Order)</option>
+                <option>VIP Gold Members</option>
+              </select>
+            </div>
+            <div class="d-flex justify-content-between">
+              <button type="button" class="btn btn-light btn-wizard-prev" data-prev="2">&larr; Back</button>
+              <button type="button" class="btn btn-coral-admin btn-wizard-next" data-next="4">Next: Schedule &rarr;</button>
+            </div>
+          </div>
+
+          <!-- Step 4: Schedule -->
+          <div class="wizard-step-pane d-none" id="wizardStep4">
+            <div class="row g-3 mb-3">
+              <div class="col-6">
+                <label class="form-label extra-small fw-bold text-uppercase text-muted">Start Date</label>
+                <input type="date" class="form-control extra-small py-2" value="2026-11-01" />
+              </div>
+              <div class="col-6">
+                <label class="form-label extra-small fw-bold text-uppercase text-muted">Expiry Date</label>
+                <input type="date" class="form-control extra-small py-2" value="2026-11-30" />
+              </div>
+            </div>
+            <div class="d-flex justify-content-between">
+              <button type="button" class="btn btn-light btn-wizard-prev" data-prev="3">&larr; Back</button>
+              <button type="button" class="btn btn-success" id="btnFinishCreateOffer">
+                <i class="bi bi-check2-circle me-1"></i> Publish Campaign
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../common/js/global.js"></script>
+  <script src="../js/admin-nav.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add / Edit Product - Seller Center</title>
+  <meta name="description" content="Add new items to your ShopNow storefront with detailed specifications, pricing, stock, and high-resolution photos." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Common & Seller CSS -->
+  <link rel="stylesheet" href="../../common/css/global.css" />
+  <link rel="stylesheet" href="../css/seller.css" />
+</head>
+<body class="seller-body">
+
+  <!-- Reusable Seller Header & Subnav -->
+  <div id="sellerHeader" data-active="products"></div>
+
+  <!-- Add Product Main Content -->
+  <main class="seller-page-wrapper">
+    <div class="container">
+
+      <!-- Breadcrumbs -->
+      <nav class="buyer-breadcrumb mb-2" aria-label="breadcrumb">
+        <a href="products.html">Products</a>
+        <span>&gt;</span>
+        <span class="active">Add product</span>
+      </nav>
+
+      <h1 class="seller-page-title mb-4" id="pageHeaderAddProductTitle">Add product</h1>
+
+      <form id="sellerAddProductForm">
+        <div class="row g-4 align-items-start">
+          
+          <!-- Left Column: Product Details Form (Matching Figma Screen) -->
+          <div class="col-12 col-lg-8">
+            <div class="card border-1 rounded-4 shadow-sm p-4">
+              <h2 class="fs-6 fw-bold text-dark mb-4">Product details</h2>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label for="prodCategorySelect" class="form-label small fw-bold text-dark">Product category *</label>
+                  <select class="form-select" id="prodCategorySelect" required>
+                    <option value="Home & Living" selected>Home &amp; Living</option>
+                    <option value="Home Decor">Home Decor</option>
+                    <option value="Storage">Storage</option>
+                    <option value="Decor">Decor</option>
+                    <option value="Garden">Garden</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="prodSubCategorySelect" class="form-label small fw-bold text-dark">Sub-category</label>
+                  <select class="form-select" id="prodSubCategorySelect">
+                    <option value="Tableware" selected>Tableware</option>
+                    <option value="Cushions">Cushions</option>
+                    <option value="Baskets">Baskets</option>
+                    <option value="Candles">Candles</option>
+                    <option value="Planters">Planters</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="prodTitleInput" class="form-label small fw-bold text-dark">Product title *</label>
+                <input type="text" class="form-control" id="prodTitleInput" placeholder="e.g. Speckled ceramic mug" required />
+              </div>
+
+              <div class="mb-3">
+                <label for="prodDescInput" class="form-label small fw-bold text-dark">Description</label>
+                <textarea class="form-control" id="prodDescInput" rows="4" placeholder="Handcrafted ceramic mug with a warm matte finish and speckled details. Ideal for everyday coffee, tea and soups. Capacity 350ml. Microwave safe."></textarea>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label for="prodSkuInput" class="form-label small fw-bold text-dark">SKU (Stock Keeping Unit)</label>
+                  <input type="text" class="form-control" id="prodSkuInput" placeholder="e.g. MH-CER-012" />
+                </div>
+                <div class="col-md-6">
+                  <label for="prodStockInput" class="form-label small fw-bold text-dark">Stock quantity *</label>
+                  <input type="number" class="form-control" id="prodStockInput" min="0" value="10" required />
+                </div>
+              </div>
+
+              <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                  <label for="prodPriceInput" class="form-label small fw-bold text-dark">Price (Rs) *</label>
+                  <input type="number" class="form-control" id="prodPriceInput" min="1" step="0.01" placeholder="890" required />
+                </div>
+                <div class="col-md-6">
+                  <label for="prodDiscountInput" class="form-label small fw-bold text-dark">Discount price (optional)</label>
+                  <input type="number" class="form-control" id="prodDiscountInput" min="1" step="0.01" placeholder="799" />
+                </div>
+              </div>
+
+              <!-- Status Toggle -->
+              <div class="mb-4">
+                <label class="form-label small fw-bold text-dark d-block">Publication Status</label>
+                <div class="btn-group" role="group">
+                  <input type="radio" class="btn-check" name="prodStatusRadio" id="statusActive" value="Active" checked />
+                  <label class="btn btn-outline-success btn-sm px-3" for="statusActive">Active (Publish)</label>
+
+                  <input type="radio" class="btn-check" name="prodStatusRadio" id="statusDraft" value="Draft" />
+                  <label class="btn btn-outline-secondary btn-sm px-3" for="statusDraft">Draft</label>
+                </div>
+              </div>
+
+              <div class="d-flex gap-3">
+                <button type="submit" class="btn-coral-seller" id="btnSubmitProduct">
+                  Save product
+                </button>
+                <a href="products.html" class="btn-outline-seller">
+                  Cancel
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Images Dropzone with Cloudinary Upload -->
+          <div class="col-12 col-lg-4">
+            <div class="card border-1 rounded-4 shadow-sm p-4">
+              <div class="d-flex align-items-center justify-content-between mb-3">
+                <h2 class="fs-6 fw-bold text-dark mb-0">Images</h2>
+                <span class="badge bg-primary-subtle text-primary extra-small"><i class="bi bi-cloud-check me-1"></i>Cloudinary CDN</span>
+              </div>
+
+              <!-- Hidden File Input for Cloudinary -->
+              <input type="file" id="productImageFileInput" accept="image/png,image/jpeg,image/webp,image/jpg" class="d-none" multiple />
+
+              <!-- Dropzone Box (Native label activation avoids browser user-activation errors) -->
+              <label for="productImageFileInput" class="seller-dropzone d-block text-center cursor-pointer mb-0" id="productDropzone">
+                <i class="bi bi-cloud-arrow-up dropzone-icon fs-1 text-coral mb-2 d-block"></i>
+                <strong class="d-block text-dark small mb-1">Click to browse or drag photos here</strong>
+                <span class="extra-small text-muted d-block mb-2">PNG, JPG, WEBP &bull; Auto-sync to Cloudinary</span>
+                <span class="btn btn-sm btn-outline-secondary rounded-pill px-3 py-1 extra-small" id="btnBrowseImages">
+                  <i class="bi bi-folder2-open me-1"></i> Browse Files
+                </span>
+              </label>
+
+              <!-- Uploading Status Indicator -->
+              <div id="uploadStatusBox" class="mt-3 p-2 bg-light rounded-3 d-none">
+                <div class="d-flex align-items-center justify-content-between extra-small text-secondary mb-1">
+                  <span><i class="bi bi-arrow-repeat spin me-1 text-coral"></i> <span id="uploadStatusText">Uploading to Cloudinary...</span></span>
+                  <span id="uploadStatusPercent" class="fw-bold text-coral">100%</span>
+                </div>
+                <div class="progress" style="height: 4px;">
+                  <div class="progress-bar bg-coral progress-bar-striped progress-bar-animated" id="uploadProgressBar" style="width: 100%;"></div>
+                </div>
+              </div>
+
+              <!-- Optional Direct Cloudinary / Image URL Input -->
+              <div class="mt-3 pt-3 border-top">
+                <label for="productImageUrlInput" class="form-label extra-small fw-bold text-secondary mb-1">Or paste image URL</label>
+                <div class="input-group input-group-sm">
+                  <input type="url" class="form-control" id="productImageUrlInput" placeholder="https://res.cloudinary.com/..." />
+                  <button class="btn btn-outline-secondary" type="button" id="btnApplyImageUrl">Add</button>
+                </div>
+              </div>
+
+              <!-- Uploaded Thumbnails Preview Grid -->
+              <div class="mt-3">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                  <span class="extra-small fw-bold text-dark">Selected Images (<span id="uploadedImagesCount">0</span>/5)</span>
+                  <span class="extra-small text-muted">First image is primary thumbnail</span>
+                </div>
+                <div class="uploaded-thumbs-grid" id="uploadedThumbsGrid">
+                  <!-- Dynamically rendered via seller.js -->
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </form>
+
+    </div>
+  </main>
+
+  <!-- Reusable Seller Footer -->
+  <div id="sellerFooter"></div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../common/js/global.js"></script>
+  <script src="../js/seller-nav.js"></script>
+  <script src="../js/seller.js"></script>
+</body>
+</html>

@@ -149,9 +149,17 @@ $(document).ready(function () {
   function renderCategories(cats) {
     let catHtml = '';
     cats.forEach(c => {
+      let catParam = c.title;
+      if (c.title.includes("Women")) catParam = "Sweaters";
+      else if (c.title.includes("Men")) catParam = "Sweaters";
+      else if (c.title.includes("Tech") || c.title.includes("Sound")) catParam = "Audio";
+      else if (c.title.includes("Home")) catParam = "Decor";
+      else if (c.title.includes("Beauty")) catParam = "Skincare";
+      else if (c.title.includes("Active")) catParam = "Footwear";
+
       catHtml += `
         <div class="col-6 col-sm-4 col-md-2">
-          <a href="#trending-products" class="category-card-figma">
+          <a href="../../buyer/html/catalog.html?category=${encodeURIComponent(catParam)}" class="category-card-figma text-decoration-none">
             <div class="category-img-box">
               <img src="${c.image}" alt="${c.title}" />
             </div>
@@ -166,38 +174,67 @@ $(document).ready(function () {
     $('#categoriesContainer').html(catHtml);
   }
 
+  let allHomeProducts = [...defaultProducts];
+
   function renderProducts(prods) {
+    if (Array.isArray(prods) && prods.length > 0) {
+      allHomeProducts = prods.map((p, idx) => {
+        let img = p.image;
+        if (!img || img.includes('placeholder') || img.length < 15 || !img.startsWith('http')) {
+          img = defaultProducts[idx % defaultProducts.length].image;
+        }
+        return { ...p, image: img };
+      });
+    }
+    const user = typeof ShopNowCommon !== 'undefined' ? ShopNowCommon.getCurrentUser() : null;
+    const userWishlist = user ? ShopNowCommon.getUserWishlist(user) : [];
+
     let prodHtml = '';
-    prods.forEach(p => {
+    allHomeProducts.forEach(p => {
       const priceVal = Number(p.price) || 0;
       const oldPriceVal = p.oldPrice ? Number(p.oldPrice) : null;
       const oldPriceHtml = oldPriceVal ? `<span class="old-price">$${oldPriceVal.toFixed(2)}</span>` : '';
       const badgeHtml = p.badge ? `<span class="product-badge-tag">${p.badge}</span>` : '';
       const ratingVal = p.rating ? Number(p.rating).toFixed(1) : '4.8';
       const reviewsVal = p.reviews ? p.reviews : '0';
+      const isWishlisted = userWishlist.some(w => String(w.id) === String(p.id));
 
       prodHtml += `
         <div class="col-6 col-md-4 col-lg-3">
           <div class="product-card-figma">
             <div class="product-img-wrapper">
               ${badgeHtml}
-              <button class="product-fav-circle-btn" aria-label="Favorite">
-                <i class="bi bi-heart"></i>
+              <button class="product-fav-circle-btn ${isWishlisted ? 'active' : ''}" aria-label="Favorite" data-id="${p.id}" title="${isWishlisted ? 'In Wishlist' : 'Add to Wishlist'}">
+                <i class="bi ${isWishlisted ? 'bi-heart-fill' : 'bi-heart'}"></i>
               </button>
-              <img src="${p.image}" alt="${p.title}" />
+              <a href="../../buyer/html/product-details.html?id=${p.id}" class="d-block w-100 h-100">
+                <img src="${p.image}" alt="${p.title}" />
+              </a>
             </div>
             <div class="product-info-wrapper">
               <span class="product-brand-tag">${p.brand || 'SHOPNOW'}</span>
-              <h6 class="product-name-title">${p.title}</h6>
+              <h6 class="product-name-title">
+                <a href="../../buyer/html/product-details.html?id=${p.id}" class="text-dark text-decoration-none product-link-title">
+                  ${p.title}
+                </a>
+              </h6>
               <div class="product-rating-row">
                 <i class="bi bi-star-fill text-warning"></i>
                 <span>${ratingVal}</span>
                 <span class="reviews-count">(${reviewsVal})</span>
               </div>
-              <div class="product-price-row">
-                <span class="curr-price">$${priceVal.toFixed(2)}</span>
-                ${oldPriceHtml}
+              <div class="product-price-row d-flex justify-content-between align-items-center mb-2">
+                <div>
+                  <span class="curr-price">$${priceVal.toFixed(2)}</span>
+                  ${oldPriceHtml}
+                </div>
+                <a href="../../buyer/html/product-details.html?id=${p.id}" class="btn btn-sm btn-outline-dark rounded-pill px-3 py-1 small fw-semibold">
+                  View <i class="bi bi-arrow-right ms-1"></i>
+                </a>
               </div>
+              <button type="button" class="btn btn-sm btn-coral-custom w-100 rounded-pill py-2 small fw-semibold btn-home-add-cart" data-id="${p.id}">
+                <i class="bi bi-cart-plus me-1"></i>Add to Cart
+              </button>
             </div>
           </div>
         </div>
@@ -206,15 +243,111 @@ $(document).ready(function () {
     $('#trendingProductsContainer, #productsContainer').html(prodHtml);
   }
 
-  // Handle heart favorite toggle button
+  // Handle heart favorite toggle button with user session and separation
   $(document).on('click', '.product-fav-circle-btn', function (e) {
     e.preventDefault();
-    $(this).toggleClass('active');
-    const icon = $(this).find('i');
-    if ($(this).hasClass('active')) {
-      icon.removeClass('bi-heart').addClass('bi-heart-fill');
+    const $btn = $(this);
+    const rawId = $btn.attr('data-id') || $btn.data('id');
+    const id = String(rawId);
+
+    const user = typeof ShopNowCommon !== 'undefined' ? ShopNowCommon.getCurrentUser() : null;
+    if (!user || !user.email) {
+      if (typeof ShopNowCommon !== 'undefined') {
+        ShopNowCommon.showToast('Please sign in to save items to your wishlist', 'info');
+      }
+      setTimeout(function () {
+        window.location.href = 'login.html?redirect=home';
+      }, 1000);
+      return;
+    }
+
+    let prod = allHomeProducts.find(p => String(p.id) === id);
+    if (!prod) {
+      const cached = JSON.parse(localStorage.getItem(STORAGE_PRODUCTS_KEY) || '[]');
+      prod = cached.find(p => String(p.id) === id);
+    }
+    if (!prod) {
+      prod = defaultProducts.find(p => String(p.id) === id);
+    }
+    if (!prod) return;
+
+    let wishlist = ShopNowCommon.getUserWishlist(user);
+    const existingIdx = wishlist.findIndex(item => String(item.id) === id);
+
+    if (existingIdx > -1) {
+      wishlist.splice(existingIdx, 1);
+      ShopNowCommon.saveUserWishlist(wishlist, user);
+      $btn.removeClass('active');
+      $btn.find('i').removeClass('bi-heart-fill').addClass('bi-heart');
+      $btn.attr('title', 'Add to Wishlist');
+      if (typeof ShopNowCommon !== 'undefined') {
+        ShopNowCommon.showToast(`Removed "${prod.title}" from Wishlist`, 'info');
+      }
     } else {
-      icon.removeClass('bi-heart-fill').addClass('bi-heart');
+      wishlist.push(prod);
+      ShopNowCommon.saveUserWishlist(wishlist, user);
+      $btn.addClass('active');
+      $btn.find('i').removeClass('bi-heart').addClass('bi-heart-fill');
+      $btn.attr('title', 'In Wishlist');
+      if (typeof ShopNowCommon !== 'undefined') {
+        ShopNowCommon.showToast(`Saved "${prod.title}" to Wishlist!`, 'success');
+      }
+    }
+
+    if (window.ShopNowHeader && window.ShopNowHeader.updateWishlistBadge) {
+      window.ShopNowHeader.updateWishlistBadge(wishlist.length);
+    }
+  });
+
+  // Handle Add to Cart direct from home page with user session and separation
+  $(document).on('click', '.btn-home-add-cart', function (e) {
+    e.preventDefault();
+    const rawId = $(this).attr('data-id') || $(this).data('id');
+    const id = String(rawId);
+
+    const user = typeof ShopNowCommon !== 'undefined' ? ShopNowCommon.getCurrentUser() : null;
+    if (!user || !user.email) {
+      if (typeof ShopNowCommon !== 'undefined') {
+        ShopNowCommon.showToast('Please sign in to add items to your cart', 'info');
+      }
+      setTimeout(function () {
+        window.location.href = 'login.html?redirect=cart';
+      }, 1000);
+      return;
+    }
+
+    let prod = allHomeProducts.find(p => String(p.id) === id);
+    if (!prod) {
+      const cached = JSON.parse(localStorage.getItem(STORAGE_PRODUCTS_KEY) || '[]');
+      prod = cached.find(p => String(p.id) === id);
+    }
+    if (!prod) {
+      prod = defaultProducts.find(p => String(p.id) === id);
+    }
+    if (!prod) {
+      if (typeof ShopNowCommon !== 'undefined') {
+        ShopNowCommon.showToast('Product not found', 'error');
+      }
+      return;
+    }
+
+    let cart = ShopNowCommon.getUserCart(user);
+    const existing = cart.find(item => String(item.id) === id);
+    if (existing) {
+      existing.quantity = (existing.quantity || 1) + 1;
+    } else {
+      cart.push({ ...prod, quantity: 1 });
+    }
+
+    ShopNowCommon.saveUserCart(cart, user);
+
+    const totalCount = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+    if (window.ShopNowHeader && window.ShopNowHeader.updateCartBadge) {
+      window.ShopNowHeader.updateCartBadge(totalCount);
+    }
+
+    if (typeof ShopNowCommon !== 'undefined') {
+      ShopNowCommon.showToast(`Added "${prod.title}" to cart!`, 'success');
     }
   });
 
@@ -260,8 +393,18 @@ $(document).ready(function () {
 
   $.getJSON(MOCKAPI_PRODUCTS_URL, function (data) {
     if (Array.isArray(data) && data.length > 0) {
-      localStorage.setItem(STORAGE_PRODUCTS_KEY, JSON.stringify(data));
-      renderProducts(data);
+      // Merge with seller-added products so they are not wiped from the catalog
+      const currentCat = JSON.parse(localStorage.getItem(STORAGE_PRODUCTS_KEY) || '[]');
+      const sellerProds = JSON.parse(localStorage.getItem('shopnow_seller_products') || '[]');
+      const customAdded = [...currentCat, ...sellerProds].filter(p => p && p.sellerEmail && p.sellerEmail !== 'seller@demo.com');
+      const merged = [...data];
+      customAdded.forEach(sp => {
+        if (!merged.some(m => String(m.id) === String(sp.id) || (m.sku && sp.sku && m.sku === sp.sku))) {
+          merged.unshift(sp);
+        }
+      });
+      localStorage.setItem(STORAGE_PRODUCTS_KEY, JSON.stringify(merged));
+      renderProducts(merged);
     } else if (!cachedProducts) {
       renderProducts(defaultProducts);
     }
