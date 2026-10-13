@@ -169,13 +169,11 @@ $(document).ready(function () {
         ShopNowCommon.saveStorage('shopnow_users', users);
       }
 
-      // Sync to MockAPI asynchronously
-      if (typeof ShopNowAPI !== 'undefined') {
-        try {
-          await ShopNowAPI.createUser(newUser);
-        } catch (err) {
-          console.warn('[Register] MockAPI sync notice:', err);
-        }
+      // Sync to MockAPI asynchronously in background (non-blocking for instant UI response)
+      if (typeof ShopNowAPI !== 'undefined' && ShopNowAPI.createUser) {
+        ShopNowAPI.createUser(newUser).catch(function (err) {
+          console.warn('[Register] Background sync note:', err);
+        });
       }
 
       // Automatically establish user session directly upon registration
@@ -198,7 +196,7 @@ $(document).ready(function () {
           // Buyer default
           window.location.href = 'home.html';
         }
-      }, 800);
+      }, 150);
     });
 
   function showRegAlert(msg, type) {

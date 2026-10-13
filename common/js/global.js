@@ -121,7 +121,7 @@ const ShopNowCommon = (function () {
 
   // Formatters
   function formatPrice(price) {
-    return '$' + parseFloat(price).toFixed(2);
+    return '₹ ' + Number(price || 0).toLocaleString('en-IN');
   }
 
   function generateStars(rating, maxStars = 5) {
@@ -227,7 +227,7 @@ const ShopNowAPI = (function () {
     }
   };
 
-  const TIMEOUT_MS = 5000;
+  const TIMEOUT_MS = 2500;
 
   async function request(url, options = {}) {
     const controller = new AbortController();

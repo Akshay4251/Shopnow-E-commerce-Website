@@ -209,7 +209,7 @@ $(document).ready(function () {
         } else {
           window.location.href = 'home.html';
         }
-      }, 1000);
+      }, 150);
     } else {
       showLoginAlert(`Invalid credentials for ${role.toUpperCase()}. Click "Auto-fill demo" above or Register.`, 'danger');
     }
@@ -262,7 +262,7 @@ $(document).ready(function () {
         });
     } else {
       // Demo / fallback simulation when keys are not configured yet
-      setTimeout(finishReset, 800);
+      setTimeout(finishReset, 250);
     }
   });
 

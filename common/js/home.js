@@ -351,49 +351,43 @@ $(document).ready(function () {
     }
   });
 
-  // Load Categories (localStorage cache -> MockAPI -> default fallback)
+  // 1. Immediately Render Categories (from cache or instant default) - 0ms latency
+  let activeCategories = defaultCategories;
   const cachedCategories = localStorage.getItem(STORAGE_CATEGORIES_KEY);
   if (cachedCategories) {
     try {
-      renderCategories(JSON.parse(cachedCategories));
-    } catch (e) {
-      renderCategories(defaultCategories);
-    }
+      const parsed = JSON.parse(cachedCategories);
+      if (Array.isArray(parsed) && parsed.length > 0) activeCategories = parsed;
+    } catch (e) {}
+  } else {
+    localStorage.setItem(STORAGE_CATEGORIES_KEY, JSON.stringify(defaultCategories));
   }
+  renderCategories(activeCategories);
 
+  // Background non-blocking sync for Categories
   $.getJSON(MOCKAPI_CATEGORIES_URL, function (data) {
     if (Array.isArray(data) && data.length > 0) {
       localStorage.setItem(STORAGE_CATEGORIES_KEY, JSON.stringify(data));
       renderCategories(data);
-    } else if (!cachedCategories) {
-      renderCategories(defaultCategories);
-    }
-  }).fail(function () {
-    if (!cachedCategories) {
-      // Try local JSON resource fallback if available
-      $.getJSON('../resources/categories.json', function (data) {
-        const list = data.categories || defaultCategories;
-        localStorage.setItem(STORAGE_CATEGORIES_KEY, JSON.stringify(list));
-        renderCategories(list);
-      }).fail(function () {
-        renderCategories(defaultCategories);
-      });
     }
   });
 
-  // Load Products (localStorage cache -> MockAPI -> default fallback)
+  // 2. Immediately Render Products (from cache or instant default) - 0ms latency
+  let activeProducts = defaultProducts;
   const cachedProducts = localStorage.getItem(STORAGE_PRODUCTS_KEY);
   if (cachedProducts) {
     try {
-      renderProducts(JSON.parse(cachedProducts));
-    } catch (e) {
-      renderProducts(defaultProducts);
-    }
+      const parsed = JSON.parse(cachedProducts);
+      if (Array.isArray(parsed) && parsed.length > 0) activeProducts = parsed;
+    } catch (e) {}
+  } else {
+    localStorage.setItem(STORAGE_PRODUCTS_KEY, JSON.stringify(defaultProducts));
   }
+  renderProducts(activeProducts);
 
+  // Background non-blocking sync for Products
   $.getJSON(MOCKAPI_PRODUCTS_URL, function (data) {
     if (Array.isArray(data) && data.length > 0) {
-      // Merge with seller-added products so they are not wiped from the catalog
       const currentCat = JSON.parse(localStorage.getItem(STORAGE_PRODUCTS_KEY) || '[]');
       const sellerProds = JSON.parse(localStorage.getItem('shopnow_seller_products') || '[]');
       const customAdded = [...currentCat, ...sellerProds].filter(p => p && p.sellerEmail && p.sellerEmail !== 'seller@demo.com');
@@ -405,19 +399,6 @@ $(document).ready(function () {
       });
       localStorage.setItem(STORAGE_PRODUCTS_KEY, JSON.stringify(merged));
       renderProducts(merged);
-    } else if (!cachedProducts) {
-      renderProducts(defaultProducts);
-    }
-  }).fail(function () {
-    if (!cachedProducts) {
-      // Try local JSON resource fallback if available
-      $.getJSON('../resources/products.json', function (data) {
-        const list = data.products || defaultProducts;
-        localStorage.setItem(STORAGE_PRODUCTS_KEY, JSON.stringify(list));
-        renderProducts(list);
-      }).fail(function () {
-        renderProducts(defaultProducts);
-      });
     }
   });
 });

@@ -200,22 +200,27 @@ $(document).ready(function () {
     }
   }
 
-  // Helper: Get Cached or Default Products
+  // Helper: Get Cached or Default Products (Instant 0ms Load with Background Sync)
   function getProducts(callback) {
+    let initial = defaultProducts;
     const cached = localStorage.getItem(STORAGE_PRODUCTS_KEY);
     if (cached) {
       try {
         const parsed = JSON.parse(cached);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          callback(parsed);
-          return;
+          initial = parsed;
         }
       } catch (e) {}
+    } else {
+      localStorage.setItem(STORAGE_PRODUCTS_KEY, JSON.stringify(defaultProducts));
     }
+    
+    // Call callback immediately with initial data for instant UI rendering
+    callback(initial);
 
+    // Sync in background without blocking
     $.getJSON(PRODUCTS_API, function (data) {
       if (Array.isArray(data) && data.length > 0) {
-        // Merge with locally added seller products so items are not overwritten
         const currentCat = JSON.parse(localStorage.getItem(STORAGE_PRODUCTS_KEY) || '[]');
         const sellerProds = JSON.parse(localStorage.getItem('shopnow_seller_products') || '[]');
         const customAdded = [...currentCat, ...sellerProds].filter(p => p && p.sellerEmail && p.sellerEmail !== 'seller@demo.com');
@@ -227,11 +232,7 @@ $(document).ready(function () {
         });
         localStorage.setItem(STORAGE_PRODUCTS_KEY, JSON.stringify(merged));
         callback(merged);
-      } else {
-        callback(defaultProducts);
       }
-    }).fail(function () {
-      callback(defaultProducts);
     });
   }
 

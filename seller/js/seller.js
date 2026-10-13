@@ -1450,16 +1450,14 @@ $(document).ready(function () {
         });
         safeStorageSet('shopnow_products', catalog);
 
-        // Sync with MockAPI products: POST to https://6ac630bdbea0e72cf5c8ada0.mockapi.io/api/v1/products
-        try {
-          await fetch('https://6ac630bdbea0e72cf5c8ada0.mockapi.io/api/v1/products', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newProd)
-          });
-        } catch (err) {
+        // Sync with MockAPI products in background (non-blocking)
+        fetch('https://6ac630bdbea0e72cf5c8ada0.mockapi.io/api/v1/products', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newProd)
+        }).catch(function (err) {
           console.warn('MockAPI product push notice:', err);
-        }
+        });
       }
 
       safeStorageSet(STORAGE_SELLER_PRODUCTS, products);
@@ -1470,7 +1468,7 @@ $(document).ready(function () {
 
       setTimeout(function () {
         window.location.href = 'products.html';
-      }, 500);
+      }, 150);
     });
   }
 
