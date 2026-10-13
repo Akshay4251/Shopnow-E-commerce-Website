@@ -1,0 +1,199 @@
+/* ===================================================
+   SHOPNOW - LOGIN PAGE STYLES (FIGMA IDENTICAL MATCHING)
+   =================================================== */
+
+.login-page-wrapper {
+  padding: 80px 0 90px;
+  background-color: #f4f7fb;
+  min-height: calc(100vh - 200px);
+}
+
+.login-left-title {
+  font-size: 2.85rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.login-left-desc {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  max-width: 520px;
+}
+
+/* Recent Order Card Component */
+.recent-order-card {
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 24px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  max-width: 480px;
+}
+
+.badge-arriving {
+  background-color: #d1fae5;
+  color: #059669;
+  border-radius: 50px;
+  padding: 6px 14px;
+  font-size: 0.775rem;
+  font-weight: 600;
+}
+
+.order-product-thumb img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 12px;
+  background-color: #f8fafc;
+}
+
+.product-brand-tag {
+  font-size: 0.725rem;
+  letter-spacing: 0.8px;
+  color: #94a3b8;
+  font-weight: 700;
+}
+
+.product-title {
+  font-size: 0.95rem;
+  color: #1e293b;
+}
+
+.shipping-progress-track {
+  width: 100%;
+}
+
+.progress-segment {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background-color: #e2e8f0;
+}
+
+.progress-segment.active {
+  background-color: #10b981;
+}
+
+/* Right Login Card */
+.login-card-main {
+  background-color: #ffffff;
+  border-radius: 24px;
+  padding: 44px 38px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.login-card-title {
+  font-size: 2.15rem;
+  font-weight: 700;
+}
+
+/* 4 Role Selector Bar */
+.role-pills-bar.four-roles {
+  display: flex;
+  background-color: #f1f5f9;
+  border-radius: 50px;
+  padding: 5px;
+  gap: 4px;
+}
+
+.role-tab-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 10px 14px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.825rem;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.role-tab-btn:hover {
+  color: #1e293b;
+}
+
+.role-tab-btn.active {
+  background-color: var(--color-coral);
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(255, 83, 56, 0.3);
+}
+
+/* Role Access Callout */
+.role-access-callout {
+  background-color: #fef3ee;
+  border: 1px solid rgba(255, 83, 56, 0.2);
+  border-radius: 16px;
+  padding: 18px 20px;
+}
+
+/* Form Group with Icon */
+.input-capsule-group {
+  position: relative;
+  width: 100%;
+}
+
+.input-capsule-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  font-size: 1.1rem;
+  pointer-events: none;
+}
+
+.form-control-custom-icon {
+  border-radius: 12px;
+  padding: 12px 16px 12px 46px;
+  border: 1px solid #cbd5e1;
+  font-size: 0.925rem;
+  color: #1e293b;
+  transition: all 0.2s ease;
+  background-color: #ffffff;
+}
+
+.form-control-custom-icon:focus {
+  border-color: var(--color-coral);
+  box-shadow: 0 0 0 3px rgba(255, 83, 56, 0.15);
+  outline: none;
+}
+
+.create-account-callout {
+  background-color: #fef3ee;
+  border: 1px solid rgba(255, 83, 56, 0.2);
+}
+
+/* Trouble Signing In Section */
+.trouble-signing-section {
+  background-color: #fef3ee;
+  border-top: 1px solid rgba(255, 83, 56, 0.15);
+  border-bottom: 1px solid rgba(255, 83, 56, 0.15);
+}
+
+/* Media Queries */
+@media (max-width: 991.98px) {
+  .login-page-wrapper {
+    padding: 50px 0 60px;
+  }
+
+  .login-left-title {
+    font-size: 2.15rem;
+  }
+
+  .login-card-main {
+    padding: 32px 24px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .role-pills-bar.four-roles {
+    flex-wrap: wrap;
+  }
+
+  .role-tab-btn {
+    font-size: 0.75rem;
+    padding: 8px 8px;
+  }
+}

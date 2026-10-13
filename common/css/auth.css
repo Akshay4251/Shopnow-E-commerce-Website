@@ -1,0 +1,120 @@
+/* ===================================================
+   SHOPNOW - AUTH STYLES (FIGMA IMAGES 4 & 5 MATCHING)
+   Registration & Login Forms (No Header & Footer DOM)
+   =================================================== */
+
+.auth-page-wrapper {
+  padding: 60px 0;
+  min-height: 100vh;
+  background: var(--color-cream-accent);
+  display: flex;
+  align-items: center;
+}
+
+.auth-card-main {
+  background: #ffffff;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+.auth-side-hero {
+  background: var(--color-cream);
+  padding: 44px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+
+.auth-side-hero img {
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-height: 320px;
+  object-fit: cover;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 24px;
+}
+
+.auth-form-area {
+  padding: 44px;
+}
+
+/* Role Pills */
+.role-pills-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  background: var(--color-gray-100);
+  padding: 6px;
+  border-radius: var(--radius-md);
+  margin-bottom: 24px;
+}
+
+.role-pills-bar.login-roles {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.role-tab-btn {
+  border: none;
+  background: transparent;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-gray-500);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.role-tab-btn.active {
+  background: var(--color-coral);
+  color: #ffffff;
+  box-shadow: var(--shadow-coral);
+}
+
+.role-desc-box {
+  background: var(--color-cream);
+  border: 1px dashed var(--color-coral);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  margin-bottom: 24px;
+}
+
+.pw-toggle-icon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: var(--color-gray-500);
+  cursor: pointer;
+}
+
+.pw-strength-track {
+  height: 5px;
+  border-radius: 3px;
+  background: #e5e7eb;
+  margin-top: 6px;
+  overflow: hidden;
+}
+
+.pw-strength-bar {
+  height: 100%;
+  width: 0%;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+@media (max-width: 575.98px) {
+  .role-pills-bar { grid-template-columns: repeat(3, 1fr); }
+  .role-pills-bar.login-roles { grid-template-columns: repeat(2, 1fr); }
+  .role-tab-btn { font-size: 0.75rem; padding: 8px 4px; }
+  .auth-form-area { padding: 24px; }
+}

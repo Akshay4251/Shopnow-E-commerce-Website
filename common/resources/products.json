@@ -1,0 +1,100 @@
+{
+  "products": [
+    {
+      "id": 101,
+      "brand": "AERFORM",
+      "title": "Textured Cashmere Blend Sweater",
+      "category": "Sweaters",
+      "price": 189.00,
+      "oldPrice": 240.00,
+      "rating": 4.8,
+      "reviews": 124,
+      "badge": "15% OFF",
+      "image": "https://res.cloudinary.com/dpva4smxo/image/upload/v1791382197/Product_image_ucgxvy.png"
+    },
+    {
+      "id": 102,
+      "brand": "LUMEN",
+      "title": "Over-Ear Noise Canceling Headphones",
+      "category": "Audio",
+      "price": 199.00,
+      "oldPrice": 270.00,
+      "rating": 4.9,
+      "reviews": 88,
+      "badge": "15% OFF",
+      "image": "https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_1_dtjolj.png"
+    },
+    {
+      "id": 103,
+      "brand": "KIN HOME",
+      "title": "Sculptural Ceramic Table Lamp",
+      "category": "Decor",
+      "price": 145.00,
+      "oldPrice": null,
+      "rating": 4.7,
+      "reviews": 42,
+      "badge": "",
+      "image": "https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_2_k3wqpn.png"
+    },
+    {
+      "id": 104,
+      "brand": "RIVIERA HOME",
+      "title": "Structured Leather Daypack",
+      "category": "Accessories",
+      "price": 175.00,
+      "oldPrice": 220.00,
+      "rating": 4.6,
+      "reviews": 210,
+      "badge": "15% OFF",
+      "image": "https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_3_jh8ziq.png"
+    },
+    {
+      "id": 105,
+      "brand": "AERFORM",
+      "title": "Aeroflex Pro Runner",
+      "category": "Footwear",
+      "price": 140.00,
+      "oldPrice": null,
+      "rating": 4.8,
+      "reviews": 56,
+      "badge": "NEW EDIT",
+      "image": "https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_4_dh5fbk.png"
+    },
+    {
+      "id": 106,
+      "brand": "LUMEN",
+      "title": "Hydration Serum & Body Oil",
+      "category": "Skincare",
+      "price": 48.00,
+      "oldPrice": null,
+      "rating": 4.9,
+      "reviews": 310,
+      "badge": "",
+      "image": "https://res.cloudinary.com/dpva4smxo/image/upload/v1791382197/Product_image_5_mqgoba.png"
+    },
+    {
+      "id": 107,
+      "brand": "NOMAD",
+      "title": "Expandable Carry-On Suitcase",
+      "category": "Luggage",
+      "price": 220.00,
+      "oldPrice": 280.00,
+      "rating": 4.9,
+      "reviews": 512,
+      "badge": "BESTSELLER",
+      "image": "https://res.cloudinary.com/dpva4smxo/image/upload/v1791382197/Product_image_6_vvdraq.png"
+    },
+    {
+      "id": 108,
+      "brand": "SONORA AUDIO",
+      "title": "Mini 360 Speaker",
+      "category": "Portable Tech",
+      "price": 95.00,
+      "oldPrice": null,
+      "rating": 4.7,
+      "reviews": 94,
+      "badge": "",
+      "image": "https://res.cloudinary.com/dpva4smxo/image/upload/v1791382197/Product_image_7_radxl9.png"
+    }
+  ]
+}

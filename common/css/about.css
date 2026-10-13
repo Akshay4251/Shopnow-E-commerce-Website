@@ -1,0 +1,493 @@
+/* ===================================================
+   SHOPNOW - ABOUT US PAGE STYLES (FIGMA IDENTICAL MATCHING)
+   =================================================== */
+
+:root {
+  --color-coral: #ff5338;
+  --color-coral-hover: #e0442b;
+  --color-navy: #081726;
+  --color-card-light: #f4f7fb;
+  --color-credo-peach: #fef3ee;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: #111827;
+  background-color: #ffffff;
+}
+
+/* ==================== BUTTON STYLES ==================== */
+.btn-coral-pill {
+  background-color: var(--color-coral);
+  color: #ffffff !important;
+  font-weight: 600;
+  border-radius: 50px;
+  padding: 13px 28px;
+  border: none;
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(255, 83, 56, 0.25);
+}
+
+.btn-coral-pill:hover {
+  background-color: var(--color-coral-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 83, 56, 0.35);
+}
+
+.btn-outline-pill {
+  background-color: #ffffff;
+  color: #111827 !important;
+  font-weight: 600;
+  border-radius: 50px;
+  padding: 13px 28px;
+  border: 1px solid #d0d7de;
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+}
+
+.btn-outline-pill:hover {
+  background-color: #f8fafc;
+  border-color: #9ca3af;
+  transform: translateY(-2px);
+}
+
+.btn-white-pill {
+  background-color: #ffffff;
+  color: var(--color-navy) !important;
+  font-weight: 600;
+  border-radius: 50px;
+  padding: 13px 28px;
+  border: none;
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+.btn-white-pill:hover {
+  background-color: #f1f5f9;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+.hero-tag-coral-text {
+  color: var(--color-coral);
+  font-size: 0.825rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+/* ==================== HERO SECTION ==================== */
+.about-hero-section {
+  padding: 90px 0 100px;
+  background-color: #ffffff;
+}
+
+.about-hero-title {
+  font-size: 3.25rem;
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -0.5px;
+}
+
+.about-hero-desc {
+  font-size: 1.1rem;
+  line-height: 1.65;
+  max-width: 520px;
+}
+
+.about-hero-image-wrapper {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+}
+
+.about-hero-img {
+  border-radius: 24px;
+  width: 100%;
+  max-height: 520px;
+  object-fit: cover;
+}
+
+/* Floating Rating Badge */
+.rating-floating-badge {
+  position: absolute;
+  bottom: 24px;
+  left: -24px;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 14px 22px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  z-index: 2;
+}
+
+.rating-star-icon {
+  width: 44px;
+  height: 44px;
+  background-color: #fef3c7;
+  color: #f59e0b;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  flex-shrink: 0;
+}
+
+.rating-score {
+  font-size: 1.1rem;
+}
+
+.rating-subtext {
+  font-size: 0.8rem;
+  display: block;
+  white-space: nowrap;
+}
+
+/* ==================== METRICS BAR (DARK NAVY) ==================== */
+.about-stats-navy-bar {
+  background-color: var(--color-navy);
+  color: #ffffff;
+  padding: 60px 0;
+  width: 100%;
+}
+
+.stat-metric-number {
+  font-size: 3.4rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.stat-metric-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+/* ==================== OUR STORY SECTION ==================== */
+.story-image-wrapper {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 380px;
+}
+
+.story-main-img {
+  border-radius: 24px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.garage-badge-callout {
+  position: absolute;
+  bottom: -20px;
+  right: -10px;
+  background-color: var(--color-coral);
+  color: #ffffff;
+  border-radius: 18px;
+  padding: 22px 26px;
+  text-align: left;
+  box-shadow: 0 12px 30px rgba(255, 83, 56, 0.35);
+  max-width: 240px;
+  z-index: 2;
+}
+
+.badge-year {
+  font-family: var(--font-serif);
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.badge-desc {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  line-height: 1.35;
+}
+
+.story-timeline-link {
+  color: var(--color-coral);
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+}
+
+.story-timeline-link:hover {
+  color: var(--color-coral-hover);
+  text-decoration: underline;
+}
+
+/* ==================== CREDO / MISSION BANNER ==================== */
+.credo-section {
+  background-color: var(--color-credo-peach);
+  padding: 90px 0;
+  text-align: center;
+}
+
+.purpose-quote-card {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.credo-icon-circle {
+  width: 56px;
+  height: 56px;
+  background-color: #ffffff;
+  color: var(--color-coral);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: 0 6px 20px rgba(255, 83, 56, 0.15);
+}
+
+.credo-quote-text {
+  font-size: 2.35rem;
+  font-weight: 400;
+  line-height: 1.35;
+  color: #111827;
+}
+
+/* ==================== VALUES SECTION (PRINCIPLES) ==================== */
+.principle-item-card {
+  background-color: var(--color-card-light);
+  border-radius: 20px;
+  padding: 36px 28px;
+  height: 100%;
+  transition: all 0.25s ease;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.principle-item-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+  border-color: rgba(255, 83, 56, 0.3);
+}
+
+.principle-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background-color: #ffffff;
+  color: var(--color-coral);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  margin-bottom: 22px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.principle-title {
+  font-weight: 700;
+  font-size: 1.15rem;
+  margin-bottom: 10px;
+  color: #111827;
+}
+
+.principle-desc {
+  font-size: 0.9rem;
+  color: #6b7280;
+  line-height: 1.55;
+  margin-bottom: 0;
+}
+
+/* ==================== TRUST & SAFETY SECTION (SPLIT 50/50 FULL-BLEED) ==================== */
+.trust-safety-split-section {
+  width: 100%;
+  background-color: var(--color-navy);
+  overflow: hidden;
+}
+
+.trust-split-img-wrapper {
+  width: 100%;
+  height: 100%;
+  min-height: 480px;
+}
+
+.trust-split-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 0;
+}
+
+.trust-split-content-col {
+  background-color: var(--color-navy);
+  display: flex;
+  align-items: center;
+  padding: 90px 60px 90px 70px;
+  color: #ffffff;
+}
+
+.trust-split-content-inner {
+  max-width: 540px;
+}
+
+.trust-navy-title {
+  font-size: 2.85rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.trust-checklist span {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* ==================== CULTURE / OUR PEOPLE SECTION ==================== */
+.culture-section-bg {
+  background-color: #faf7f4;
+}
+
+.culture-card-img-wrapper {
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+.culture-img {
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  object-fit: cover;
+  border-radius: 24px;
+}
+
+.culture-coral-quote-card {
+  background-color: var(--color-coral);
+  border-radius: 24px;
+  padding: 44px 34px;
+  box-shadow: 0 12px 30px rgba(255, 83, 56, 0.2);
+  min-height: 400px;
+}
+
+.coral-quote-text {
+  font-size: 1.65rem;
+  line-height: 1.35;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+}
+
+/* ==================== TRUST BADGES ROW ==================== */
+.trust-badges-bar {
+  padding: 36px 0;
+}
+
+.trust-badge-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.trust-badge-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background-color: #fef3ee;
+  color: var(--color-coral);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+/* ==================== MEDIA QUERIES FOR TABLET & MOBILE ==================== */
+@media (max-width: 991.98px) {
+  .about-hero-section {
+    padding: 60px 0 70px;
+  }
+
+  .about-hero-title {
+    font-size: 2.5rem;
+  }
+
+  .rating-floating-badge {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    margin: 20px auto 0;
+    display: inline-flex;
+  }
+
+  .garage-badge-callout {
+    position: relative;
+    bottom: auto;
+    right: auto;
+    margin: 20px auto 0;
+    max-width: 100%;
+  }
+
+  .credo-quote-text {
+    font-size: 1.85rem;
+  }
+
+  .trust-navy-title {
+    font-size: 2.25rem;
+  }
+
+  .trust-split-content-col {
+    padding: 60px 24px;
+  }
+
+  .trust-split-img-wrapper {
+    min-height: 350px;
+  }
+
+  .culture-img {
+    min-height: 280px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .about-hero-title {
+    font-size: 2rem;
+  }
+
+  .about-hero-desc {
+    font-size: 0.98rem;
+  }
+
+  .stat-metric-number {
+    font-size: 2.4rem;
+  }
+
+  .stat-metric-label {
+    font-size: 0.725rem;
+  }
+
+  .credo-quote-text {
+    font-size: 1.45rem;
+  }
+
+  .heading-lg {
+    font-size: 1.8rem !important;
+  }
+
+  .trust-navy-title {
+    font-size: 1.8rem;
+  }
+
+  .coral-quote-text {
+    font-size: 1.25rem;
+  }
+}

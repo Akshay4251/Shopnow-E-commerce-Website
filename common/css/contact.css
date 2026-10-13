@@ -1,0 +1,257 @@
+/* ===================================================
+   SHOPNOW - CONTACT US PAGE STYLES (FIGMA EXACT MATCH)
+   =================================================== */
+
+/* Hero Section (Dark Navy) */
+.contact-hero-section {
+  background-color: #081726;
+  color: #ffffff;
+  padding: 72px 0 84px;
+}
+
+.contact-hero-title {
+  font-size: 3.2rem;
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+}
+
+.contact-hero-desc {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  max-width: 540px;
+}
+
+.contact-search-capsule {
+  background: #ffffff;
+  border-radius: 50px;
+  padding: 6px 6px 6px 20px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.contact-search-icon {
+  color: #9ca3af;
+  font-size: 1.25rem;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.contact-search-capsule input {
+  border: none;
+  outline: none;
+  background: transparent;
+  flex: 1;
+  font-size: 0.95rem;
+  color: #081726;
+  font-family: var(--font-sans);
+  min-width: 0;
+}
+
+.btn-contact-search {
+  background-color: #ff5338;
+  color: #ffffff;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 30px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: background 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.btn-contact-search:hover {
+  background-color: #e04325;
+}
+
+/* Quick Help Cards */
+.quick-help-card-figma {
+  background: #f4f7fb;
+  border: 1px solid #e5e9f0;
+  border-radius: 20px;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-decoration: none;
+  color: #081726;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.quick-help-card-figma:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(8, 23, 38, 0.08);
+  border-color: #ff5338;
+  color: #081726;
+}
+
+.quick-help-icon-box {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: #ffece6;
+  color: #ff5338;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  margin-bottom: 20px;
+}
+
+.quick-help-card-title {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #081726;
+  margin-bottom: 6px;
+}
+
+.quick-help-card-desc {
+  font-size: 0.85rem;
+  color: #6b7280;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  flex: 1;
+}
+
+.quick-help-link {
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: #ff5338;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Contact Form Card */
+.bg-light-soft {
+  background-color: #f8f9fa;
+}
+
+.contact-info-icon-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #ffece6;
+  color: #ff5338;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.contact-form-card-figma {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 40px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.04);
+}
+
+.contact-file-box {
+  background-color: #f9fafb;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+/* Browse by Topic Cards */
+.topic-grid-card-figma {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 24px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  text-decoration: none;
+  color: #081726;
+  transition: all 0.25s ease;
+  height: 100%;
+}
+
+.topic-grid-card-figma:hover {
+  border-color: #ff5338;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+  color: #081726;
+}
+
+.topic-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #f3f4f6;
+  color: #081726;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.topic-card-title {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1rem;
+  color: #081726;
+  margin-bottom: 4px;
+}
+
+.topic-card-desc {
+  font-size: 0.825rem;
+  color: #6b7280;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.topic-arrow {
+  color: #d1d5db;
+  font-size: 1.1rem;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.topic-grid-card-figma:hover .topic-arrow {
+  transform: translateX(3px);
+  color: #ff5338;
+}
+
+/* Support Built Around Your Day */
+.bg-cream-soft {
+  background-color: #fffdf9;
+}
+
+.support-team-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 24px;
+}
+
+/* Trust Badges Bar for Contact Page */
+.contact-trust-badges {
+  background-color: #ffffff !important;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 991.98px) {
+  .contact-hero-title { font-size: 2.5rem; }
+  .contact-hero-section { padding: 50px 0 60px; }
+  .contact-form-card-figma { padding: 28px 20px; }
+}
+
+@media (max-width: 767.98px) {
+  .contact-hero-title { font-size: 2.1rem; }
+  .contact-search-capsule {
+    flex-direction: column;
+    border-radius: 24px;
+    padding: 12px;
+    gap: 10px;
+  }
+  .contact-search-capsule input { width: 100%; text-align: center; }
+  .btn-contact-search { width: 100%; }
+}

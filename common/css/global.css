@@ -1,0 +1,252 @@
+/* ===================================================
+   SHOPNOW - FIGMA PIXEL-PERFECT GLOBAL DESIGN SYSTEM
+   Exact Color Tokens, Typography, Buttons & Utilities
+   (No Header & Footer DOM styles included)
+   =================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap');
+
+:root {
+  /* Exact Figma Palette */
+  --color-coral: #e04326;
+  --color-coral-hover: #c7371d;
+  --color-coral-light: rgba(224, 67, 38, 0.08);
+  --color-navy: #0b1a2b;
+  --color-navy-card: #132439;
+  --color-navy-light: rgba(11, 26, 43, 0.05);
+  --color-cream: #f8f7f4;
+  --color-cream-card: #f6f4ee;
+  --color-cream-accent: #fdfbf7;
+  --color-peach: #fdf7f2;
+
+  /* Neutrals */
+  --color-dark: #111827;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-500: #6b7280;
+  --color-gray-700: #374151;
+  --color-gray-900: #111827;
+  --color-border: #eae6df;
+
+  /* Brand Spotlight Colors from Figma */
+  --color-adiform: #122338;
+  --color-riviera: #ff5c39;
+  --color-lumen: #6e59a4;
+  --color-nomad: #247b79;
+  --color-sonora: #be7e38;
+
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Playfair Display', Georgia, serif;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.12);
+  --shadow-coral: 0 10px 28px rgba(224, 67, 38, 0.28);
+
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 32px;
+  --radius-pill: 999px;
+
+  /* Transitions */
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Base Setup */
+body {
+  font-family: var(--font-sans);
+  color: var(--color-dark);
+  background-color: #ffffff;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--color-dark);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.heading-xl {
+  font-size: 3.5rem;
+  line-height: 1.12;
+  font-weight: 800;
+}
+
+.heading-lg {
+  font-size: 2.65rem;
+  line-height: 1.18;
+  font-weight: 700;
+}
+
+.heading-md {
+  font-size: 2rem;
+  line-height: 1.25;
+  font-weight: 700;
+}
+
+.subtitle {
+  font-size: 1.15rem;
+  color: var(--color-gray-500);
+  line-height: 1.65;
+}
+
+.label-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.725rem;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--color-coral);
+  background: var(--color-coral-light);
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+}
+
+.btn-coral-custom,
+.btn-coral-pill {
+  background-color: var(--color-coral);
+  color: #ffffff !important;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 13px 32px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: var(--shadow-coral);
+}
+
+.btn-coral-custom:hover,
+.btn-coral-pill:hover,
+.btn-coral-custom:focus,
+.btn-coral-pill:focus {
+  background-color: var(--color-coral-hover);
+  color: #ffffff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(224, 67, 38, 0.35);
+}
+
+.btn-outline-custom {
+  border: 1.5px solid var(--color-dark);
+  color: var(--color-dark);
+  background: transparent;
+  border-radius: var(--radius-pill);
+  padding: 12px 30px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-outline-custom:hover {
+  background: var(--color-dark);
+  color: #ffffff;
+}
+
+.btn-white-custom {
+  background-color: #ffffff;
+  color: var(--color-dark);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  padding: 12px 30px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.btn-white-custom:hover {
+  background-color: var(--color-gray-100);
+  color: var(--color-dark);
+}
+
+/* Section Padding */
+.section-padding {
+  padding: 95px 0;
+}
+
+.section-padding-sm {
+  padding: 55px 0;
+}
+
+/* Trust Badges Bar */
+.trust-badges-bar {
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-cream-accent);
+  padding: 24px 0;
+}
+
+.trust-badge-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-gray-700);
+}
+
+.trust-badge-item i {
+  font-size: 1.35rem;
+  color: var(--color-coral);
+}
+
+/* Toast Notification */
+.shopnow-toast {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  z-index: 9999;
+  box-shadow: var(--shadow-lg);
+  color: #ffffff;
+  animation: slideInRight 0.3s ease forwards;
+}
+
+.shopnow-toast-success { background: #15803d; }
+.shopnow-toast-error { background: #b91c1c; }
+.shopnow-toast-info { background: #0369a1; }
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@media (max-width: 991.98px) {
+  .heading-xl { font-size: 2.5rem; }
+  .heading-lg { font-size: 2rem; }
+  .heading-md { font-size: 1.6rem; }
+  .section-padding { padding: 65px 0; }
+}
