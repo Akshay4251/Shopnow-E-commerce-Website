@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Seller Profile | ShopNow</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <link href="../css/seller-profile.css" rel="stylesheet" />
+<link rel="stylesheet" href="../css/seller-responsive.css">
+</head>
+<body>
+
+  <div class="sn-announce">Good finds. Great possibilities. Discover something new every day.</div>
+
+  <!-- Header -->
+  <header class="sn-header">
+    <div class="sn-container sn-header__row">
+      <a href="seller-dashboard.html" class="sn-logo"><img class="project-logo" src="../resources/shopnow-logo.png" alt="ShopNow"></a>
+
+      <form class="sn-search" role="search" action="seller-help-search.html" method="get">
+        <i class="bi bi-search"></i>
+        <input type="search" name="q" placeholder="Search products, orders and more" aria-label="Search" autocomplete="off" />
+      </form>
+
+      <div class="sn-header__right">
+        <a href="seller-notifications.html" class="sn-bell" aria-label="Notifications"><i class="bi bi-bell"></i><span class="sn-bell__dot"></span></a>
+        <div class="sn-chipwrap">
+          <a href="seller-profile.html" class="sn-userchip" aria-label="Open profile settings">
+            <span class="sn-avatar sn-avatar--sm"><span id="hdrInitials">RS</span><img id="hdrImg" alt="" hidden /></span>
+            <span class="sn-userchip__text"><strong id="hdrName">Seller</strong><small id="hdrBusiness">Seller account</small></span>
+          </a>
+          <button type="button" class="sn-caret" id="menuBtn" aria-haspopup="true" aria-expanded="false" aria-label="Account menu"><i class="bi bi-chevron-down"></i></button>
+          <ul class="sn-menu" id="menuList" hidden>
+            <li><a href="seller-profile.html"><i class="bi bi-person"></i> Profile settings</a></li>
+            <li><a href="seller-update-password.html"><i class="bi bi-shield-lock"></i> Update password</a></li>
+            <li><a href="#" id="logoutBtn" class="danger"><i class="bi bi-box-arrow-right"></i> Log out</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <nav class="sn-nav" aria-label="Seller navigation">
+      <div class="sn-container sn-nav__row">
+        <a href="seller-dashboard.html">Dashboard</a>
+        <a href="seller-products.html">Products</a>
+        <a href="seller-inventory.html">Inventory</a>
+        <a href="seller-orders.html">Orders</a>
+        <a href="seller-shipping.html">Shipping</a>
+        <a href="seller-reviews.html">Reviews</a>
+        <a href="seller-return-orders.html">Returns</a>
+        <a href="seller-reports.html">Reports</a>
+        <a href="seller-profile.html" class="active">Profile</a>
+        <a href="seller-notifications.html">Notifications</a>
+        <a href="seller-support.html">Support</a><a href="faq.html" class="">FAQ</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="sn-container sn-main">
+    <ol class="sn-crumbs">
+      <li><a href="seller-dashboard.html">Dashboard</a></li>
+      <li aria-current="page">Profile</li>
+    </ol>
+
+    <div class="sn-pagehead">
+      <div>
+        <h1>Profile</h1>
+        <p>Manage your personal and business information.</p>
+      </div>
+      <button type="button" class="btn-coral" id="editBtn">Edit profile</button>
+    </div>
+
+    <div class="sn-layout">
+
+      <!-- Left summary card -->
+      <aside class="sn-card sn-side">
+        <div class="sn-avatar sn-avatar--lg">
+          <span id="avatarInitials">RS</span>
+          <img id="avatarImg" alt="Profile photo" hidden />
+        </div>
+        <h2 id="sideName">—</h2>
+        <p class="sn-side__sub" id="sideBusiness">—</p>
+        <span class="sn-badge"><i class="bi bi-patch-check-fill"></i> Verified</span>
+        <p class="sn-side__since">Member since <span id="memberSince">—</span></p>
+
+        <input type="file" id="photoInput" accept="image/png,image/jpeg" hidden />
+        <button type="button" class="btn-outline-dark-sn" id="photoBtn">Change photo</button>
+        <button type="button" class="sn-remove" id="photoRemoveBtn" disabled>Remove photo</button>
+
+        <hr />
+        <p class="sn-side__hint">Keep your account secure</p>
+        <a href="seller-update-password.html" class="sn-link">Update password</a>
+      </aside>
+
+      <!-- Right content -->
+      <section class="sn-content">
+
+        <!-- VIEW MODE -->
+        <div id="viewMode">
+          <div class="sn-card sn-block">
+            <h3>Personal information</h3>
+            <div class="sn-grid3">
+              <div><span class="sn-label">Full name</span><span class="sn-value" id="vName">—</span></div>
+              <div><span class="sn-label">Email</span><span class="sn-value" id="vEmail">—</span></div>
+              <div><span class="sn-label">Phone</span><span class="sn-value" id="vPhone">—</span></div>
+            </div>
+          </div>
+
+          <div class="sn-card sn-block">
+            <h3>Business information</h3>
+            <div class="sn-grid2">
+              <div><span class="sn-label">Business name</span><span class="sn-value" id="vBusiness">—</span></div>
+              <div><span class="sn-label">Tax ID</span><span class="sn-value" id="vTax">—</span></div>
+              <div><span class="sn-label">Business address</span><span class="sn-value" id="vAddress">—</span></div>
+              <div><span class="sn-label">Bank account</span><span class="sn-value" id="vBank">—</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- EDIT MODE -->
+        <form id="editMode" class="sn-edit" novalidate hidden>
+          <div class="sn-editmark">Edit mode</div>
+          <h2 class="sn-edit__title">Edit profile</h2>
+          <p class="sn-edit__sub">Update your details below, then save your changes.</p>
+
+          <div class="sn-card sn-block">
+            <h3>Personal information</h3>
+            <div class="sn-grid3">
+              <div class="sn-field">
+                <label for="fName">Full name</label>
+                <input type="text" id="fName" autocomplete="name" />
+                <small class="sn-err"></small>
+              </div>
+              <div class="sn-field">
+                <label for="fEmail">Email</label>
+                <input type="email" id="fEmail" autocomplete="email" />
+                <small class="sn-err"></small>
+              </div>
+              <div class="sn-field">
+                <label for="fPhone">Phone</label>
+                <input type="tel" id="fPhone" autocomplete="tel" />
+                <small class="sn-err"></small>
+              </div>
+            </div>
+          </div>
+
+          <div class="sn-card sn-block">
+            <h3>Business information</h3>
+            <div class="sn-grid2">
+              <div class="sn-field">
+                <label for="fBusiness">Business name</label>
+                <input type="text" id="fBusiness" autocomplete="organization" />
+                <small class="sn-err"></small>
+              </div>
+              <div class="sn-field">
+                <label for="fTax">Tax ID</label>
+                <input type="text" id="fTax" maxlength="15" autocomplete="off" />
+                <small class="sn-err"></small>
+              </div>
+              <div class="sn-field">
+                <label for="fAddress">Business address</label>
+                <input type="text" id="fAddress" autocomplete="street-address" />
+                <small class="sn-err"></small>
+              </div>
+              <div class="sn-field">
+                <label for="fBank">Bank account</label>
+                <input type="text" id="fBank" autocomplete="off" />
+                <small class="sn-err"></small>
+              </div>
+            </div>
+          </div>
+
+          <div class="sn-actions">
+            <button type="submit" class="btn-coral">Save changes</button>
+            <button type="button" class="btn-outline-dark-sn" id="cancelBtn">Cancel</button>
+          </div>
+        </form>
+
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="sn-footer">
+    <div class="sn-container">
+      <div class="sn-footer__grid">
+        <div>
+          <a href="seller-dashboard.html" class="sn-logo sn-logo--light"><span class="footer-brand-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="8" width="14" height="12" rx="2.5"></rect><path d="M9 8V7a3 3 0 0 1 6 0v1"></path></svg></span><span>ShopNow</span></a>
+          <p class="sn-footer__tag">Everyday finds. Independent brands.<br />A world of possibilities, all in one place.</p>
+          <div class="sn-social"><i class="bi bi-instagram"></i><i class="bi bi-facebook"></i><i class="bi bi-youtube"></i></div>
+        </div>
+        <div><h4>Shop</h4><a href="#">New arrivals</a><a href="#">Best sellers</a><a href="#">Shop all</a><a href="#">Gift cards</a></div>
+        <div><h4>Sell with us</h4><a href="#">Become a seller</a><a href="#">Seller Center</a><a href="#">Seller resources</a><a href="#">Seller support</a></div>
+        <div><h4>Help</h4><a href="#">Contact us</a><a href="#">Shipping &amp; delivery</a><a href="#">Returns &amp; refunds</a><a href="#">Track your order</a></div>
+        <div><h4>About ShopNow</h4><a href="#">Our story</a><a href="#">Careers</a><a href="#">Journal</a><a href="#">Our community</a></div>
+      </div>
+      <div class="sn-footer__bottom">
+        <span>© 2026 ShopNow. All rights reserved.</span>
+        <span class="sn-footer__legal"><a href="#">Privacy policy</a><a href="#">Terms of service</a></span>
+        <span class="sn-pay">Secure payments <b>VISA</b><b>Mastercard</b><b>PayPal</b><b>Apple Pay</b></span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="sn-toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="../js/seller-profile.js"></script>
+<script src="../js/seller-responsive.js"></script>
+<script src="../js/seller-search.js"></script>
+</body>
+</html>
