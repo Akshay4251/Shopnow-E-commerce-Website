@@ -14,14 +14,16 @@ $(document).ready(function () {
   const STORAGE_CART_KEY = 'shopnow_cart';
   const STORAGE_USER_KEY = 'shopnow_current_user';
 
-  // Fallback Full Product Catalog (Matching the exact 8 Figma products)
+  // Fallback Full Product Catalog (Matching the exact 8 Figma products with Indian Rupee figures)
   const defaultProducts = [
     {
       id: 101,
       brand: 'AERFORM',
       title: 'Textured Cashmere Blend Sweater',
       category: 'Sweaters',
-      price: 189.00,
+      price: 1899,
+      oldPrice: 2499,
+      badge: '15% OFF',
       rating: 4.8,
       reviews: 124,
       image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382197/Product_image_ucgxvy.png'
@@ -31,7 +33,9 @@ $(document).ready(function () {
       brand: 'LUMEN',
       title: 'Over-Ear Noise Canceling Headphones',
       category: 'Audio',
-      price: 199.00,
+      price: 2999,
+      oldPrice: 3999,
+      badge: '15% OFF',
       rating: 4.9,
       reviews: 88,
       image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_1_dtjolj.png'
@@ -41,7 +45,9 @@ $(document).ready(function () {
       brand: 'KIN HOME',
       title: 'Sculptural Ceramic Table Lamp',
       category: 'Decor',
-      price: 145.00,
+      price: 1450,
+      oldPrice: null,
+      badge: '',
       rating: 4.7,
       reviews: 42,
       image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_2_k3wqpn.png'
@@ -51,7 +57,9 @@ $(document).ready(function () {
       brand: 'RIVIERA',
       title: 'Structured Leather Shoulder Bag',
       category: 'Accessories',
-      price: 175.00,
+      price: 1750,
+      oldPrice: 2200,
+      badge: '15% OFF',
       rating: 4.6,
       reviews: 210,
       image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_3_jh8ziq.png'
@@ -61,7 +69,9 @@ $(document).ready(function () {
       brand: 'AERFORM',
       title: 'Aeroflex Pro Runner Sneakers',
       category: 'Footwear',
-      price: 140.00,
+      price: 1400,
+      oldPrice: null,
+      badge: 'NEW EDIT',
       rating: 4.8,
       reviews: 56,
       image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_4_dh5fbk.png'
@@ -71,7 +81,9 @@ $(document).ready(function () {
       brand: 'LUMEN',
       title: 'Hydration Serum & Body Oil',
       category: 'Skincare',
-      price: 48.00,
+      price: 890,
+      oldPrice: null,
+      badge: '',
       rating: 4.9,
       reviews: 310,
       image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382197/Product_image_5_mqgoba.png'
@@ -81,7 +93,9 @@ $(document).ready(function () {
       brand: 'NOMAD',
       title: 'Expandable Carry-On Suitcase',
       category: 'Luggage',
-      price: 220.00,
+      price: 2499,
+      oldPrice: 3199,
+      badge: 'BESTSELLER',
       rating: 4.9,
       reviews: 512,
       image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382197/Product_image_6_vvdraq.png'
@@ -91,7 +105,9 @@ $(document).ready(function () {
       brand: 'SONORA AUDIO',
       title: 'Mini 360 Portable Tech Speaker',
       category: 'Portable Tech',
-      price: 95.00,
+      price: 950,
+      oldPrice: null,
+      badge: '',
       rating: 4.7,
       reviews: 94,
       image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382197/Product_image_7_radxl9.png'
@@ -293,32 +309,77 @@ $(document).ready(function () {
   // 2. PAGE: PRODUCT LISTING (CATALOG & FILTERS)
   // ===================================================
   if ($('#catalogProductsContainer').length) {
-    let allCatalogProducts = [];
-
-    getProducts(function (prods) {
-      allCatalogProducts = prods.map((p, idx) => {
-        let cat = p.category;
-        if (!cat || /^category\s*\d*$/i.test(cat)) {
-          const idNum = parseInt(String(p.id).replace(/\D/g, '')) || idx;
-          const fallbackCats = ['Sweaters', 'Audio', 'Decor', 'Accessories', 'Footwear', 'Skincare', 'Luggage', 'Portable Tech'];
-          cat = fallbackCats[idNum % fallbackCats.length];
-        }
-        let img = p.image;
-        if (!img || img.includes('placeholder') || img.length < 15 || !img.startsWith('http')) {
-          img = defaultProducts[idx % defaultProducts.length].image;
-        }
-        return { ...p, category: cat, image: img };
-      });
-      applyCatalogFilters();
-    });
-
-    // Parse URL Params (e.g. ?category=audio or ?q=headphones or ?brand=AERFORM or ?filter=deals)
+    // 1. Declare all state variables first (prevents TDZ ReferenceErrors)
     const urlParams = new URLSearchParams(window.location.search);
     const searchParam = urlParams.get('q');
     const categoryParam = urlParams.get('category');
     const brandParam = urlParams.get('brand');
     const filterParam = urlParams.get('filter');
 
+    let allCatalogProducts = [];
+    let filteredCatalogProds = [];
+    let currentCatalogPage = 1;
+    const catalogPageSize = 8;
+
+    // Normalizer to sanitize raw/dummy MockAPI data into accurate products
+    function normalizeCatalogProduct(p, idx) {
+      if (!p) return null;
+      const defaultRef = defaultProducts.find(d => String(d.id) === String(p.id)) || defaultProducts[idx % defaultProducts.length];
+      
+      // Sanitizing dummy generated titles
+      const isDummyTitle = !p.title || /^title\s*\d*$/i.test(p.title);
+      const title = isDummyTitle ? defaultRef.title : p.title;
+
+      // Sanitizing dummy generated brands
+      const isDummyBrand = !p.brand || /^brand\s*\d*$/i.test(p.brand);
+      const brand = isDummyBrand ? (p.sellerName || defaultRef.brand || 'SHOPNOW') : p.brand;
+
+      // Category matching filter sidebar categories
+      let cat = p.category;
+      if (!cat || /^category\s*\d*$/i.test(cat)) {
+        cat = defaultRef.category || 'Sweaters';
+      }
+
+      // High-resolution image fallback
+      let img = p.image || (Array.isArray(p.images) && p.images[0]);
+      if (!img || img.includes('placeholder') || img.length < 15 || !img.startsWith('http')) {
+        img = defaultRef.image;
+      }
+
+      // Price normalization
+      let price = Number(p.price);
+      if (isNaN(price) || price <= 0 || (isDummyTitle && price < 100)) {
+        price = defaultRef.price;
+      }
+
+      // Old price / discount
+      let oldPrice = p.oldPrice ? Number(p.oldPrice) : (p.discountPrice ? Number(p.discountPrice) : null);
+      if (oldPrice && oldPrice <= price) {
+        if (oldPrice > 0 && oldPrice < price) {
+          const temp = price;
+          price = oldPrice;
+          oldPrice = temp;
+        } else {
+          oldPrice = defaultRef.oldPrice || null;
+        }
+      }
+
+      return {
+        ...p,
+        id: p.id || defaultRef.id,
+        title: title,
+        brand: brand,
+        category: cat,
+        price: price,
+        oldPrice: oldPrice,
+        badge: p.badge || (p.createdAt ? 'NEW' : defaultRef.badge || ''),
+        rating: p.rating ? Number(p.rating) : defaultRef.rating || 4.8,
+        reviews: p.reviews !== undefined ? p.reviews : defaultRef.reviews || 0,
+        image: img
+      };
+    }
+
+    // 2. Pre-fill Search and Category from URL Params
     if (searchParam) {
       $('#siteSearchInput').val(searchParam);
     }
@@ -357,10 +418,11 @@ $(document).ready(function () {
       }
     }
 
+    // 3. Filter Application Engine
     function applyCatalogFilters() {
       let filtered = [...allCatalogProducts];
 
-      // 0. Quick filter param (e.g., deals, new, best)
+      // Quick filter param (e.g., deals, new, best)
       if (filterParam === 'deals' || categoryParam === 'deals') {
         filtered = filtered.filter(p => p.oldPrice || (p.badge && p.badge.includes('OFF')));
       } else if (filterParam === 'new') {
@@ -370,7 +432,7 @@ $(document).ready(function () {
         filtered.sort((a, b) => Number(b.rating) - Number(a.rating));
       }
 
-      // 1. Search Query Filter / Brand Filter
+      // Search Query Filter / Brand Filter
       const q = ($('#siteSearchInput').val() || '').toLowerCase().trim();
       if (q) {
         filtered = filtered.filter(p =>
@@ -380,7 +442,7 @@ $(document).ready(function () {
         );
       }
 
-      // 2. Category Checkboxes
+      // Category Checkboxes
       const selectedCats = [];
       $('#categoryFiltersList input[type="checkbox"]:checked').each(function () {
         selectedCats.push($(this).val());
@@ -392,19 +454,19 @@ $(document).ready(function () {
         );
       }
 
-      // 3. Price Filter
+      // Price Filter
       const minPrice = parseFloat($('#minPriceInput').val());
       const maxPrice = parseFloat($('#maxPriceInput').val());
       if (!isNaN(minPrice)) filtered = filtered.filter(p => Number(p.price) >= minPrice);
       if (!isNaN(maxPrice)) filtered = filtered.filter(p => Number(p.price) <= maxPrice);
 
-      // 4. Rating Radio
+      // Rating Radio
       const minRating = parseFloat($('input[name="ratingFilter"]:checked').val()) || 0;
       if (minRating > 0) {
         filtered = filtered.filter(p => Number(p.rating) >= minRating);
       }
 
-      // 5. Sorting
+      // Sorting
       const sortVal = $('#sortSelect').val();
       if (sortVal === 'price-low') {
         filtered.sort((a, b) => Number(a.price) - Number(b.price));
@@ -417,10 +479,7 @@ $(document).ready(function () {
       renderCatalogGrid(filtered, 1);
     }
 
-    let currentCatalogPage = 1;
-    const catalogPageSize = 8;
-    let filteredCatalogProds = [];
-
+    // 4. Render Grid & Pagination
     function renderCatalogGrid(prods, page) {
       if (prods !== undefined) filteredCatalogProds = prods;
       if (page !== undefined) currentCatalogPage = page;
@@ -428,13 +487,19 @@ $(document).ready(function () {
       const $container = $('#catalogProductsContainer');
       const $title = $('#catalogResultsTitle');
 
-      $title.text(`${filteredCatalogProds.length} results for ${$('#siteSearchInput').val() || 'all items'}`);
+      const searchQuery = ($('#siteSearchInput').val() || '').trim();
+      const resultLabel = searchQuery ? `"${searchQuery}"` : 'all items';
+      $title.text(`${filteredCatalogProds.length} results for ${resultLabel}`);
 
       if (filteredCatalogProds.length === 0) {
         $container.html(`
           <div class="col-12 text-center py-5">
-            <h5 class="text-muted font-serif">No products found matching your filter criteria.</h5>
-            <button class="btn btn-sm btn-coral-custom mt-3" id="btnResetAllFiltersEmpty">Reset Filters</button>
+            <div class="p-4 bg-light rounded-4 d-inline-block mb-3">
+              <i class="bi bi-search text-muted" style="font-size: 2.5rem;"></i>
+            </div>
+            <h5 class="text-dark font-serif fw-bold">No products found matching your filter criteria.</h5>
+            <p class="text-muted small">Try loosening your search query, price range, or category selections.</p>
+            <button class="btn btn-sm btn-coral-custom mt-2 px-4 py-2 rounded-pill" id="btnResetAllFiltersEmpty">Reset All Filters</button>
           </div>
         `);
         $('.catalog-pagination').addClass('d-none');
@@ -449,28 +514,40 @@ $(document).ready(function () {
       let html = '';
       pInfo.pageItems.forEach(p => {
         const ratingVal = p.rating ? Number(p.rating).toFixed(1) : '4.8';
-        const priceVal = Number(p.price).toLocaleString('en-IN');
-        const isWishlisted = currentWishlist.some(w => String(w.id) === String(p.id));
+        const priceVal = Number(p.price) || 0;
+        const oldPriceVal = p.oldPrice ? Number(p.oldPrice) : null;
+        const oldPriceHtml = (oldPriceVal && oldPriceVal > priceVal)
+          ? `<span class="old-price small text-muted text-decoration-line-through ms-2">₹ ${oldPriceVal.toLocaleString('en-IN')}</span>`
+          : '';
+        const badgeHtml = p.badge ? `<span class="product-badge-tag">${p.badge}</span>` : '';
+        const isWishlisted = Array.isArray(currentWishlist) && currentWishlist.some(w => w && String(w.id) === String(p.id));
 
         html += `
           <div class="col-6 col-md-4 col-xl-3">
-            <div class="catalog-product-card">
+            <div class="catalog-product-card position-relative">
               <div class="position-relative">
                 <button type="button" class="catalog-wish-btn btn-catalog-wish ${isWishlisted ? 'active' : ''}" data-id="${p.id}" aria-label="Add to Wishlist" title="${isWishlisted ? 'In Wishlist' : 'Add to Wishlist'}">
                   <i class="bi ${isWishlisted ? 'bi-heart-fill' : 'bi-heart'}"></i>
                 </button>
+                ${badgeHtml}
                 <a href="product-details.html?id=${p.id}" class="catalog-product-thumb d-block">
-                  <img src="${p.image}" alt="${p.title}" />
+                  <img src="${p.image}" alt="${p.title}" loading="lazy" />
                 </a>
                 <span class="catalog-brand-tag">${p.brand || 'SHOPNOW'}</span>
-                <a href="product-details.html?id=${p.id}" class="catalog-product-name">${p.title}</a>
-                <div class="catalog-rating-row">
+                <a href="product-details.html?id=${p.id}" class="catalog-product-name text-decoration-none d-block text-truncate" title="${p.title}">
+                  ${p.title}
+                </a>
+                <div class="catalog-rating-row d-flex align-items-center gap-1 mb-2">
                   <i class="bi bi-star-fill text-warning"></i>
-                  <span>${ratingVal}</span>
+                  <span class="fw-semibold small">${ratingVal}</span>
+                  <span class="text-muted extra-small">(${p.reviews || 0})</span>
                 </div>
-                <div class="catalog-price-val">₹ ${priceVal}</div>
+                <div class="catalog-price-val fw-bold text-dark mb-3">
+                  <span>₹ ${priceVal.toLocaleString('en-IN')}</span>
+                  ${oldPriceHtml}
+                </div>
               </div>
-              <button type="button" class="btn-coral-add-cart btn-quick-add" data-id="${p.id}">
+              <button type="button" class="btn-coral-add-cart btn-quick-add w-100 rounded-pill py-2 small fw-semibold" data-id="${p.id}">
                 <i class="bi bi-cart-plus me-1"></i>Add to Cart
               </button>
             </div>
@@ -483,45 +560,56 @@ $(document).ready(function () {
       // Render Dynamic Catalog Pagination
       const $pag = $('.catalog-pagination');
       if ($pag.length) {
-        $pag.removeClass('d-none');
-        let pagHtml = '';
-        const prevDisabled = currentCatalogPage <= 1;
-        pagHtml += `<button class="page-btn-item page-catalog-prev" ${prevDisabled ? 'disabled' : ''}>&lt;</button>`;
+        if (pInfo.totalPages <= 1) {
+          $pag.addClass('d-none');
+        } else {
+          $pag.removeClass('d-none');
+          let pagHtml = '';
+          const prevDisabled = currentCatalogPage <= 1;
+          pagHtml += `<button class="page-btn-item page-catalog-prev" ${prevDisabled ? 'disabled' : ''} aria-label="Previous Page">&lt;</button>`;
 
-        for (let i = 1; i <= pInfo.totalPages; i++) {
-          pagHtml += `<button class="page-btn-item page-catalog-num ${i === currentCatalogPage ? 'active' : ''}" data-page="${i}">${i}</button>`;
+          for (let i = 1; i <= pInfo.totalPages; i++) {
+            pagHtml += `<button class="page-btn-item page-catalog-num ${i === currentCatalogPage ? 'active' : ''}" data-page="${i}">${i}</button>`;
+          }
+
+          const nextDisabled = currentCatalogPage >= pInfo.totalPages;
+          pagHtml += `<button class="page-btn-item page-catalog-next" ${nextDisabled ? 'disabled' : ''} aria-label="Next Page">&gt;</button>`;
+          $pag.html(pagHtml);
+
+          $pag.off('click', '.page-catalog-prev').on('click', '.page-catalog-prev', function () {
+            if (currentCatalogPage > 1) {
+              renderCatalogGrid(filteredCatalogProds, currentCatalogPage - 1);
+              const el = document.getElementById('catalogProductsContainer');
+              if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          });
+          $pag.off('click', '.page-catalog-next').on('click', '.page-catalog-next', function () {
+            if (currentCatalogPage < pInfo.totalPages) {
+              renderCatalogGrid(filteredCatalogProds, currentCatalogPage + 1);
+              const el = document.getElementById('catalogProductsContainer');
+              if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          });
+          $pag.off('click', '.page-catalog-num').on('click', '.page-catalog-num', function () {
+            const pg = parseInt($(this).data('page'), 10);
+            if (pg && pg !== currentCatalogPage) {
+              renderCatalogGrid(filteredCatalogProds, pg);
+              const el = document.getElementById('catalogProductsContainer');
+              if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          });
         }
-
-        const nextDisabled = currentCatalogPage >= pInfo.totalPages;
-        pagHtml += `<button class="page-btn-item page-catalog-next" ${nextDisabled ? 'disabled' : ''}>&gt;</button>`;
-        $pag.html(pagHtml);
-
-        $pag.off('click', '.page-catalog-prev').on('click', '.page-catalog-prev', function () {
-          if (currentCatalogPage > 1) {
-            renderCatalogGrid(filteredCatalogProds, currentCatalogPage - 1);
-            const el = document.getElementById('catalogProductsContainer');
-            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        });
-        $pag.off('click', '.page-catalog-next').on('click', '.page-catalog-next', function () {
-          if (currentCatalogPage < pInfo.totalPages) {
-            renderCatalogGrid(filteredCatalogProds, currentCatalogPage + 1);
-            const el = document.getElementById('catalogProductsContainer');
-            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        });
-        $pag.off('click', '.page-catalog-num').on('click', '.page-catalog-num', function () {
-          const pg = parseInt($(this).data('page'), 10);
-          if (pg && pg !== currentCatalogPage) {
-            renderCatalogGrid(filteredCatalogProds, pg);
-            const el = document.getElementById('catalogProductsContainer');
-            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        });
       }
     }
 
-    // Filter Events
+    // 5. Connect getProducts data loader
+    getProducts(function (prods) {
+      const list = Array.isArray(prods) && prods.length > 0 ? prods : defaultProducts;
+      allCatalogProducts = list.map((p, idx) => normalizeCatalogProduct(p, idx)).filter(Boolean);
+      applyCatalogFilters();
+    });
+
+    // 6. Filter Events
     $('#categoryFiltersList input[type="checkbox"]').on('change', function () {
       if ($(this).val() === 'all' && $(this).is(':checked')) {
         $('#categoryFiltersList input[type="checkbox"]').not(this).prop('checked', false);
@@ -535,13 +623,14 @@ $(document).ready(function () {
     $('input[name="ratingFilter"]').on('change', applyCatalogFilters);
     $('#sortSelect').on('change', applyCatalogFilters);
 
-    $('#btnResetFilters, $(document)').on('click', '#btnResetAllFiltersEmpty', function () {
+    $(document).on('click', '#btnResetFilters, #btnResetAllFiltersEmpty', function () {
       $('#categoryFiltersList input[type="checkbox"]').prop('checked', false);
       $('#categoryFiltersList input[value="all"]').prop('checked', true);
       $('#minPriceInput').val('');
       $('#maxPriceInput').val('');
       $('input[name="ratingFilter"][value="0"]').prop('checked', true);
       $('#sortSelect').val('featured');
+      $('#siteSearchInput').val('');
       applyCatalogFilters();
     });
 

@@ -957,10 +957,500 @@ $(document).ready(function () {
     });
   }
 
-  // Export buttons
-  $('#btnExportAdminReport').on('click', function () {
-    if (typeof ShopNowCommon !== 'undefined') {
-      ShopNowCommon.showToast('Consolidated Platform Performance Audit PDF downloaded.', 'info');
+  // ===================================================
+  // 9. PAGE: EXECUTIVE REPORTS & AUDIT LOGS
+  // ===================================================
+  if ($('#reportTransactionsTableBody').length || $('#btnExportAdminCSV').length) {
+    // Current date reference (defaults to system time e.g. Oct 2026)
+    const now = new Date();
+    
+    // Seed Comprehensive Orders Data if not fully populated
+    let storedOrders = JSON.parse(localStorage.getItem('shopnow_orders') || '[]');
+    
+    // Base sample historical orders spanning Today, Last Week, Last Month, and Earlier
+    const sampleAuditOrders = [
+      { id: 'ORD-8091', date: new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 15).toISOString(), customer: 'Rahul Deshmukh', product: 'Textured Cashmere Blend Sweater', amount: 1899, payment: 'UPI / PhonePe', status: 'Delivered', statusClass: 'delivered' },
+      { id: 'ORD-8090', date: new Date(now.getFullYear(), now.getMonth(), now.getDate(), 7, 45).toISOString(), customer: 'Priya Sharma', product: 'Over-Ear Noise Canceling Headphones', amount: 2999, payment: 'Credit Card', status: 'Shipped', statusClass: 'shipped' },
+      { id: 'ORD-8089', date: new Date(now.getFullYear(), now.getMonth(), now.getDate(), 6, 20).toISOString(), customer: 'Ananya Verma', product: 'Hydration Serum & Body Oil', amount: 890, payment: 'UPI / GPay', status: 'Processing', statusClass: 'pending' },
+      { id: 'ORD-8085', date: new Date(now.getTime() - 2 * 86400000).toISOString(), customer: 'Aman Patel', product: 'Expandable Carry-On Suitcase', amount: 2499, payment: 'Net Banking', status: 'Delivered', statusClass: 'delivered' },
+      { id: 'ORD-8082', date: new Date(now.getTime() - 4 * 86400000).toISOString(), customer: 'Sneha Kulkarni', product: 'Sculptural Ceramic Table Lamp', amount: 1450, payment: 'Debit Card', status: 'Delivered', statusClass: 'delivered' },
+      { id: 'ORD-8078', date: new Date(now.getTime() - 6 * 86400000).toISOString(), customer: 'Rohan Mehta', product: 'Aeroflex Pro Runner Sneakers', amount: 1400, payment: 'Cash on Delivery', status: 'Shipped', statusClass: 'shipped' },
+      { id: 'ORD-8071', date: new Date(now.getTime() - 10 * 86400000).toISOString(), customer: 'Vikram Joshi', product: 'Mini 360 Portable Tech Speaker', amount: 950, payment: 'UPI / Paytm', status: 'Delivered', statusClass: 'delivered' },
+      { id: 'ORD-8064', date: new Date(now.getTime() - 15 * 86400000).toISOString(), customer: 'Neha Gupta', product: 'Structured Leather Shoulder Bag', amount: 1750, payment: 'Credit Card', status: 'Delivered', statusClass: 'delivered' },
+      { id: 'ORD-8055', date: new Date(now.getTime() - 22 * 86400000).toISOString(), customer: 'Kavita Reddy', product: 'Over-Ear Noise Canceling Headphones', amount: 2999, payment: 'UPI / PhonePe', status: 'Delivered', statusClass: 'delivered' },
+      { id: 'ORD-8042', date: new Date(now.getTime() - 28 * 86400000).toISOString(), customer: 'Arjun Nair', product: 'Textured Cashmere Blend Sweater', amount: 1899, payment: 'Debit Card', status: 'Delivered', statusClass: 'delivered' },
+      { id: 'ORD-8025', date: new Date(now.getTime() - 35 * 86400000).toISOString(), customer: 'Renu Soni', product: 'Aeroflex Pro Runner Sneakers', amount: 1400, payment: 'Credit Card', status: 'Delivered', statusClass: 'delivered' },
+      { id: 'ORD-8012', date: new Date(now.getTime() - 42 * 86400000).toISOString(), customer: 'Manish Tiwari', product: 'Mini 360 Portable Tech Speaker', amount: 950, payment: 'Cash on Delivery', status: 'Cancelled', statusClass: 'cancelled' }
+    ];
+
+    // Merge existing user orders from checkout with sample audit orders
+    let allReportOrders = [...sampleAuditOrders];
+    if (Array.isArray(storedOrders) && storedOrders.length > 0) {
+      storedOrders.forEach((so, idx) => {
+        let orderDate = so.createdAt || so.date;
+        let isoDate;
+        try {
+          isoDate = orderDate ? new Date(orderDate).toISOString() : new Date().toISOString();
+        } catch(e) {
+          isoDate = new Date().toISOString();
+        }
+        const ordId = so.id || so.orderId || `ORD-LIVE-${idx + 1}`;
+        if (!allReportOrders.some(ro => ro.id === ordId)) {
+          allReportOrders.unshift({
+            id: ordId,
+            date: isoDate,
+            customer: so.customer || so.customerName || so.userName || 'Shopper',
+            product: so.product || (so.items && so.items[0]?.name) || 'Assorted Items',
+            amount: Number(so.price || so.totalAmount || 1899),
+            payment: so.paymentMethod || 'Online Payment',
+            status: so.status || 'Delivered',
+            statusClass: (so.status || 'delivered').toLowerCase()
+          });
+        }
+      });
     }
-  });
+
+    // Sort descending by date
+    allReportOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    let activeFilterPreset = 'all';
+    let filteredReportOrders = [...allReportOrders];
+    let currentReportPage = 1;
+    const reportPageSize = 5;
+
+    // Helper: Format Date for UI
+    function formatDisplayDateTime(isoStr) {
+      try {
+        const d = new Date(isoStr);
+        return d.toLocaleDateString('en-IN', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric'
+        }) + ', ' + d.toLocaleTimeString('en-IN', {
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+      } catch (e) {
+        return isoStr || 'N/A';
+      }
+    }
+
+    // Pre-fill date inputs with current month range as sensible default
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const dd = String(now.getDate()).padStart(2, '0');
+    const todayStr = `${yyyy}-${mm}-${dd}`;
+    $('#reportEndDate').val(todayStr);
+
+    const thirtyDaysAgo = new Date(now.getTime() - 30 * 86400000);
+    const startYyyy = thirtyDaysAgo.getFullYear();
+    const startMm = String(thirtyDaysAgo.getMonth() + 1).padStart(2, '0');
+    const startDd = String(thirtyDaysAgo.getDate()).padStart(2, '0');
+    $('#reportStartDate').val(`${startYyyy}-${startMm}-${startDd}`);
+
+    // Core Filter Execution Engine
+    function applyReportDateFilter(preset, customStart, customEnd) {
+      activeFilterPreset = preset;
+      const refNow = new Date();
+      let label = 'All Time Records';
+
+      if (preset === 'today') {
+        const startOfToday = new Date(refNow.getFullYear(), refNow.getMonth(), refNow.getDate(), 0, 0, 0, 0);
+        const endOfToday = new Date(refNow.getFullYear(), refNow.getMonth(), refNow.getDate(), 23, 59, 59, 999);
+        filteredReportOrders = allReportOrders.filter(o => {
+          const d = new Date(o.date);
+          return d >= startOfToday && d <= endOfToday;
+        });
+        label = `Today (${startOfToday.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })})`;
+      } else if (preset === 'last-week') {
+        const sevenDaysAgo = new Date(refNow.getTime() - 7 * 86400000);
+        sevenDaysAgo.setHours(0, 0, 0, 0);
+        filteredReportOrders = allReportOrders.filter(o => {
+          const d = new Date(o.date);
+          return d >= sevenDaysAgo;
+        });
+        label = `Last 7 Days (Since ${sevenDaysAgo.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })})`;
+      } else if (preset === 'last-month') {
+        const thirtyDaysAgo = new Date(refNow.getTime() - 30 * 86400000);
+        thirtyDaysAgo.setHours(0, 0, 0, 0);
+        filteredReportOrders = allReportOrders.filter(o => {
+          const d = new Date(o.date);
+          return d >= thirtyDaysAgo;
+        });
+        label = `Last 30 Days (Since ${thirtyDaysAgo.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })})`;
+      } else if (preset === 'custom') {
+        let sDate = customStart ? new Date(customStart + 'T00:00:00') : new Date(0);
+        let eDate = customEnd ? new Date(customEnd + 'T23:59:59') : new Date();
+        if (sDate > eDate) {
+          const tmp = sDate;
+          sDate = eDate;
+          eDate = tmp;
+        }
+        filteredReportOrders = allReportOrders.filter(o => {
+          const d = new Date(o.date);
+          return d >= sDate && d <= eDate;
+        });
+        label = `Custom Range: ${sDate.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })} to ${eDate.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}`;
+      } else {
+        // All Time
+        filteredReportOrders = [...allReportOrders];
+        label = 'All Time Records';
+      }
+
+      // Update UI Banner Labels
+      $('#reportActivePeriodLabel').text(label);
+      $('#reportFilteredRecordsCount').text(`${filteredReportOrders.length} transaction${filteredReportOrders.length === 1 ? '' : 's'}`);
+      $('#reportGeneratedTimestamp').html(`<i class="bi bi-clock me-1"></i>Updated ${new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}`);
+
+      // Update KPI Metrics Cards
+      let totalGmv = 0;
+      filteredReportOrders.forEach(o => {
+        totalGmv += Number(o.amount || 0);
+      });
+      const totalCommission = Math.round(totalGmv * 0.10);
+      const ordersCount = filteredReportOrders.length;
+      const aov = ordersCount > 0 ? Math.round(totalGmv / ordersCount) : 0;
+
+      $('#reportGrossVolume').text(`₹ ${totalGmv.toLocaleString('en-IN')}`);
+      $('#reportTotalCommission').text(`₹ ${totalCommission.toLocaleString('en-IN')}`);
+      $('#reportOrdersCount').text(ordersCount.toLocaleString('en-IN'));
+      $('#reportAvgOrderValue').text(`₹ ${aov.toLocaleString('en-IN')}`);
+
+      // Subtext adjustments
+      if (preset === 'today') {
+        $('#reportGmvSubtext').text('Today\'s captured GMV');
+        $('#reportOrdersSubtext').text('Today\'s checkouts');
+      } else if (preset === 'last-week') {
+        $('#reportGmvSubtext').text('+14% vs previous week');
+        $('#reportOrdersSubtext').text('7-day verified orders');
+      } else if (preset === 'last-month') {
+        $('#reportGmvSubtext').text('+22% vs previous month');
+        $('#reportOrdersSubtext').text('30-day verified orders');
+      } else {
+        $('#reportGmvSubtext').text('+22% YoY platform growth');
+        $('#reportOrdersSubtext').text('All verified checkouts');
+      }
+
+      // Re-render Transactions Table
+      renderReportTable(filteredReportOrders, 1);
+    }
+
+    // Render Table Page
+    function renderReportTable(items, page = 1) {
+      if (items !== undefined) filteredReportOrders = items;
+      currentReportPage = page;
+
+      const pInfo = ShopNowCommon.paginate(filteredReportOrders, currentReportPage, reportPageSize);
+      currentReportPage = pInfo.currentPage;
+
+      let html = '';
+      if (pInfo.pageItems.length === 0) {
+        html = `
+          <tr>
+            <td colspan="8" class="text-center py-5">
+              <div class="p-3 bg-light rounded-circle d-inline-block mb-2">
+                <i class="bi bi-calendar-x text-muted" style="font-size: 2rem;"></i>
+              </div>
+              <h6 class="text-dark fw-bold mb-1">No transactions found for this date range</h6>
+              <p class="text-muted extra-small mb-0">Try selecting "Last Month" or "All Time" to view consolidated historical audit records.</p>
+            </td>
+          </tr>
+        `;
+      } else {
+        pInfo.pageItems.forEach(ord => {
+          const comm = Math.round(Number(ord.amount || 0) * 0.10);
+          const badgeClass = ord.statusClass || (ord.status === 'Delivered' ? 'delivered' : ord.status === 'Shipped' ? 'shipped' : ord.status === 'Cancelled' ? 'cancelled' : 'pending');
+
+          html += `
+            <tr>
+              <td><strong class="text-coral font-monospace">${ord.id}</strong></td>
+              <td class="small text-muted">${formatDisplayDateTime(ord.date)}</td>
+              <td><strong class="text-dark">${ord.customer}</strong></td>
+              <td class="small text-truncate" style="max-width: 220px;" title="${ord.product}">${ord.product}</td>
+              <td><strong>₹ ${Number(ord.amount).toLocaleString('en-IN')}</strong></td>
+              <td class="text-info fw-semibold">₹ ${comm.toLocaleString('en-IN')}</td>
+              <td><span class="badge bg-light text-dark border extra-small">${ord.payment || 'Online'}</span></td>
+              <td><span class="badge-status badge-status-${badgeClass}">${ord.status || 'Completed'}</span></td>
+            </tr>
+          `;
+        });
+      }
+
+      $('#reportTransactionsTableBody').html(html);
+
+      // Render Table Pagination
+      ShopNowCommon.renderPaginationUI({
+        wrapperSelector: '#reportPaginationWrapper',
+        infoSelector: '#reportPaginationInfo',
+        listSelector: '#reportPaginationList',
+        currentPage: currentReportPage,
+        totalPages: pInfo.totalPages,
+        totalItems: pInfo.totalItems,
+        pageSize: reportPageSize,
+        itemLabel: 'records',
+        onPageChange: function (newPage) {
+          renderReportTable(filteredReportOrders, newPage);
+        }
+      });
+    }
+
+    // 1. Preset Buttons Click
+    $('.report-preset-btn').on('click', function () {
+      $('.report-preset-btn').removeClass('btn-coral-admin active').addClass('btn-outline-dark');
+      $(this).removeClass('btn-outline-dark').addClass('btn-coral-admin active');
+      const preset = $(this).data('preset');
+      applyReportDateFilter(preset);
+    });
+
+    // 2. Custom Date Filter Apply
+    $('#btnApplyDateFilter').on('click', function () {
+      const s = $('#reportStartDate').val();
+      const e = $('#reportEndDate').val();
+      if (!s || !e) {
+        if (typeof ShopNowCommon !== 'undefined') {
+          ShopNowCommon.showToast('Please select both Start Date and End Date', 'error');
+        }
+        return;
+      }
+      $('.report-preset-btn').removeClass('btn-coral-admin active').addClass('btn-outline-dark');
+      applyReportDateFilter('custom', s, e);
+    });
+
+    // 3. Reset Filter
+    $('#btnResetDateFilter').on('click', function () {
+      $('.report-preset-btn').removeClass('btn-coral-admin active').addClass('btn-outline-dark');
+      $('.report-preset-btn[data-preset="all"]').removeClass('btn-outline-dark').addClass('btn-coral-admin active');
+      $('#reportEndDate').val(todayStr);
+      $('#reportStartDate').val(`${startYyyy}-${startMm}-${startDd}`);
+      applyReportDateFilter('all');
+    });
+
+    // ===================================================
+    // CSV EXPORT GENERATOR
+    // ===================================================
+    function generateReportCSV() {
+      if (!filteredReportOrders || filteredReportOrders.length === 0) {
+        if (typeof ShopNowCommon !== 'undefined') {
+          ShopNowCommon.showToast('No records available to export for the selected filter range.', 'error');
+        }
+        return;
+      }
+
+      const activeLabel = $('#reportActivePeriodLabel').text().replace(/,/g, ' ');
+      const genTimestamp = new Date().toLocaleString('en-IN');
+
+      let csv = '\uFEFF'; // UTF-8 BOM for Microsoft Excel compatibility
+      csv += `ShopNow Executive Performance & Transaction Audit Report\r\n`;
+      csv += `Filter Period:,"${activeLabel}"\r\n`;
+      csv += `Generated On:,"${genTimestamp}"\r\n`;
+      csv += `Total Transactions:,${filteredReportOrders.length}\r\n\r\n`;
+
+      // Headers
+      csv += `Order ID,Date & Time,Customer,Product / Items,Gross Amount (INR),Platform Commission 10% (INR),Payment Method,Status\r\n`;
+
+      let sumGross = 0;
+      let sumComm = 0;
+
+      filteredReportOrders.forEach(o => {
+        const gross = Number(o.amount || 0);
+        const comm = Math.round(gross * 0.10);
+        sumGross += gross;
+        sumComm += comm;
+
+        const safeProd = `"${String(o.product || '').replace(/"/g, '""')}"`;
+        const safeCust = `"${String(o.customer || '').replace(/"/g, '""')}"`;
+        const safeDate = `"${formatDisplayDateTime(o.date).replace(/"/g, '""')}"`;
+
+        csv += `${o.id},${safeDate},${safeCust},${safeProd},${gross},${comm},"${o.payment || 'Online'}",${o.status || 'Delivered'}\r\n`;
+      });
+
+      // Total Row
+      csv += `\r\nTOTALS,,,"${filteredReportOrders.length} Orders",${sumGross},${sumComm},,\r\n`;
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const filename = `ShopNow_Report_${activeFilterPreset}_${todayStr}.csv`;
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      if (typeof ShopNowCommon !== 'undefined') {
+        ShopNowCommon.showToast(`CSV Report "${filename}" generated and downloaded!`, 'success');
+      }
+    }
+
+    // ===================================================
+    // PDF EXPORT GENERATOR (Using jsPDF & AutoTable)
+    // ===================================================
+    function generateReportPDF() {
+      if (!filteredReportOrders || filteredReportOrders.length === 0) {
+        if (typeof ShopNowCommon !== 'undefined') {
+          ShopNowCommon.showToast('No records available to export for the selected filter range.', 'error');
+        }
+        return;
+      }
+
+      const activeLabel = $('#reportActivePeriodLabel').text();
+      let totalGmv = 0;
+      filteredReportOrders.forEach(o => { totalGmv += Number(o.amount || 0); });
+      const totalCommission = Math.round(totalGmv * 0.10);
+      const ordersCount = filteredReportOrders.length;
+      const aov = ordersCount > 0 ? Math.round(totalGmv / ordersCount) : 0;
+
+      // Check if jsPDF is available via CDN
+      if (window.jspdf && window.jspdf.jsPDF) {
+        try {
+          const { jsPDF } = window.jspdf;
+          const doc = new jsPDF('p', 'pt', 'a4');
+
+          // Header Brand Box
+          doc.setFillColor(8, 23, 38); // Dark Navy #081726
+          doc.rect(0, 0, 595.28, 75, 'F');
+
+          // Brand Logo / Name
+          doc.setTextColor(255, 83, 56); // Coral #ff5338
+          doc.setFontSize(20);
+          doc.setFont('helvetica', 'bold');
+          doc.text('ShopNow', 40, 42);
+
+          doc.setTextColor(255, 255, 255);
+          doc.setFontSize(14);
+          doc.setFont('helvetica', 'normal');
+          doc.text('Executive Platform Audit Report', 140, 42);
+
+          doc.setFontSize(8);
+          doc.setTextColor(148, 163, 184);
+          doc.text('CONFIDENTIAL · FINANCIAL & MULTI-VENDOR GMV AUDIT', 140, 56);
+
+          // Meta Information
+          doc.setTextColor(15, 23, 42);
+          doc.setFontSize(10);
+          doc.setFont('helvetica', 'bold');
+          doc.text(`Filter Period:`, 40, 105);
+          doc.setFont('helvetica', 'normal');
+          doc.text(`${activeLabel}`, 115, 105);
+
+          doc.setFont('helvetica', 'bold');
+          doc.text(`Generated On:`, 40, 120);
+          doc.setFont('helvetica', 'normal');
+          doc.text(`${new Date().toLocaleString('en-IN')}`, 125, 120);
+
+          // Summary Stats Box (4 mini cards)
+          doc.setFillColor(248, 250, 252);
+          doc.setDrawColor(226, 232, 240);
+          doc.roundedRect(40, 135, 515, 50, 4, 4, 'FD');
+
+          // Stat 1: Total GMV
+          doc.setFontSize(8);
+          doc.setTextColor(100, 116, 139);
+          doc.text('GROSS VOLUME', 55, 153);
+          doc.setFontSize(12);
+          doc.setTextColor(255, 83, 56);
+          doc.setFont('helvetica', 'bold');
+          doc.text(`INR ${totalGmv.toLocaleString('en-IN')}`, 55, 172);
+
+          // Stat 2: Commission
+          doc.setFontSize(8);
+          doc.setTextColor(100, 116, 139);
+          doc.setFont('helvetica', 'normal');
+          doc.text('PLATFORM COMMISSION', 185, 153);
+          doc.setFontSize(12);
+          doc.setTextColor(14, 165, 233);
+          doc.setFont('helvetica', 'bold');
+          doc.text(`INR ${totalCommission.toLocaleString('en-IN')}`, 185, 172);
+
+          // Stat 3: Total Orders
+          doc.setFontSize(8);
+          doc.setTextColor(100, 116, 139);
+          doc.setFont('helvetica', 'normal');
+          doc.text('TOTAL ORDERS', 345, 153);
+          doc.setFontSize(12);
+          doc.setTextColor(15, 23, 42);
+          doc.setFont('helvetica', 'bold');
+          doc.text(`${ordersCount}`, 345, 172);
+
+          // Stat 4: Avg Order Value
+          doc.setFontSize(8);
+          doc.setTextColor(100, 116, 139);
+          doc.setFont('helvetica', 'normal');
+          doc.text('AVG ORDER VALUE', 450, 153);
+          doc.setFontSize(12);
+          doc.setTextColor(16, 185, 129);
+          doc.setFont('helvetica', 'bold');
+          doc.text(`INR ${aov.toLocaleString('en-IN')}`, 450, 172);
+
+          // AutoTable Data Preparation
+          const tableHeaders = [['Order ID', 'Date', 'Customer', 'Product', 'Amount (INR)', 'Fee (10%)', 'Status']];
+          const tableRows = filteredReportOrders.map(o => [
+            o.id,
+            formatDisplayDateTime(o.date).split(',')[0],
+            o.customer,
+            o.product.length > 25 ? o.product.substring(0, 23) + '..' : o.product,
+            `INR ${Number(o.amount).toLocaleString('en-IN')}`,
+            `INR ${Math.round(Number(o.amount) * 0.10).toLocaleString('en-IN')}`,
+            o.status || 'Delivered'
+          ]);
+
+          doc.autoTable({
+            head: tableHeaders,
+            body: tableRows,
+            startY: 200,
+            theme: 'grid',
+            headStyles: {
+              fillColor: [8, 23, 38],
+              textColor: [255, 255, 255],
+              fontStyle: 'bold',
+              fontSize: 8,
+              cellPadding: 6
+            },
+            bodyStyles: {
+              fontSize: 8,
+              cellPadding: 5,
+              textColor: [15, 23, 42]
+            },
+            alternateRowStyles: {
+              fillColor: [248, 250, 252]
+            },
+            columnStyles: {
+              0: { fontStyle: 'bold', textColor: [255, 83, 56], cellWidth: 65 },
+              4: { halign: 'right', fontStyle: 'bold' },
+              5: { halign: 'right', textColor: [14, 165, 233] },
+              6: { halign: 'center' }
+            },
+            margin: { left: 40, right: 40 },
+            didDrawPage: function (data) {
+              // Page footer
+              const str = `Page ${doc.internal.getNumberOfPages()}`;
+              doc.setFontSize(8);
+              doc.setTextColor(148, 163, 184);
+              doc.text(str, 595.28 - 70, 841.89 - 25);
+              doc.text('ShopNow E-Commerce Audit · Generated strictly for internal administration.', 40, 841.89 - 25);
+            }
+          });
+
+          const filename = `ShopNow_Admin_Report_${activeFilterPreset}_${todayStr}.pdf`;
+          doc.save(filename);
+
+          if (typeof ShopNowCommon !== 'undefined') {
+            ShopNowCommon.showToast(`PDF Report "${filename}" generated and downloaded!`, 'success');
+          }
+          return;
+        } catch (err) {
+          console.warn('jsPDF error, falling back to printable view:', err);
+        }
+      }
+
+      // Printable View Fallback (If jsPDF CDN failed)
+      window.print();
+    }
+
+    // Attach Export Event Listeners
+    $('#btnExportAdminCSV, #btnExportTableCSV').on('click', generateReportCSV);
+    $('#btnExportAdminPDF, #btnExportTablePDF, #btnExportAdminReport').on('click', generateReportPDF);
+
+    // Initial Load - render all records
+    applyReportDateFilter('all');
+  }
 });
