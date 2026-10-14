@@ -87,13 +87,14 @@
               <span class="brand-logo-text">ShopNow</span>
             </a>
 
-            <!-- Search Capsule -->
-            <form class="header-search-form flex-grow-1 mx-lg-4" id="siteSearchForm" action="${PREFIX}buyer/html/catalog.html" method="GET">
+            <!-- Search Capsule with Live Suggestions Dropdown -->
+            <form class="header-search-form flex-grow-1 mx-lg-4 position-relative" id="siteSearchForm" action="${PREFIX}buyer/html/catalog.html" method="GET">
               <i class="bi bi-search header-search-icon"></i>
-              <input type="text" name="q" class="header-search-input" id="siteSearchInput" placeholder="Search products, brands and categories" autocomplete="off" />
+              <input type="text" name="q" class="header-search-input" id="siteSearchInput" placeholder="Search products, brands and categories..." autocomplete="off" />
               <button type="submit" class="header-search-btn" aria-label="Search">
                 <i class="bi bi-arrow-right"></i>
               </button>
+              <div class="header-search-results-dropdown shadow-lg d-none" id="headerSearchResultsDropdown"></div>
             </form>
 
             <!-- Header Action Items -->
@@ -400,6 +401,125 @@
         }
       }
     });
+
+    // Setup Live Search Suggestions Dropdown
+    const searchForm = document.getElementById('siteSearchForm');
+    const searchInput = document.getElementById('siteSearchInput');
+    const searchDropdown = document.getElementById('headerSearchResultsDropdown');
+
+    if (searchForm && searchInput && searchDropdown) {
+      const isCatalog = window.location.pathname.toLowerCase().endsWith('catalog.html');
+
+      // Do not open dropdown if already on catalog page (catalog page has full in-page filter)
+      if (!isCatalog) {
+        let debounceTimer = null;
+
+        function closeSearchDropdown() {
+          searchDropdown.classList.add('d-none');
+          searchDropdown.innerHTML = '';
+        }
+
+        searchInput.addEventListener('input', function () {
+          clearTimeout(debounceTimer);
+          const q = searchInput.value.trim().toLowerCase();
+          if (q.length < 2) {
+            closeSearchDropdown();
+            return;
+          }
+
+          debounceTimer = setTimeout(function () {
+            // Get available products
+            let prods = [];
+            try {
+              const cached = localStorage.getItem('shopnow_products');
+              if (cached) prods = JSON.parse(cached);
+            } catch (e) {}
+
+            // Fallback default list if empty
+            if (!Array.isArray(prods) || prods.length === 0) {
+              prods = [
+                { id: '101', brand: 'AERFORM', title: 'Textured Cashmere Blend Sweater', category: 'Sweaters', price: 1899, image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382197/Product_image_ucgxvy.png' },
+                { id: '102', brand: 'LUMEN', title: 'Over-Ear Noise Canceling Headphones', category: 'Audio', price: 2999, image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_1_dtjolj.png' },
+                { id: '103', brand: 'KIN HOME', title: 'Sculptural Ceramic Table Lamp', category: 'Decor', price: 1450, image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_2_k3wqpn.png' },
+                { id: '104', brand: 'RIVIERA', title: 'Structured Leather Shoulder Bag', category: 'Accessories', price: 1750, image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_3_jh8ziq.png' },
+                { id: '105', brand: 'AERFORM', title: 'Aeroflex Pro Runner Sneakers', category: 'Footwear', price: 1400, image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_4_dh5fbk.png' },
+                { id: '106', brand: 'LUMEN', title: 'Hydration Serum & Body Oil', category: 'Skincare', price: 890, image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382197/Product_image_5_mqgoba.png' },
+                { id: '107', brand: 'NOMAD', title: 'Expandable Carry-On Suitcase', category: 'Luggage', price: 2499, image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382197/Product_image_6_vvdraq.png' },
+                { id: '108', brand: 'SONORA AUDIO', title: 'Mini 360 Portable Tech Speaker', category: 'Portable Tech', price: 950, image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382197/Product_image_7_radxl9.png' }
+              ];
+            }
+
+            const matches = prods.filter(p => {
+              const t = (p.title || '').toLowerCase();
+              const b = (p.brand || '').toLowerCase();
+              const c = (p.category || '').toLowerCase();
+              return t.includes(q) || b.includes(q) || c.includes(q);
+            });
+
+            if (matches.length === 0) {
+              searchDropdown.innerHTML = `
+                <div class="p-3 text-center text-muted small">
+                  <i class="bi bi-search me-1"></i> No matching products found for "<strong>${searchInput.value.trim()}</strong>".
+                  <div class="mt-1"><a href="${PREFIX}buyer/html/catalog.html?q=${encodeURIComponent(searchInput.value.trim())}" class="text-coral fw-semibold">Search all catalog items &rarr;</a></div>
+                </div>
+              `;
+              searchDropdown.classList.remove('d-none');
+              return;
+            }
+
+            const topMatches = matches.slice(0, 4);
+            let dropHtml = '';
+            topMatches.forEach(p => {
+              const priceVal = Number(p.price) || 0;
+              const imgUrl = p.image || (Array.isArray(p.images) && p.images[0]) || 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382197/Product_image_ucgxvy.png';
+              dropHtml += `
+                <a href="${PREFIX}buyer/html/product-details.html?id=${p.id}" class="search-dropdown-item">
+                  <img src="${imgUrl}" alt="${p.title}" class="search-dropdown-thumb" />
+                  <div class="search-dropdown-info">
+                    <div class="search-dropdown-title">${p.title}</div>
+                    <div class="search-dropdown-meta">
+                      <span class="badge bg-light text-secondary border extra-small">${p.brand || 'ShopNow'}</span>
+                      <span class="text-muted extra-small">${p.category || 'Lifestyle'}</span>
+                    </div>
+                  </div>
+                  <div class="search-dropdown-price">₹ ${priceVal.toLocaleString('en-IN')}</div>
+                </a>
+              `;
+            });
+
+            dropHtml += `
+              <a href="${PREFIX}buyer/html/catalog.html?q=${encodeURIComponent(searchInput.value.trim())}" class="search-dropdown-footer">
+                See all ${matches.length} matching products &rarr;
+              </a>
+            `;
+
+            searchDropdown.innerHTML = dropHtml;
+            searchDropdown.classList.remove('d-none');
+          }, 150);
+        });
+
+        // Close on outside click
+        document.addEventListener('click', function (e) {
+          if (!searchForm.contains(e.target)) {
+            closeSearchDropdown();
+          }
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') {
+            closeSearchDropdown();
+          }
+        });
+
+        // Re-open on focus if query present
+        searchInput.addEventListener('focus', function () {
+          if (searchInput.value.trim().length >= 2 && searchDropdown.children.length > 0) {
+            searchDropdown.classList.remove('d-none');
+          }
+        });
+      }
+    }
 
     // Update Header counters dynamically
     window.ShopNowHeader = {

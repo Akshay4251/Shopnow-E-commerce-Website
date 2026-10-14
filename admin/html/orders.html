@@ -97,6 +97,25 @@
               <span><span class="badge-status badge-status-cancelled me-1">Cancelled</span> Refunded / aborted</span>
             </div>
           </div>
+        <!-- Orders Filter & Search Toolbar -->
+        <div class="admin-card p-3 mb-4">
+          <div class="row g-2 align-items-center">
+            <div class="col-12 col-md-6">
+              <div class="position-relative">
+                <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                <input type="text" id="adminOrderSearchInput" class="form-control ps-5 py-2 border-light-subtle rounded-3" placeholder="Search orders by Order ID, customer, product, or agent..." />
+              </div>
+            </div>
+            <div class="col-12 col-md-6 text-md-end">
+              <div class="btn-group btn-group-sm" id="adminOrderFilterGroup">
+                <button type="button" class="btn btn-dark active" data-status="all">All Orders</button>
+                <button type="button" class="btn btn-outline-secondary" data-status="pending">Pending</button>
+                <button type="button" class="btn btn-outline-secondary" data-status="shipped">Shipped</button>
+                <button type="button" class="btn btn-outline-secondary" data-status="delivered">Delivered</button>
+                <button type="button" class="btn btn-outline-secondary" data-status="cancelled">Cancelled</button>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Orders Table Card -->

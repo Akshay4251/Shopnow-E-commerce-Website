@@ -95,16 +95,16 @@
             <div class="col-12 col-md-6">
               <div class="position-relative">
                 <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
-                <input type="text" id="adminSellerSearchInput" class="form-control ps-5 py-2 border-light-subtle rounded-3" placeholder="Search by store name, owner name, or email..." />
+                <input type="text" id="adminSellerSearchInput" class="form-control ps-5 py-2 border-light-subtle rounded-3" placeholder="Search by owner name, store name, seller ID, email, phone, city, or status..." />
               </div>
             </div>
 
             <div class="col-12 col-md-6 text-md-end">
-              <div class="btn-group btn-group-sm">
-                <button type="button" class="btn btn-dark active">All Sellers</button>
-                <button type="button" class="btn btn-outline-secondary">Pending Onboarding</button>
-                <button type="button" class="btn btn-outline-secondary">Active</button>
-                <button type="button" class="btn btn-outline-secondary">Blocked</button>
+              <div class="btn-group btn-group-sm" id="adminSellerFilterGroup">
+                <button type="button" class="btn btn-dark active" data-status="all">All Sellers</button>
+                <button type="button" class="btn btn-outline-secondary" data-status="pending">Pending Onboarding</button>
+                <button type="button" class="btn btn-outline-secondary" data-status="active">Active</button>
+                <button type="button" class="btn btn-outline-secondary" data-status="blocked">Blocked</button>
               </div>
             </div>
           </div>

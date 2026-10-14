@@ -623,6 +623,15 @@ $(document).ready(function () {
     $('input[name="ratingFilter"]').on('change', applyCatalogFilters);
     $('#sortSelect').on('change', applyCatalogFilters);
 
+    // Live search input and form submit on catalog page
+    $('#siteSearchInput').on('input', function () {
+      applyCatalogFilters();
+    });
+    $('#siteSearchForm').on('submit', function (e) {
+      e.preventDefault();
+      applyCatalogFilters();
+    });
+
     $(document).on('click', '#btnResetFilters, #btnResetAllFiltersEmpty', function () {
       $('#categoryFiltersList input[type="checkbox"]').prop('checked', false);
       $('#categoryFiltersList input[value="all"]').prop('checked', true);
@@ -1433,8 +1442,31 @@ $(document).ready(function () {
         orders = orders.filter(o => o.statusClass !== 'delivered');
       }
 
+      // Filter by search query (Order ID, item title, brand, status)
+      const searchQ = ($('#buyerOrderSearchInput').val() || '').toLowerCase().trim();
+      if (searchQ) {
+        orders = orders.filter(o => {
+          const ordIdMatch = (o.orderId && String(o.orderId).toLowerCase().includes(searchQ)) || (o.id && String(o.id).toLowerCase().includes(searchQ));
+          const statusMatch = (o.status && o.status.toLowerCase().includes(searchQ));
+          const shipToMatch = (o.shipTo && o.shipTo.toLowerCase().includes(searchQ));
+          const itemMatch = Array.isArray(o.items) && o.items.some(it =>
+            (it.title && it.title.toLowerCase().includes(searchQ)) ||
+            (it.name && it.name.toLowerCase().includes(searchQ)) ||
+            (it.brand && it.brand.toLowerCase().includes(searchQ))
+          );
+          return ordIdMatch || statusMatch || shipToMatch || itemMatch;
+        });
+      }
+
       if (orders.length === 0) {
-        $container.html('<div class="text-center py-5"><h5 class="text-muted">You have no orders yet.</h5><a href="catalog.html" class="btn btn-coral mt-3 px-4">Browse catalog</a></div>');
+        $container.html(`
+          <div class="text-center py-5">
+            <i class="bi bi-search text-muted fs-1 mb-2 d-block"></i>
+            <h5 class="text-muted">No matching orders found.</h5>
+            <p class="small text-muted">Try adjusting your search terms or date filter.</p>
+            <a href="catalog.html" class="btn btn-coral mt-2 px-4 rounded-pill">Browse catalog</a>
+          </div>
+        `);
         return;
       }
 
@@ -1454,7 +1486,7 @@ $(document).ready(function () {
                 </div>
                 <div class="order-meta-block">
                   <span>Total</span>
-                  <strong>$${Number(order.total).toFixed(2)}</strong>
+                  <strong>₹ ${Number(order.total).toLocaleString('en-IN')}</strong>
                 </div>
                 <div class="order-meta-block">
                   <span>Ship To</span>
@@ -1485,7 +1517,7 @@ $(document).ready(function () {
                   <div class="order-history-info">
                     <a href="product-details.html?id=${item.id}" class="order-history-title">${item.title}</a>
                     <div class="small text-muted mb-1">${item.variant || 'Standard'} &bull; Qty: ${item.quantity || 1}</div>
-                    <div class="fw-bold text-dark fs-6">$${(Number(item.price) * (item.quantity || 1)).toFixed(2)}</div>
+                    <div class="fw-bold text-dark fs-6">₹ ${(Number(item.price) * (item.quantity || 1)).toLocaleString('en-IN')}</div>
                   </div>
                   <div class="order-history-actions">
                     <a href="tracking.html?orderId=${order.orderId}" class="btn-order-action">Track order</a>
@@ -1507,6 +1539,11 @@ $(document).ready(function () {
     // Date Filter change
     $('#orderDateFilter').on('change', function () {
       renderOrders($(this).val());
+    });
+
+    // Search input live filter
+    $('#buyerOrderSearchInput').on('input', function () {
+      renderOrders($('#orderDateFilter').val());
     });
 
     // Write review modal trigger

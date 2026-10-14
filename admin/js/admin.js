@@ -313,30 +313,46 @@ $(document).ready(function () {
       $('#kpiAdminOutOfStockCount').text(prods.filter(p => p.stock === 0).length || 0);
     }
 
-    function renderAdminProducts(items) {
+    let currentAdminProductPage = 1;
+    const adminProductPageSize = 5;
+    let filteredAdminProducts = prods;
+
+    function renderAdminProducts(items, page) {
+      if (items !== undefined) filteredAdminProducts = items;
+      if (page !== undefined) currentAdminProductPage = page;
+
+      const pInfo = ShopNowCommon.paginate(filteredAdminProducts, currentAdminProductPage, adminProductPageSize);
+      currentAdminProductPage = pInfo.currentPage;
+
       let html = '';
-      if (!items || items.length === 0) {
-        html = '<tr><td colspan="7" class="text-center py-4 text-muted">No products found in marketplace catalog.</td></tr>';
+      if (!pInfo.pageItems || pInfo.pageItems.length === 0) {
+        html = '<tr><td colspan="7" class="text-center py-5 text-muted"><p class="mb-0">No catalog products match your search and filter criteria.</p></td></tr>';
       } else {
-        items.slice(0, 50).forEach(p => {
-          const imgSrc = p.image || (p.images && p.images[0]) || 'https://via.placeholder.com/80';
-          const stock = p.stock !== undefined ? p.stock : 25;
-          const stockBadge = stock > 10 ? `<span class="badge bg-success-subtle text-success">${stock} in stock</span>` : (stock > 0 ? `<span class="badge bg-warning-subtle text-warning-emphasis">${stock} left (Low)</span>` : `<span class="badge bg-danger-subtle text-danger">Out of stock</span>`);
+        pInfo.pageItems.forEach(p => {
+          const imgSrc = p.image || (p.images && p.images[0]) || 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_1_dtjolj.png';
+          const pTitle = p.title || p.name || 'Catalog Product';
+          const pSku = p.sku || ('PRD-' + (p.id || 101));
+          const stock = p.stock !== undefined ? Number(p.stock) : 24;
+          const stockBadge = stock > 10
+            ? `<span class="badge bg-success-subtle text-success">${stock} in stock</span>`
+            : (stock > 0 ? `<span class="badge bg-warning-subtle text-warning-emphasis">${stock} left (Low)</span>` : `<span class="badge bg-danger-subtle text-danger">Out of stock</span>`);
+          const sellerName = p.sellerStore || p.sellerName || p.seller || p.brand || 'Tech World';
+
           html += `
             <tr>
               <td>
                 <div class="d-flex align-items-center gap-3">
-                  <img src="${imgSrc}" alt="${p.name}" style="width: 44px; height: 44px; object-fit: contain;" class="rounded border p-1 bg-white" onerror="this.src='https://via.placeholder.com/80'" />
+                  <img src="${imgSrc}" alt="${pTitle}" style="width: 44px; height: 44px; object-fit: contain;" class="rounded border p-1 bg-white" onerror="this.src='https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_1_dtjolj.png'" />
                   <div>
-                    <strong class="text-dark d-block">${p.name}</strong>
-                    <span class="extra-small text-muted">SKU: ${p.sku || ('PRD-' + (p.id || 101))}</span>
+                    <strong class="text-dark d-block text-truncate" style="max-width: 260px;" title="${pTitle}">${pTitle}</strong>
+                    <span class="extra-small text-muted font-monospace">SKU: ${pSku}</span>
                   </div>
                 </div>
               </td>
               <td>${p.category || 'General'}</td>
               <td><strong>₹ ${Number(p.price || 999).toLocaleString('en-IN')}</strong></td>
               <td>${stockBadge}</td>
-              <td>${p.seller || p.sellerName || 'Verified Merchant'}</td>
+              <td>${sellerName}</td>
               <td><span class="badge-status badge-status-active">Active</span></td>
               <td class="text-end">
                 <button class="btn btn-sm btn-outline-admin py-1 px-2 btn-inspect-product" data-id="${p.id}">
@@ -348,25 +364,75 @@ $(document).ready(function () {
         });
       }
       $('#adminProductsTableBody').html(html);
+
+      ShopNowCommon.renderPaginationUI({
+        wrapperSelector: '#adminProductsPaginationWrapper',
+        infoSelector: '#adminProductsPaginationInfo',
+        listSelector: '#adminProductsPaginationList',
+        currentPage: pInfo.currentPage,
+        totalPages: pInfo.totalPages,
+        totalItems: pInfo.totalItems,
+        startIndex: pInfo.startIndex,
+        endIndex: pInfo.endIndex,
+        itemLabel: 'products',
+        onPageChange: function (newPage) {
+          renderAdminProducts(filteredAdminProducts, newPage);
+        }
+      });
     }
 
-    renderAdminProducts(prods);
+    function applyAdminProductFilters() {
+      const q = ($('#adminProductSearchInput').val() || '').toLowerCase().trim();
+      const cat = ($('#adminProductCategoryFilter').val() || 'all').toLowerCase();
+      const stock = $('#adminProductStockFilter').val() || 'all';
 
-    $('#adminProductSearchInput').on('input', function () {
-      const q = $(this).val().toLowerCase();
-      const filtered = prods.filter(p =>
-        (p.name && p.name.toLowerCase().includes(q)) ||
-        (p.category && p.category.toLowerCase().includes(q)) ||
-        (p.seller && p.seller.toLowerCase().includes(q))
-      );
-      renderAdminProducts(filtered);
-    });
+      const filtered = prods.filter(p => {
+        const titleStr = (p.title || p.name || '').toLowerCase();
+        const skuStr = (p.sku || ('PRD-' + (p.id || ''))).toLowerCase();
+        const sellerStr = (p.sellerStore || p.sellerName || p.seller || p.brand || '').toLowerCase();
+        const catStr = (p.category || '').toLowerCase();
+
+        const matchesQ = !q || titleStr.includes(q) || skuStr.includes(q) || sellerStr.includes(q) || catStr.includes(q);
+        const matchesCat = (cat === 'all') || catStr.includes(cat);
+
+        let matchesStock = true;
+        const sVal = p.stock !== undefined ? Number(p.stock) : 24;
+        if (stock === 'in') matchesStock = sVal > 5;
+        else if (stock === 'low') matchesStock = sVal <= 5;
+
+        return matchesQ && matchesCat && matchesStock;
+      });
+
+      renderAdminProducts(filtered, 1);
+    }
+
+    renderAdminProducts(prods, 1);
+
+    $('#adminProductSearchInput').on('input', applyAdminProductFilters);
+    $('#adminProductCategoryFilter, #adminProductStockFilter').on('change', applyAdminProductFilters);
 
     $(document).on('click', '.btn-inspect-product', function () {
       const id = $(this).data('id');
-      const prod = prods.find(p => p.id == id);
-      if (prod && typeof ShopNowCommon !== 'undefined') {
-        ShopNowCommon.showToast(`Catalog product "${prod.name}" inspected. All compliance checks passed.`, 'info');
+      const prod = prods.find(p => String(p.id) === String(id));
+      if (prod) {
+        const imgSrc = prod.image || (prod.images && prod.images[0]) || 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_1_dtjolj.png';
+        const pTitle = prod.title || prod.name || 'Catalog Product';
+        const pSku = prod.sku || ('PRD-' + (prod.id || 101));
+        const pSeller = prod.sellerStore || prod.sellerName || prod.seller || prod.brand || 'Tech World';
+        const pPrice = Number(prod.price || 999);
+        const pStock = prod.stock !== undefined ? Number(prod.stock) : 24;
+        const commission = Math.round(pPrice * 0.10);
+
+        const modalEl = document.getElementById('productDetailModal');
+        if (modalEl) {
+          $(modalEl).find('img').attr('src', imgSrc);
+          $(modalEl).find('h5.fw-bold.text-dark.mb-1').text(pTitle);
+          $(modalEl).find('p.extra-small.text-muted.mb-3').html(`Listed by ${pSeller} &bull; SKU: ${pSku} &bull; Category: ${prod.category || 'General'}`);
+          $(modalEl).find('.text-coral.fs-6').text(`₹ ${pPrice.toLocaleString('en-IN')}`);
+          $(modalEl).find('.text-dark:contains("Units")').text(`${pStock} Units`);
+          $(modalEl).find('.text-dark:contains("10%")').text(`10% (₹ ${commission.toLocaleString('en-IN')} / unit)`);
+          new bootstrap.Modal(modalEl).show();
+        }
       }
     });
   }
@@ -379,52 +445,131 @@ $(document).ready(function () {
     const deliveryUsers = regUsers.filter(u => u.role === 'delivery');
     
     let defaultAgents = [
-      { id: 'DRV-821', name: 'Rajesh Verma', phone: '+91 98201 45892', vehicle: 'Sprinter Van (MH-02-CP-8921)', status: 'On Route', stops: '14 stops', rating: '4.95' },
-      { id: 'DRV-822', name: 'Sunita Patel', phone: '+91 98334 56789', vehicle: 'Hybrid Sedan (MH-12-AB-4819)', status: 'On Route', stops: '9 stops', rating: '4.92' },
-      { id: 'DRV-823', name: 'Amit Kumar', phone: '+91 98112 44999', vehicle: 'Motorcycle (MH-01-BK-9981)', status: 'Available At Hub', stops: '0 stops', rating: '4.88' }
+      { id: 'DRV-821', name: 'Rajesh Verma', phone: '+91 98201 45892', vehicle: 'Sprinter Van (MH-02-CP-8921)', status: 'On Route', statusKey: 'on-duty', stops: '14 stops', rating: '4.95' },
+      { id: 'DRV-822', name: 'Sunita Patel', phone: '+91 98334 56789', vehicle: 'Hybrid Sedan (MH-12-AB-4819)', status: 'On Route', statusKey: 'on-duty', stops: '9 stops', rating: '4.92' },
+      { id: 'DRV-823', name: 'Amit Kumar', phone: '+91 98112 44999', vehicle: 'Motorcycle (MH-01-BK-9981)', status: 'Available At Hub', statusKey: 'available', stops: '0 stops', rating: '4.88' },
+      { id: 'DRV-824', name: 'Vikram Joshi', phone: '+91 98231 77654', vehicle: 'Electric Scooter (MH-04-ET-1102)', status: 'Available At Hub', statusKey: 'available', stops: '0 stops', rating: '4.90' },
+      { id: 'DRV-825', name: 'Pooja Nair', phone: '+91 98450 33211', vehicle: 'Delivery Van (MH-03-CV-5541)', status: 'Inactive / Off-Duty', statusKey: 'inactive', stops: '0 stops', rating: '4.78' }
     ];
 
     deliveryUsers.forEach((u, i) => {
       if (!defaultAgents.some(a => a.phone === u.phone)) {
         defaultAgents.push({
-          id: 'DRV-' + (824 + i),
+          id: 'DRV-' + (826 + i),
           name: u.name || 'Courier Agent',
           phone: u.phone || '+91 98000 00000',
           vehicle: `${u.vehicle || 'Motorcycle'} (${u.city || 'Mumbai'})`,
           status: 'Available At Hub',
+          statusKey: 'available',
           stops: '0 stops',
           rating: '5.00'
         });
       }
     });
 
-    function renderAgents(items) {
+    let currentAgentPage = 1;
+    const agentPageSize = 5;
+    let currentAgentFilter = 'all';
+    let filteredAgents = defaultAgents;
+
+    function renderAgents(items, page) {
+      if (items !== undefined) filteredAgents = items;
+      if (page !== undefined) currentAgentPage = page;
+
+      const pInfo = ShopNowCommon.paginate(filteredAgents, currentAgentPage, agentPageSize);
+      currentAgentPage = pInfo.currentPage;
+
       let html = '';
-      items.forEach(a => {
-        html += `
-          <tr>
-            <td><strong class="text-coral">${a.id}</strong></td>
-            <td>
-              <div class="d-flex align-items-center gap-2">
-                <div class="admin-avatar"><img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80" alt="${a.name}" /></div>
-                <div><strong class="text-dark d-block">${a.name}</strong><span class="extra-small text-muted">★ ${a.rating} Rating</span></div>
-              </div>
-            </td>
-            <td>${a.phone}</td>
-            <td>${a.vehicle}</td>
-            <td><span class="badge-status ${a.status === 'On Route' ? 'badge-status-active' : 'badge-status-review'}">${a.status}</span></td>
-            <td><strong>${a.stops}</strong></td>
-            <td class="text-end">
-              <button class="btn btn-sm btn-coral-admin py-1 px-3 btn-assign-run" data-id="${a.id}">Assign Run</button>
-            </td>
-          </tr>
-        `;
-      });
+      if (!pInfo.pageItems || pInfo.pageItems.length === 0) {
+        html = '<tr><td colspan="7" class="text-center py-5 text-muted">No delivery drivers match your search and fleet filter.</td></tr>';
+      } else {
+        pInfo.pageItems.forEach(a => {
+          const isOnRoute = (a.status || '').toLowerCase().includes('route');
+          const isAvailable = (a.status || '').toLowerCase().includes('available');
+          const badgeClass = isOnRoute ? 'badge-status-active' : (isAvailable ? 'badge-status-review' : 'badge-status-inactive');
+
+          html += `
+            <tr>
+              <td><strong class="text-coral">${a.id}</strong></td>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="admin-avatar"><img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80" alt="${a.name}" /></div>
+                  <div><strong class="text-dark d-block">${a.name}</strong><span class="extra-small text-muted">★ ${a.rating} Rating</span></div>
+                </div>
+              </td>
+              <td>${a.phone}</td>
+              <td>${a.vehicle}</td>
+              <td><span class="badge-status ${badgeClass}">${a.status}</span></td>
+              <td><strong>${a.stops}</strong></td>
+              <td class="text-end">
+                <button class="btn btn-sm btn-coral-admin py-1 px-3 btn-assign-run" data-id="${a.id}">Assign Run</button>
+              </td>
+            </tr>
+          `;
+        });
+      }
       $('#adminDeliveryAgentsTableBody').html(html);
+
+      ShopNowCommon.renderPaginationUI({
+        wrapperSelector: '#adminAgentsPaginationWrapper',
+        infoSelector: '#adminAgentsPaginationInfo',
+        listSelector: '#adminAgentsPaginationList',
+        currentPage: pInfo.currentPage,
+        totalPages: pInfo.totalPages,
+        totalItems: pInfo.totalItems,
+        startIndex: pInfo.startIndex,
+        endIndex: pInfo.endIndex,
+        itemLabel: 'drivers',
+        onPageChange: function (newPage) {
+          renderAgents(filteredAgents, newPage);
+        }
+      });
     }
-    renderAgents(defaultAgents);
+
+    function applyAdminAgentFilters() {
+      const q = ($('#adminAgentSearchInput').val() || '').toLowerCase().trim();
+
+      const filtered = defaultAgents.filter(a => {
+        const nameStr = (a.name || '').toLowerCase();
+        const idStr = (a.id || '').toLowerCase();
+        const phoneStr = (a.phone || '').toLowerCase();
+        const vehicleStr = (a.vehicle || '').toLowerCase();
+        const statusStr = (a.status || '').toLowerCase();
+
+        const matchesQ = !q || nameStr.includes(q) || idStr.includes(q) || phoneStr.includes(q) || vehicleStr.includes(q) || statusStr.includes(q);
+
+        let matchesTab = true;
+        if (currentAgentFilter === 'available') {
+          matchesTab = statusStr.includes('available');
+        } else if (currentAgentFilter === 'on-duty') {
+          matchesTab = statusStr.includes('route') || statusStr.includes('duty');
+        } else if (currentAgentFilter === 'inactive') {
+          matchesTab = statusStr.includes('inactive') || statusStr.includes('off');
+        }
+
+        return matchesQ && matchesTab;
+      });
+
+      renderAgents(filtered, 1);
+    }
+
+    renderAgents(defaultAgents, 1);
+
+    $('#adminAgentSearchInput').on('input', applyAdminAgentFilters);
+
+    $('#adminAgentFilterGroup button').on('click', function () {
+      $('#adminAgentFilterGroup button').removeClass('btn-dark active').addClass('btn-outline-secondary');
+      $(this).removeClass('btn-outline-secondary').addClass('btn-dark active');
+      currentAgentFilter = $(this).data('status') || 'all';
+      applyAdminAgentFilters();
+    });
 
     $(document).on('click', '.btn-assign-run', function () {
+      const driverId = $(this).data('id');
+      const driver = defaultAgents.find(d => d.id === driverId);
+      if (driver) {
+        $('#selectDeliveryDriver').val(`${driver.name} (${driver.vehicle.split('(')[0].trim()})`);
+      }
       new bootstrap.Modal(document.getElementById('assignDeliveryModal')).show();
     });
   }
@@ -438,6 +583,8 @@ $(document).ready(function () {
     const sellerPageSize = 5;
     let filteredSellers = sellers;
 
+    let currentSellerFilter = 'all';
+
     function renderSellersTable(items, page) {
       if (items !== undefined) filteredSellers = items;
       if (page !== undefined) currentSellerPage = page;
@@ -447,7 +594,7 @@ $(document).ready(function () {
 
       let html = '';
       if (pInfo.pageItems.length === 0) {
-        html = '<tr><td colspan="7" class="text-center py-4 text-muted">No sellers found matching criteria.</td></tr>';
+        html = '<tr><td colspan="7" class="text-center py-5 text-muted">No sellers found matching search or filter criteria.</td></tr>';
       } else {
         pInfo.pageItems.forEach((s, idx) => {
           html += `
@@ -485,17 +632,43 @@ $(document).ready(function () {
       });
     }
 
+    function applySellerFilters() {
+      const q = ($('#adminSellerSearchInput').val() || '').toLowerCase().trim();
+      let list = sellers;
+
+      if (currentSellerFilter !== 'all') {
+        list = list.filter(s => (s.status || '').toLowerCase() === currentSellerFilter.toLowerCase());
+      }
+
+      if (q) {
+        list = list.filter(s => {
+          const store = (s.storeName || '').toLowerCase();
+          const owner = (s.ownerName || '').toLowerCase();
+          const sId = (s.id || '').toLowerCase();
+          const email = (s.email || '').toLowerCase();
+          const phone = (s.phone || '').toLowerCase();
+          const addr = (s.address || '').toLowerCase();
+          const pan = (s.pan || '').toLowerCase();
+          const gst = (s.gst || '').toLowerCase();
+          const stat = (s.status || '').toLowerCase();
+
+          return store.includes(q) || owner.includes(q) || sId.includes(q) || email.includes(q) || phone.includes(q) || addr.includes(q) || pan.includes(q) || gst.includes(q) || stat.includes(q);
+        });
+      }
+
+      renderSellersTable(list, 1);
+    }
+
     renderSellersTable(sellers, 1);
 
-    // Search Filter
-    $('#adminSellerSearchInput').on('input', function () {
-      const q = $(this).val().toLowerCase().trim();
-      const filtered = sellers.filter(s =>
-        (s.storeName || '').toLowerCase().includes(q) ||
-        (s.ownerName || '').toLowerCase().includes(q) ||
-        (s.email || '').toLowerCase().includes(q)
-      );
-      renderSellersTable(filtered, 1);
+    // Search and Status Tabs Filters
+    $('#adminSellerSearchInput').on('input', applySellerFilters);
+
+    $('#adminSellerFilterGroup button').on('click', function () {
+      $('#adminSellerFilterGroup button').removeClass('btn-dark active').addClass('btn-outline-secondary');
+      $(this).removeClass('btn-outline-secondary').addClass('btn-dark active');
+      currentSellerFilter = $(this).data('status') || 'all';
+      applySellerFilters();
     });
 
     // View & Verify Seller Modal
@@ -653,28 +826,28 @@ $(document).ready(function () {
         list = list.filter(b => (b.status || '').toLowerCase() === currentBuyerFilter.toLowerCase());
       }
       if (q) {
-        list = list.filter(b =>
-          (b.id && b.id.toLowerCase().includes(q)) ||
-          (b.name && b.name.toLowerCase().includes(q)) ||
-          (b.email && b.email.toLowerCase().includes(q))
-        );
+        list = list.filter(b => {
+          const bId = (b.id || '').toLowerCase();
+          const name = (b.name || '').toLowerCase();
+          const email = (b.email || '').toLowerCase();
+          const phone = (b.phone || '').toLowerCase();
+          const addr = (b.address || '').toLowerCase();
+          const stat = (b.status || '').toLowerCase();
+          return bId.includes(q) || name.includes(q) || email.includes(q) || phone.includes(q) || addr.includes(q) || stat.includes(q);
+        });
       }
       renderBuyersTable(list, 1);
     }
 
     renderBuyersTable(buyers, 1);
 
-    // Search input
+    // Search and Status Tabs Filters
     $('#adminBuyerSearchInput').on('input', applyBuyerFilters);
 
-    // Filter Buttons in toolbar if present
-    $('.admin-card .btn-group button').on('click', function () {
-      $('.admin-card .btn-group button').removeClass('btn-dark active').addClass('btn-outline-secondary');
+    $('#adminBuyerFilterGroup button, .admin-card .btn-group button').on('click', function () {
+      $('#adminBuyerFilterGroup button, .admin-card .btn-group button').removeClass('btn-dark active').addClass('btn-outline-secondary');
       $(this).removeClass('btn-outline-secondary').addClass('btn-dark active');
-      const text = $(this).text().trim().toLowerCase();
-      if (text.includes('all')) currentBuyerFilter = 'all';
-      else if (text.includes('active')) currentBuyerFilter = 'active';
-      else if (text.includes('block')) currentBuyerFilter = 'blocked';
+      currentBuyerFilter = $(this).data('status') || ($(this).text().trim().toLowerCase().includes('all') ? 'all' : ($(this).text().trim().toLowerCase().includes('block') ? 'blocked' : 'active'));
       applyBuyerFilters();
     });
 
@@ -760,7 +933,41 @@ $(document).ready(function () {
       });
     }
 
+    let currentAdminOrderFilter = 'all';
+
+    function applyAdminOrderFilters() {
+      const q = ($('#adminOrderSearchInput').val() || '').toLowerCase().trim();
+      let list = orders;
+
+      if (currentAdminOrderFilter !== 'all') {
+        list = list.filter(o => (o.status || '').toLowerCase() === currentAdminOrderFilter.toLowerCase());
+      }
+
+      if (q) {
+        list = list.filter(o => {
+          const ordId = (o.id || o.orderId || '').toLowerCase();
+          const cust = (o.customer || o.customerName || '').toLowerCase();
+          const prod = (o.product || (o.items && o.items[0]?.name) || '').toLowerCase();
+          const agent = (o.agent || '').toLowerCase();
+          const stat = (o.status || '').toLowerCase();
+          const price = String(o.price || o.totalAmount || '');
+          return ordId.includes(q) || cust.includes(q) || prod.includes(q) || agent.includes(q) || stat.includes(q) || price.includes(q);
+        });
+      }
+
+      renderAdminOrdersTable(list, 1);
+    }
+
     renderAdminOrdersTable(orders, 1);
+
+    $('#adminOrderSearchInput').on('input', applyAdminOrderFilters);
+
+    $('#adminOrderFilterGroup button').on('click', function () {
+      $('#adminOrderFilterGroup button').removeClass('btn-dark active').addClass('btn-outline-secondary');
+      $(this).removeClass('btn-outline-secondary').addClass('btn-dark active');
+      currentAdminOrderFilter = $(this).data('status') || 'all';
+      applyAdminOrderFilters();
+    });
 
     $(document).on('click', '.btn-assign-delivery', function () {
       const id = $(this).data('id');
