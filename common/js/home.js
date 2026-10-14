@@ -54,14 +54,15 @@ $(document).ready(function () {
     }
   ];
 
-  // Fallback Products Data
+  // Fallback Products Data (Curated with Indian Rupee Prices)
   const defaultProducts = [
     { 
       id: "101", 
       brand: 'AERFORM', 
       title: 'Textured Cashmere Blend Sweater', 
-      price: 189.00, 
-      oldPrice: 240.00, 
+      category: 'Sweaters',
+      price: 1899, 
+      oldPrice: 2499, 
       badge: '15% OFF', 
       rating: 4.8, 
       reviews: 124, 
@@ -71,8 +72,9 @@ $(document).ready(function () {
       id: "102", 
       brand: 'LUMEN', 
       title: 'Over-Ear Noise Canceling Headphones', 
-      price: 199.00, 
-      oldPrice: 270.00, 
+      category: 'Audio',
+      price: 2999, 
+      oldPrice: 3999, 
       badge: '15% OFF', 
       rating: 4.9, 
       reviews: 88, 
@@ -82,7 +84,8 @@ $(document).ready(function () {
       id: "103", 
       brand: 'KIN HOME', 
       title: 'Sculptural Ceramic Table Lamp', 
-      price: 145.00, 
+      category: 'Decor',
+      price: 1450, 
       oldPrice: null, 
       badge: '', 
       rating: 4.7, 
@@ -93,8 +96,9 @@ $(document).ready(function () {
       id: "104", 
       brand: 'RIVIERA HOME', 
       title: 'Structured Leather Daypack', 
-      price: 175.00, 
-      oldPrice: 220.00, 
+      category: 'Accessories',
+      price: 1750, 
+      oldPrice: 2200, 
       badge: '15% OFF', 
       rating: 4.6, 
       reviews: 210, 
@@ -104,7 +108,8 @@ $(document).ready(function () {
       id: "105", 
       brand: 'AERFORM', 
       title: 'Aeroflex Pro Runner', 
-      price: 140.00, 
+      category: 'Footwear',
+      price: 1400, 
       oldPrice: null, 
       badge: 'NEW EDIT', 
       rating: 4.8, 
@@ -115,7 +120,8 @@ $(document).ready(function () {
       id: "106", 
       brand: 'LUMEN', 
       title: 'Hydration Serum & Body Oil', 
-      price: 48.00, 
+      category: 'Skincare',
+      price: 890, 
       oldPrice: null, 
       badge: '', 
       rating: 4.9, 
@@ -126,8 +132,9 @@ $(document).ready(function () {
       id: "107", 
       brand: 'NOMAD', 
       title: 'Expandable Carry-On Suitcase', 
-      price: 220.00, 
-      oldPrice: 280.00, 
+      category: 'Luggage',
+      price: 2499, 
+      oldPrice: 3199, 
       badge: 'BESTSELLER', 
       rating: 4.9, 
       reviews: 512, 
@@ -137,7 +144,8 @@ $(document).ready(function () {
       id: "108", 
       brand: 'SONORA AUDIO', 
       title: 'Mini 360 Speaker', 
-      price: 95.00, 
+      category: 'Audio',
+      price: 950, 
       oldPrice: null, 
       badge: '', 
       rating: 4.7, 
@@ -174,18 +182,99 @@ $(document).ready(function () {
     $('#categoriesContainer').html(catHtml);
   }
 
-  let allHomeProducts = [...defaultProducts];
+  // Normalizer: cleans raw MockAPI data into accurate, professional product attributes
+  function normalizeProduct(p, idx) {
+    if (!p) return null;
+    const defaultRef = defaultProducts.find(d => String(d.id) === String(p.id)) || defaultProducts[idx % defaultProducts.length];
+    
+    // Check if title is dummy generated e.g. "title 101"
+    const isDummyTitle = !p.title || /^title\s*\d*$/i.test(p.title);
+    const title = isDummyTitle ? defaultRef.title : p.title;
+
+    // Check if brand is dummy generated e.g. "brand 101"
+    const isDummyBrand = !p.brand || /^brand\s*\d*$/i.test(p.brand);
+    const brand = isDummyBrand ? (p.sellerName || defaultRef.brand || 'SHOPNOW') : p.brand;
+
+    // Category
+    let cat = p.category;
+    if (!cat || /^category\s*\d*$/i.test(cat)) {
+      cat = defaultRef.category || 'Lifestyle';
+    }
+
+    // Image fallback to Cloudinary if empty or placeholder
+    let img = p.image || (Array.isArray(p.images) && p.images[0]);
+    if (!img || img.includes('placeholder') || img.length < 15 || !img.startsWith('http')) {
+      img = defaultRef.image;
+    }
+
+    // Price
+    let price = Number(p.price);
+    if (isNaN(price) || price <= 0 || (isDummyTitle && price < 100)) {
+      price = defaultRef.price;
+    }
+
+    // Old price / discount
+    let oldPrice = p.oldPrice ? Number(p.oldPrice) : (p.discountPrice ? Number(p.discountPrice) : null);
+    if (oldPrice && oldPrice <= price) {
+      if (oldPrice > 0 && oldPrice < price) {
+        const temp = price;
+        price = oldPrice;
+        oldPrice = temp;
+      } else {
+        oldPrice = defaultRef.oldPrice || null;
+      }
+    }
+
+    return {
+      ...p,
+      id: p.id || defaultRef.id,
+      title: title,
+      brand: brand,
+      category: cat,
+      price: price,
+      oldPrice: oldPrice,
+      badge: p.badge || (p.createdAt ? 'NEW' : defaultRef.badge || ''),
+      rating: p.rating ? Number(p.rating) : defaultRef.rating || 4.8,
+      reviews: p.reviews !== undefined ? p.reviews : defaultRef.reviews || 0,
+      image: img
+    };
+  }
+
+  // Sorter: Latest products (custom seller created or newest IDs/timestamps) come first
+  function sortLatestProducts(list) {
+    return [...list].sort((a, b) => {
+      if (a.createdAt && b.createdAt) {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      }
+      if (a.createdAt) return -1;
+      if (b.createdAt) return 1;
+
+      const aIsCustom = a.sellerEmail && a.sellerEmail !== 'seller@demo.com';
+      const bIsCustom = b.sellerEmail && b.sellerEmail !== 'seller@demo.com';
+      if (aIsCustom && !bIsCustom) return -1;
+      if (!aIsCustom && bIsCustom) return 1;
+
+      const numA = parseInt(String(a.id).replace(/\D/g, ''), 10) || 0;
+      const numB = parseInt(String(b.id).replace(/\D/g, ''), 10) || 0;
+      if (numA > 108 || numB > 108) {
+        return numB - numA;
+      }
+      return numA - numB;
+    });
+  }
+
+  let allHomeProducts = [];
 
   function renderProducts(prods) {
-    if (Array.isArray(prods) && prods.length > 0) {
-      allHomeProducts = prods.map((p, idx) => {
-        let img = p.image;
-        if (!img || img.includes('placeholder') || img.length < 15 || !img.startsWith('http')) {
-          img = defaultProducts[idx % defaultProducts.length].image;
-        }
-        return { ...p, image: img };
-      });
-    }
+    const list = Array.isArray(prods) && prods.length > 0 ? prods : defaultProducts;
+    
+    // Normalize and sort by newest/latest
+    const normalized = list.map((p, idx) => normalizeProduct(p, idx)).filter(Boolean);
+    const sorted = sortLatestProducts(normalized);
+
+    // Strictly limit to the latest 8 products - do not add further!
+    allHomeProducts = sorted.slice(0, 8);
+
     const user = typeof ShopNowCommon !== 'undefined' ? ShopNowCommon.getCurrentUser() : null;
     const userWishlist = user ? ShopNowCommon.getUserWishlist(user) : [];
 
@@ -193,10 +282,12 @@ $(document).ready(function () {
     allHomeProducts.forEach(p => {
       const priceVal = Number(p.price) || 0;
       const oldPriceVal = p.oldPrice ? Number(p.oldPrice) : null;
-      const oldPriceHtml = oldPriceVal ? `<span class="old-price">$${oldPriceVal.toFixed(2)}</span>` : '';
+      const oldPriceHtml = (oldPriceVal && oldPriceVal > priceVal) 
+        ? `<span class="old-price">₹ ${oldPriceVal.toLocaleString('en-IN')}</span>` 
+        : '';
       const badgeHtml = p.badge ? `<span class="product-badge-tag">${p.badge}</span>` : '';
       const ratingVal = p.rating ? Number(p.rating).toFixed(1) : '4.8';
-      const reviewsVal = p.reviews ? p.reviews : '0';
+      const reviewsVal = p.reviews !== undefined ? p.reviews : '0';
       const isWishlisted = userWishlist.some(w => String(w.id) === String(p.id));
 
       prodHtml += `
@@ -225,7 +316,7 @@ $(document).ready(function () {
               </div>
               <div class="product-price-row d-flex justify-content-between align-items-center mb-2">
                 <div>
-                  <span class="curr-price">$${priceVal.toFixed(2)}</span>
+                  <span class="curr-price">₹ ${priceVal.toLocaleString('en-IN')}</span>
                   ${oldPriceHtml}
                 </div>
                 <a href="../../buyer/html/product-details.html?id=${p.id}" class="btn btn-sm btn-outline-dark rounded-pill px-3 py-1 small fw-semibold">
