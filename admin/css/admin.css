@@ -58,14 +58,84 @@ body.admin-body {
   border-right: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+.admin-sidebar-header {
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.admin-sidebar-header .admin-sidebar-brand {
+  padding: 0;
+  border-bottom: none;
+}
+
 .admin-sidebar-brand {
-  padding: 22px 20px;
   display: flex;
   align-items: center;
   gap: 12px;
   text-decoration: none;
   color: #ffffff;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.admin-sidebar-close-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+  padding: 0;
+  line-height: 1;
+}
+
+.admin-sidebar-close-btn:hover,
+.admin-sidebar-close-btn:focus,
+.admin-sidebar-close-btn:active {
+  background: #ff5338;
+  border-color: #ff5338;
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+.admin-sidebar-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(8, 23, 38, 0.65);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 1045;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.admin-sidebar-backdrop.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media (min-width: 992px) {
+  .admin-sidebar-backdrop {
+    display: none !important;
+  }
+  .admin-sidebar-close-btn {
+    display: none !important;
+  }
+}
+
+body.admin-sidebar-open {
+  overflow: hidden;
 }
 
 .admin-brand-icon {

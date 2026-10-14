@@ -11,13 +11,18 @@
 
   function getAdminSidebarHtml(activeTab = 'dashboard') {
     return `
-      <!-- Brand Logo -->
-      <a href="dashboard.html" class="admin-sidebar-brand">
-        <div class="admin-brand-icon">
-          <i class="bi bi-bag-fill"></i>
-        </div>
-        <span class="admin-brand-name">ShopNow</span>
-      </a>
+      <!-- Brand Logo Header & Mobile Close Button -->
+      <div class="admin-sidebar-header">
+        <a href="dashboard.html" class="admin-sidebar-brand">
+          <div class="admin-brand-icon">
+            <i class="bi bi-bag-fill"></i>
+          </div>
+          <span class="admin-brand-name">ShopNow</span>
+        </a>
+        <button type="button" class="admin-sidebar-close-btn d-lg-none" id="btnCloseAdminSidebar" aria-label="Close Sidebar">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
 
       <!-- Navigation Menu (14 Core Sections Matching Figma) -->
       <ul class="admin-sidebar-menu">
@@ -179,11 +184,86 @@
       topBarContainer.innerHTML = getAdminTopBarHtml();
     }
 
-    // Mobile Sidebar Toggle
+    // Mobile Sidebar & Backdrop Controller (Hamburger effect)
+    let backdrop = document.getElementById('adminSidebarBackdrop');
+    if (!backdrop && sidebarContainer) {
+      backdrop = document.createElement('div');
+      backdrop.className = 'admin-sidebar-backdrop';
+      backdrop.id = 'adminSidebarBackdrop';
+      document.body.appendChild(backdrop);
+    }
+
+    function openSidebar() {
+      if (sidebarContainer) {
+        sidebarContainer.classList.add('show');
+        document.body.classList.add('admin-sidebar-open');
+      }
+      if (backdrop) {
+        backdrop.classList.add('show');
+      }
+    }
+
+    function closeSidebar() {
+      if (sidebarContainer) {
+        sidebarContainer.classList.remove('show');
+        document.body.classList.remove('admin-sidebar-open');
+      }
+      if (backdrop) {
+        backdrop.classList.remove('show');
+      }
+    }
+
     const toggleBtn = document.getElementById('btnToggleAdminSidebar');
     if (toggleBtn && sidebarContainer) {
-      toggleBtn.addEventListener('click', function () {
-        sidebarContainer.classList.toggle('show');
+      toggleBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (sidebarContainer.classList.contains('show')) {
+          closeSidebar();
+        } else {
+          openSidebar();
+        }
+      });
+    }
+
+    // Close button inside sidebar header
+    const closeBtn = document.getElementById('btnCloseAdminSidebar');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        closeSidebar();
+      });
+    }
+
+    // Click on backdrop to close
+    if (backdrop) {
+      backdrop.addEventListener('click', function (e) {
+        e.stopPropagation();
+        closeSidebar();
+      });
+    }
+
+    // Click outside handler for mobile
+    document.addEventListener('click', function (e) {
+      if (window.innerWidth < 992 && sidebarContainer && sidebarContainer.classList.contains('show')) {
+        if (!sidebarContainer.contains(e.target) && (!toggleBtn || !toggleBtn.contains(e.target))) {
+          closeSidebar();
+        }
+      }
+    });
+
+    // Close on Escape key press
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && sidebarContainer && sidebarContainer.classList.contains('show')) {
+        closeSidebar();
+      }
+    });
+
+    // Close sidebar on link click on mobile
+    if (sidebarContainer) {
+      sidebarContainer.addEventListener('click', function (e) {
+        if (window.innerWidth < 992 && e.target.closest('.admin-nav-item')) {
+          closeSidebar();
+        }
       });
     }
 
