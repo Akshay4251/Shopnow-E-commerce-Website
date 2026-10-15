@@ -38,24 +38,8 @@
             <span>Assigned Orders</span>
           </a>
         </li>
-        <li>
-          <a href="location.html" class="delivery-nav-item ${activeTab === 'location' ? 'active' : ''}">
-            <i class="bi bi-geo-alt-fill"></i>
-            <span>Location</span>
-          </a>
-        </li>
-        <li>
-          <a href="customer-interaction.html" class="delivery-nav-item ${activeTab === 'interaction' ? 'active' : ''}">
-            <i class="bi bi-chat-left-dots-fill"></i>
-            <span>Customer Interaction</span>
-          </a>
-        </li>
-        <li>
-          <a href="payment.html" class="delivery-nav-item ${activeTab === 'payment' ? 'active' : ''}">
-            <i class="bi bi-credit-card-2-front-fill"></i>
-            <span>Payment Management</span>
-          </a>
-        </li>
+        
+     
         <li>
           <a href="history.html" class="delivery-nav-item ${activeTab === 'history' ? 'active' : ''}">
             <i class="bi bi-clock-history"></i>
@@ -111,10 +95,11 @@
               <span class="online-dot"></span>
               <span id="deliveryOnlineText">Active &amp; Online</span>
             </span>
+            </div>
+            br
             <div class="form-check form-switch m-0 p-0">
               <input class="form-check-input cursor-pointer" type="checkbox" id="toggleAgentOnlineSwitch" checked style="width: 44px; height: 22px;" />
             </div>
-          </div>
 
           <!-- Notification Bell -->
           <a href="assigned-orders.html" class="btn btn-light rounded-circle position-relative p-2" title="Notifications">
