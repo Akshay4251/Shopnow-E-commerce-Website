@@ -1083,7 +1083,7 @@ $(document).ready(function () {
                 ${[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => `<option value="${n}" ${n == (item.quantity || 1) ? 'selected' : ''}>${n}</option>`).join('')}
               </select>
             </div>
-            <div class="cart-item-price-val">$${itemTotal}</div>
+            <div class="cart-item-price-val">${itemTotal}</div>
           </div>
         `;
       });
