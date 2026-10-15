@@ -1052,8 +1052,8 @@ $(document).ready(function () {
 
       $headerCount.text(`${totalItems} item${totalItems > 1 ? 's' : ''}`);
       $footerCount.text(`Subtotal (${totalItems} item${totalItems > 1 ? 's' : ''}):`);
-      $footerVal.text(`$${subtotalPrice.toFixed(2)}`);
-      $summarySubtotal.text(`$${subtotalPrice.toFixed(2)}`);
+      $footerVal.text(`₹${subtotalPrice.toFixed(2)}`);
+      $summarySubtotal.text(`₹${subtotalPrice.toFixed(2)}`);
 
       let html = '';
       cart.forEach((item, idx) => {
@@ -1083,7 +1083,7 @@ $(document).ready(function () {
                 ${[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => `<option value="${n}" ${n == (item.quantity || 1) ? 'selected' : ''}>${n}</option>`).join('')}
               </select>
             </div>
-            <div class="cart-item-price-val">${itemTotal}</div>
+            <div class="cart-item-price-val">₹ ${itemTotal}</div>
           </div>
         `;
       });
@@ -1151,8 +1151,8 @@ $(document).ready(function () {
     const cart = getBuyerCart();
     const subtotal = cart.reduce((sum, item) => sum + (Number(item.price) * (item.quantity || 1)), 0);
 
-    $('#checkoutItemsPrice').text(`$${subtotal.toFixed(2)}`);
-    $('#checkoutTotalPrice').text(`$${subtotal.toFixed(2)}`);
+    $('#checkoutItemsPrice').text(`₹${subtotal.toFixed(2)}`);
+    $('#checkoutTotalPrice').text(`₹${subtotal.toFixed(2)}`);
 
     // Render review items
     let reviewHtml = '';
