@@ -62,40 +62,94 @@
             <div class="payment-order-amount" id="paymentOrderAmount">₹ 5,040.00</div>
           </div>
 
-          <!-- Card Input Form -->
+          <!-- Payment Method Selector Tabs (Matching Screenshot 2) -->
+          <div class="d-flex gap-2 mb-4 payment-tabs-group" id="paymentMethodTabs">
+            <button type="button" class="btn btn-sm rounded-pill px-3 py-2 fw-semibold btn-outline-coral payment-tab-btn active" data-tab="card">Card</button>
+            <button type="button" class="btn btn-sm rounded-pill px-3 py-2 fw-semibold btn-outline-secondary payment-tab-btn" data-tab="upi">UPI</button>
+            <button type="button" class="btn btn-sm rounded-pill px-3 py-2 fw-semibold btn-outline-secondary payment-tab-btn" data-tab="netbanking">Net banking</button>
+          </div>
+
+          <!-- Payment Form -->
           <form id="paymentGatewayForm">
-            <h6 class="fw-bold text-dark mb-3">Card details</h6>
+            <!-- 1. Card Tab Panel -->
+            <div class="payment-tab-panel" id="panelCard">
+              <h6 class="fw-bold text-dark mb-3">Card details</h6>
 
-            <!-- Card Number -->
-            <div class="payment-input-group">
-              <label for="cardNumberInput">Card number</label>
-              <div class="position-relative">
-                <input type="text" class="payment-input pe-5" id="cardNumberInput" placeholder="0000 0000 0000 0000" maxlength="19" required />
-                <span class="position-absolute end-0 top-50 translate-middle-y me-3 text-muted" id="cardBrandIcon">
-                  <i class="bi bi-credit-card-2-front fs-5"></i>
-                </span>
+              <!-- Card Number -->
+              <div class="payment-input-group">
+                <label for="cardNumberInput">Card number</label>
+                <div class="position-relative">
+                  <input type="text" class="payment-input pe-5" id="cardNumberInput" placeholder="0000 0000 0000 0000" maxlength="19" value="4532 8920 1204 4242" />
+                  <span class="position-absolute end-0 top-50 translate-middle-y me-3 text-muted" id="cardBrandIcon">
+                    <i class="bi bi-credit-card-2-front fs-5"></i>
+                  </span>
+                </div>
+              </div>
+
+              <!-- Name on Card -->
+              <div class="payment-input-group">
+                <label for="cardNameInput">Name on card</label>
+                <input type="text" class="payment-input" id="cardNameInput" placeholder="Alex Johnson" value="Shreyas Patil" />
+              </div>
+
+              <!-- Expiry & CVV -->
+              <div class="row g-3">
+                <div class="col-6">
+                  <div class="payment-input-group">
+                    <label for="cardExpiryInput">Expiry</label>
+                    <input type="text" class="payment-input" id="cardExpiryInput" placeholder="MM / YY" maxlength="7" value="12 / 28" />
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="payment-input-group">
+                    <label for="cardCvvInput">CVV</label>
+                    <input type="password" class="payment-input" id="cardCvvInput" placeholder="123" maxlength="4" value="894" />
+                  </div>
+                </div>
               </div>
             </div>
 
-            <!-- Name on Card -->
-            <div class="payment-input-group">
-              <label for="cardNameInput">Name on card</label>
-              <input type="text" class="payment-input" id="cardNameInput" placeholder="Alex Johnson" required />
-            </div>
+            <!-- 2. UPI Tab Panel -->
+            <div class="payment-tab-panel d-none" id="panelUpi">
+              <h6 class="fw-bold text-dark mb-3">UPI Payment</h6>
 
-            <!-- Expiry & CVV -->
-            <div class="row g-3">
-              <div class="col-6">
-                <div class="payment-input-group">
-                  <label for="cardExpiryInput">Expiry</label>
-                  <input type="text" class="payment-input" id="cardExpiryInput" placeholder="MM / YY" maxlength="7" required />
+              <div class="payment-input-group">
+                <label for="upiIdInput">Enter your UPI ID / VPA</label>
+                <div class="position-relative">
+                  <input type="text" class="payment-input" id="upiIdInput" placeholder="username@okhdfcbank" value="shreyas@okhdfcbank" />
                 </div>
               </div>
-              <div class="col-6">
-                <div class="payment-input-group">
-                  <label for="cardCvvInput">CVV</label>
-                  <input type="password" class="payment-input" id="cardCvvInput" placeholder="123" maxlength="4" required />
+
+              <div class="mb-4">
+                <span class="extra-small text-muted d-block mb-2 fw-bold">OR PAY WITH UPI APP:</span>
+                <div class="d-flex flex-wrap gap-2">
+                  <button type="button" class="btn btn-sm btn-outline-dark rounded-pill py-1 px-3 btn-upi-app" data-app="Google Pay">
+                    <i class="bi bi-google me-1"></i> Google Pay
+                  </button>
+                  <button type="button" class="btn btn-sm btn-outline-dark rounded-pill py-1 px-3 btn-upi-app" data-app="PhonePe">
+                    <i class="bi bi-phone me-1"></i> PhonePe
+                  </button>
+                  <button type="button" class="btn btn-sm btn-outline-dark rounded-pill py-1 px-3 btn-upi-app" data-app="Paytm">
+                    <i class="bi bi-wallet2 me-1"></i> Paytm
+                  </button>
                 </div>
+              </div>
+            </div>
+
+            <!-- 3. Net Banking Tab Panel (Matching Screenshot 2) -->
+            <div class="payment-tab-panel d-none" id="panelNetBanking">
+              <h6 class="fw-bold text-dark mb-3">Net banking</h6>
+
+              <div class="payment-input-group mb-4">
+                <label for="bankSelectDropdown" class="text-muted small mb-2 d-block">Choose your bank</label>
+                <select class="form-select payment-input py-2" id="bankSelectDropdown">
+                  <option value="ICICI Bank" selected>ICICI Bank</option>
+                  <option value="HDFC Bank">HDFC Bank</option>
+                  <option value="State Bank of India">State Bank of India (SBI)</option>
+                  <option value="Axis Bank">Axis Bank</option>
+                  <option value="Kotak Mahindra Bank">Kotak Mahindra Bank</option>
+                  <option value="Punjab National Bank">Punjab National Bank</option>
+                </select>
               </div>
             </div>
 

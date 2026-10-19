@@ -55,9 +55,9 @@
             <div class="d-flex align-items-center flex-wrap gap-2">
               <span class="text-muted small fw-semibold me-1"><i class="bi bi-calendar3 me-1"></i>Filter Period:</span>
               <button type="button" class="btn btn-sm btn-outline-dark rounded-pill px-3 report-preset-btn" data-preset="today">Today</button>
-              <button type="button" class="btn btn-sm btn-outline-dark rounded-pill px-3 report-preset-btn" data-preset="last-week">Last Week</button>
+              <button type="button" class="btn btn-sm btn-coral-admin rounded-pill px-3 report-preset-btn active" data-preset="last-week">Last Week</button>
               <button type="button" class="btn btn-sm btn-outline-dark rounded-pill px-3 report-preset-btn" data-preset="last-month">Last Month</button>
-              <button type="button" class="btn btn-sm btn-coral-admin rounded-pill px-3 report-preset-btn active" data-preset="all">All Time</button>
+              <button type="button" class="btn btn-sm btn-outline-dark rounded-pill px-3 report-preset-btn" data-preset="all">All Time</button>
             </div>
 
             <!-- Custom Date Range Form -->
@@ -137,17 +137,84 @@
           </div>
         </div>
 
-        <!-- Sales Analytics Chart Card -->
-        <div class="admin-card mb-4">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <h6 class="fw-bold text-dark mb-0">Gross Merchandise Value Trajectory</h6>
-            <span class="badge bg-coral-subtle text-coral border extra-small">Live GMV Curve</span>
+        <!-- Middle Row: Dynamic GMV Volume Trend & Order Status Distribution -->
+        <div class="row g-4 mb-4">
+          <!-- GMV / Sales Volume Bar Chart (7 Cols) -->
+          <div class="col-12 col-xl-7">
+            <div class="admin-card h-100 mb-0">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                  <h6 class="fw-bold text-dark mb-0">Gross Revenue &amp; GMV Trajectory</h6>
+                  <span class="extra-small text-muted" id="adminRevenueSubtitle">Daily captured sales turnover vs target quota</span>
+                </div>
+                <div class="d-flex align-items-center gap-3 extra-small">
+                  <span class="d-flex align-items-center gap-1">
+                    <span class="rounded-circle d-inline-block" style="width: 8px; height: 8px; background-color: #ff5338;"></span> Gross GMV (₹)
+                  </span>
+                  <span class="d-flex align-items-center gap-1">
+                    <span class="rounded-circle d-inline-block" style="width: 8px; height: 8px; background-color: #081726;"></span> Target (₹)
+                  </span>
+                </div>
+              </div>
+
+              <!-- Bar Volume Chart Container -->
+              <div class="p-3 bg-light rounded-3 position-relative" style="min-height: 220px;">
+                <canvas id="adminRevenueChart" style="max-height: 200px; width: 100%;"></canvas>
+              </div>
+            </div>
           </div>
-          <div class="p-3 bg-light rounded-3" style="height: 180px;">
-            <svg viewBox="0 0 600 120" class="w-100 h-100" preserveAspectRatio="none">
-              <path fill="rgba(255,83,56,0.15)" d="M 0,100 Q 100,50 200,80 T 400,30 T 600,45 L 600,120 L 0,120 Z"></path>
-              <path fill="none" stroke="#ff5338" stroke-width="3" d="M 0,100 Q 100,50 200,80 T 400,30 T 600,45"></path>
-            </svg>
+
+          <!-- Fulfillment & Status Distribution Donut Chart (5 Cols) -->
+          <div class="col-12 col-xl-5">
+            <div class="admin-card h-100 mb-0 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <h6 class="fw-bold text-dark mb-0">Fulfillment Distribution</h6>
+                  <span class="badge bg-coral-subtle text-coral extra-small fw-semibold" id="adminStatusSummaryBadge">Period Summary</span>
+                </div>
+                <span class="extra-small text-muted d-block mb-3">Overall platform order lifecycle breakdown for selected interval</span>
+
+                <!-- Donut Chart Container -->
+                <div class="d-flex justify-content-center my-2 position-relative" style="height: 180px;">
+                  <canvas id="adminStatusChart" style="max-height: 170px; max-width: 170px;"></canvas>
+                  <div class="position-absolute top-50 start-50 translate-middle text-center pointer-events-none" id="adminDonutCenterInfo">
+                    <span class="fs-4 fw-bold text-dark lh-1 d-block" id="adminDonutCenterRate">92%</span>
+                    <span class="extra-small text-muted" style="font-size: 0.65rem;">Fulfilled</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Donut Legends with Dynamic Percentages & Counts -->
+              <div class="pt-3 border-top">
+                <div class="d-flex justify-content-between extra-small mb-1">
+                  <span class="d-flex align-items-center gap-1">
+                    <span class="rounded-circle d-inline-block" style="width: 8px; height: 8px; background-color: #ff5338;"></span> Delivered / Completed
+                  </span>
+                  <div>
+                    <strong class="text-dark" id="legendDeliveredPct">82%</strong>
+                    <span class="text-muted ms-1" id="legendDeliveredCount">(0)</span>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-between extra-small mb-1">
+                  <span class="d-flex align-items-center gap-1">
+                    <span class="rounded-circle d-inline-block" style="width: 8px; height: 8px; background-color: #081726;"></span> In Transit / Shipped
+                  </span>
+                  <div>
+                    <strong class="text-dark" id="legendShippedPct">12%</strong>
+                    <span class="text-muted ms-1" id="legendShippedCount">(0)</span>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-between extra-small">
+                  <span class="d-flex align-items-center gap-1">
+                    <span class="rounded-circle d-inline-block" style="width: 8px; height: 8px; background-color: #cbd5e1;"></span> Cancelled / Processing
+                  </span>
+                  <div>
+                    <strong class="text-dark" id="legendPendingPct">6%</strong>
+                    <span class="text-muted ms-1" id="legendPendingCount">(0)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -202,6 +269,8 @@
   <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Chart.js for interactive dynamic bar & doughnut charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- jsPDF and AutoTable for standard PDF report generation -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>

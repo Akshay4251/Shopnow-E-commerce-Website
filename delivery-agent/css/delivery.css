@@ -676,3 +676,55 @@ body.delivery-sidebar-open {
     border-radius: 14px;
   }
 }
+
+/* ---------------- 8. Delivery Theme Utilities & Report Buttons ---------------- */
+.text-coral {
+  color: #ff5338 !important;
+}
+
+.bg-coral {
+  background-color: #ff5338 !important;
+  color: #ffffff !important;
+}
+
+.bg-coral-subtle {
+  background-color: rgba(255, 83, 56, 0.12) !important;
+}
+
+.btn-coral-delivery {
+  background-color: #ff5338 !important;
+  border-color: #ff5338 !important;
+  color: #ffffff !important;
+  transition: all 0.2s ease;
+}
+
+.btn-coral-delivery:hover,
+.btn-coral-delivery:focus,
+.btn-coral-delivery.active {
+  background-color: #e04326 !important;
+  border-color: #e04326 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(255, 83, 56, 0.3) !important;
+}
+
+.btn-outline-delivery {
+  border-color: #ff5338 !important;
+  color: #ff5338 !important;
+  background-color: transparent !important;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-delivery:hover,
+.btn-outline-delivery:focus {
+  background-color: #ff5338 !important;
+  border-color: #ff5338 !important;
+  color: #ffffff !important;
+}
+
+.report-preset-btn.active {
+  background-color: #ff5338 !important;
+  border-color: #ff5338 !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(255, 83, 56, 0.25) !important;
+}
+

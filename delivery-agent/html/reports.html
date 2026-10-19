@@ -33,36 +33,73 @@
       <!-- Reports Content (Matching Figma Image 3 Screen 8) -->
       <main class="delivery-content">
         <!-- Page Header & Action Buttons -->
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4">
           <div>
             <h1 class="delivery-page-title">Performance Reports</h1>
-            <p class="delivery-page-subtitle">Detailed analysis of your delivery operations and efficiency metrics.</p>
+            <p class="delivery-page-subtitle">Detailed analysis of your delivery operations, payout earnings, and efficiency metrics.</p>
           </div>
 
-          <div class="d-flex align-items-center gap-2">
-            <div class="input-group input-group-sm">
-              <span class="input-group-text bg-white border-light-subtle"><i class="bi bi-calendar3 text-muted"></i></span>
-              <select class="form-select bg-white border-light-subtle extra-small" id="reportDateRange">
-                <option value="7">Last 7 Days</option>
-                <option value="30">Last 30 Days</option>
-                <option value="90">Last Quarter</option>
-              </select>
-            </div>
-            <button type="button" class="btn btn-coral-delivery btn-sm px-3" id="btnExportReportsPdf">
-              <i class="bi bi-file-earmark-pdf-fill"></i> Export PDF
+          <div class="d-flex align-items-center gap-2 flex-wrap">
+            <button type="button" class="btn btn-outline-success btn-sm px-3 fw-semibold shadow-sm" id="btnExportReportsCsv">
+              <i class="bi bi-file-earmark-spreadsheet-fill me-1"></i> Export CSV
+            </button>
+            <button type="button" class="btn btn-coral-delivery btn-sm px-3 fw-semibold shadow-sm" id="btnExportReportsPdf">
+              <i class="bi bi-file-earmark-pdf-fill me-1"></i> Export PDF
             </button>
           </div>
         </div>
 
-        <!-- 4 Metric Cards Strip (Matching Figma Screen 8) -->
+        <!-- Filter Bar Card: Presets (Today, Last Week, Last Month, All) & Two-Date Range Interval -->
+        <div class="delivery-card mb-4 border shadow-sm">
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+            <!-- Time Presets Pills -->
+            <div class="d-flex align-items-center flex-wrap gap-2">
+              <span class="text-muted small fw-semibold me-1"><i class="bi bi-calendar3 me-1"></i>Filter Period:</span>
+              <button type="button" class="btn btn-sm btn-outline-dark rounded-pill px-3 report-preset-btn" data-preset="today">Today</button>
+              <button type="button" class="btn btn-sm btn-coral-delivery rounded-pill px-3 report-preset-btn active" data-preset="last-week">Last Week</button>
+              <button type="button" class="btn btn-sm btn-outline-dark rounded-pill px-3 report-preset-btn" data-preset="last-month">Last Month</button>
+              <button type="button" class="btn btn-sm btn-outline-dark rounded-pill px-3 report-preset-btn" data-preset="all">All Time</button>
+            </div>
+
+            <!-- Custom Two-Date Interval Selector -->
+            <div class="d-flex align-items-center flex-wrap gap-2">
+              <div class="d-flex align-items-center gap-1">
+                <label for="reportStartDate" class="extra-small text-muted fw-bold">From:</label>
+                <input type="date" id="reportStartDate" class="form-control form-control-sm" style="width: 145px;" />
+              </div>
+              <div class="d-flex align-items-center gap-1">
+                <label for="reportEndDate" class="extra-small text-muted fw-bold">To:</label>
+                <input type="date" id="reportEndDate" class="form-control form-control-sm" style="width: 145px;" />
+              </div>
+              <button type="button" class="btn btn-sm btn-dark px-3 fw-semibold" id="btnApplyDateFilter">
+                <i class="bi bi-funnel-fill me-1"></i>Apply Filter
+              </button>
+              <button type="button" class="btn btn-sm btn-outline-secondary px-2" id="btnResetDateFilter" title="Reset Filters">
+                <i class="bi bi-arrow-counterclockwise"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Active Filter Status Row -->
+          <div class="mt-3 pt-3 border-top d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2">
+            <div class="small">
+              <span class="text-muted">Filtered Range:</span>
+              <strong class="text-dark ms-1" id="reportActivePeriodLabel">Last Week Records</strong>
+              <span class="badge bg-light text-dark border ms-2" id="reportFilteredRecordsCount">0 deliveries</span>
+            </div>
+            <span class="extra-small text-muted" id="reportGeneratedTimestamp"><i class="bi bi-clock me-1"></i>Updated live from courier logs</span>
+          </div>
+        </div>
+
+        <!-- 4 Metric Cards Strip -->
         <div class="row g-3 mb-4">
           <!-- Success Rate (Featured Coral Card) -->
           <div class="col-12 col-sm-6 col-xl-3">
             <div class="delivery-stat-card text-white" style="background: linear-gradient(135deg, #ff5338 0%, #ff7660 100%); border-color: #ff5338;">
               <div>
                 <span class="stat-card-label text-white-50">Success Rate</span>
-                <div class="stat-card-number text-white">98.4%</div>
-                <span class="badge bg-white text-coral stat-card-badge">
+                <div class="stat-card-number text-white" id="kpiSuccessRate">98.4%</div>
+                <span class="badge bg-white text-coral stat-card-badge" id="kpiSuccessBadge">
                   <i class="bi bi-arrow-up-right"></i> +4.2% vs fleet avg
                 </span>
               </div>
@@ -77,8 +114,8 @@
             <div class="delivery-stat-card">
               <div>
                 <span class="stat-card-label">Total Deliveries</span>
-                <div class="stat-card-number">247</div>
-                <span class="extra-small text-muted fw-semibold">Completed in period</span>
+                <div class="stat-card-number" id="kpiTotalDeliveries">0</div>
+                <span class="extra-small text-muted fw-semibold" id="kpiTotalSubtitle">Completed in period</span>
               </div>
               <div class="stat-card-icon bg-warning-subtle text-warning-emphasis">
                 <i class="bi bi-box-seam-fill"></i>
@@ -91,8 +128,8 @@
             <div class="delivery-stat-card">
               <div>
                 <span class="stat-card-label">Avg. Completion</span>
-                <div class="stat-card-number">22m</div>
-                <span class="badge bg-success-subtle text-success stat-card-badge">
+                <div class="stat-card-number" id="kpiAvgCompletion">22m</div>
+                <span class="badge bg-success-subtle text-success stat-card-badge" id="kpiAvgSpeedBadge">
                   <i class="bi bi-speedometer2"></i> 5m ahead of target
                 </span>
               </div>
@@ -102,16 +139,16 @@
             </div>
           </div>
 
-          <!-- Customer Satisfaction -->
+          <!-- Agent Earnings / Customer Rating -->
           <div class="col-12 col-sm-6 col-xl-3">
             <div class="delivery-stat-card">
               <div>
-                <span class="stat-card-label">Customer Satisfaction</span>
-                <div class="stat-card-number">4.9</div>
-                <span class="extra-small text-muted fw-semibold">Based on 189 reviews</span>
+                <span class="stat-card-label">Rider Payout</span>
+                <div class="stat-card-number text-success" id="kpiAgentEarnings">₹ 0</div>
+                <span class="extra-small text-muted fw-semibold" id="kpiRatingSubtitle">Rating: 4.9 ★ (Active fleet)</span>
               </div>
-              <div class="stat-card-icon bg-warning-subtle text-warning">
-                <i class="bi bi-star-fill"></i>
+              <div class="stat-card-icon bg-success-subtle text-success">
+                <i class="bi bi-cash-stack"></i>
               </div>
             </div>
           </div>
@@ -119,13 +156,13 @@
 
         <!-- Middle Row: Volume Charts & Status Distribution -->
         <div class="row g-4 mb-4">
-          <!-- Weekly Volume Bar Chart (7 Cols) -->
+          <!-- Weekly / Interval Volume Bar Chart (7 Cols) -->
           <div class="col-12 col-xl-7">
             <div class="delivery-card h-100 mb-0">
-              <div class="d-flex justify-content-between align-items-center mb-4">
+              <div class="d-flex justify-content-between align-items-center mb-3">
                 <div>
-                  <h6 class="fw-bold text-dark mb-0">Weekly Volume</h6>
-                  <span class="extra-small text-muted">Daily delivery completion vs schedule target</span>
+                  <h6 class="fw-bold text-dark mb-0">Delivery Volume Trend</h6>
+                  <span class="extra-small text-muted" id="volumeChartSubtitle">Daily delivery completion vs schedule target</span>
                 </div>
                 <div class="d-flex align-items-center gap-3 extra-small">
                   <span class="d-flex align-items-center gap-1">
@@ -137,45 +174,10 @@
                 </div>
               </div>
 
-              <!-- Bar Volume Chart -->
-              <div class="p-3 bg-light rounded-3">
-                <div class="d-flex align-items-end justify-content-between gap-3" style="height: 190px;">
-                  <!-- Mon -->
-                  <div class="d-flex flex-column align-items-center flex-grow-1 h-100 justify-content-end">
-                    <div class="w-100 rounded-top" style="height: 60%; background-color: #ff5338;" title="Mon: 32 Deliveries"></div>
-                    <span class="extra-small text-muted mt-2">Mon</span>
-                  </div>
-                  <!-- Tue -->
-                  <div class="d-flex flex-column align-items-center flex-grow-1 h-100 justify-content-end">
-                    <div class="w-100 rounded-top" style="height: 75%; background-color: #ff5338;" title="Tue: 41 Deliveries"></div>
-                    <span class="extra-small text-muted mt-2">Tue</span>
-                  </div>
-                  <!-- Wed -->
-                  <div class="d-flex flex-column align-items-center flex-grow-1 h-100 justify-content-end">
-                    <div class="w-100 rounded-top" style="height: 65%; background-color: #ff5338;" title="Wed: 35 Deliveries"></div>
-                    <span class="extra-small text-muted mt-2">Wed</span>
-                  </div>
-                  <!-- Thu -->
-                  <div class="d-flex flex-column align-items-center flex-grow-1 h-100 justify-content-end">
-                    <div class="w-100 rounded-top" style="height: 85%; background-color: #ff5338;" title="Thu: 48 Deliveries"></div>
-                    <span class="extra-small text-muted mt-2">Thu</span>
-                  </div>
-                  <!-- Fri -->
-                  <div class="d-flex flex-column align-items-center flex-grow-1 h-100 justify-content-end">
-                    <div class="w-100 rounded-top" style="height: 95%; background-color: #ff5338;" title="Fri: 54 Deliveries"></div>
-                    <span class="extra-small text-muted mt-2">Fri</span>
-                  </div>
-                  <!-- Sat -->
-                  <div class="d-flex flex-column align-items-center flex-grow-1 h-100 justify-content-end">
-                    <div class="w-100 rounded-top" style="height: 100%; background: linear-gradient(to top, #ff5338, #ff7a66);" title="Sat: 58 Deliveries (Peak)"></div>
-                    <span class="extra-small fw-bold text-coral mt-2">Sat</span>
-                  </div>
-                  <!-- Sun -->
-                  <div class="d-flex flex-column align-items-center flex-grow-1 h-100 justify-content-end">
-                    <div class="w-100 rounded-top" style="height: 70%; background-color: #ff5338;" title="Sun: 37 Deliveries"></div>
-                    <span class="extra-small text-muted mt-2">Sun</span>
-                  </div>
-                </div>
+              <!-- Bar Volume Chart Container -->
+              <div class="p-3 bg-light rounded-3 position-relative" style="min-height: 220px;">
+                <canvas id="deliveryVolumeChart" style="max-height: 200px; width: 100%;"></canvas>
+                <div id="volumeChartSvgContainer" class="d-none"></div>
               </div>
             </div>
           </div>
@@ -184,44 +186,96 @@
           <div class="col-12 col-xl-5">
             <div class="delivery-card h-100 mb-0 d-flex flex-column justify-content-between">
               <div>
-                <h6 class="fw-bold text-dark mb-0">Status Distribution</h6>
-                <span class="extra-small text-muted d-block mb-3">Overall parcel state breakdown</span>
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <h6 class="fw-bold text-dark mb-0">Status Distribution</h6>
+                  <span class="badge bg-coral-subtle text-coral extra-small fw-semibold" id="statusDistributionSummaryBadge">Period Summary</span>
+                </div>
+                <span class="extra-small text-muted d-block mb-3">Overall parcel state breakdown for selected interval</span>
 
-                <!-- SVG Donut Chart Mockup -->
-                <div class="d-flex justify-content-center my-3">
-                  <div class="position-relative" style="width: 160px; height: 160px;">
-                    <svg viewBox="0 0 36 36" class="w-100 h-100">
-                      <!-- Background circle -->
-                      <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#f1f5f9" stroke-width="4.5" />
-                      <!-- Completed arc (82%) -->
-                      <path class="circle" stroke-dasharray="82, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#ff5338" stroke-width="4.5" stroke-linecap="round" />
-                      <!-- In-transit arc (12%) -->
-                      <path class="circle" stroke-dasharray="12, 100" stroke-dashoffset="-82" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#081726" stroke-width="4.5" />
-                    </svg>
-                    <div class="position-absolute top-50 start-50 translate-middle text-center">
-                      <span class="fs-4 fw-bold text-dark lh-1 d-block">92%</span>
-                      <span class="extra-small text-muted" style="font-size: 0.65rem;">On-Time</span>
-                    </div>
+                <!-- Donut Chart Container -->
+                <div class="d-flex justify-content-center my-2 position-relative" style="height: 180px;">
+                  <canvas id="deliveryStatusChart" style="max-height: 170px; max-width: 170px;"></canvas>
+                  <div class="position-absolute top-50 start-50 translate-middle text-center pointer-events-none" id="donutCenterInfo">
+                    <span class="fs-4 fw-bold text-dark lh-1 d-block" id="donutCenterRate">92%</span>
+                    <span class="extra-small text-muted" style="font-size: 0.65rem;">On-Time</span>
                   </div>
                 </div>
               </div>
 
-              <!-- Donut Legends -->
+              <!-- Donut Legends with Dynamic Percentages & Counts -->
               <div class="pt-3 border-top">
                 <div class="d-flex justify-content-between extra-small mb-1">
-                  <span class="d-flex align-items-center gap-1"><span class="rounded-circle d-inline-block" style="width: 8px; height: 8px; background-color: #ff5338;"></span> On-Time Delivered</span>
-                  <strong class="text-dark">82%</strong>
+                  <span class="d-flex align-items-center gap-1">
+                    <span class="rounded-circle d-inline-block" style="width: 8px; height: 8px; background-color: #ff5338;"></span> Delivered
+                  </span>
+                  <div>
+                    <strong class="text-dark" id="legendDeliveredPct">82%</strong>
+                    <span class="text-muted ms-1" id="legendDeliveredCount">(0)</span>
+                  </div>
                 </div>
                 <div class="d-flex justify-content-between extra-small mb-1">
-                  <span class="d-flex align-items-center gap-1"><span class="rounded-circle d-inline-block" style="width: 8px; height: 8px; background-color: #081726;"></span> In Transit</span>
-                  <strong class="text-dark">12%</strong>
+                  <span class="d-flex align-items-center gap-1">
+                    <span class="rounded-circle d-inline-block" style="width: 8px; height: 8px; background-color: #081726;"></span> In Transit / Out for Delivery
+                  </span>
+                  <div>
+                    <strong class="text-dark" id="legendInTransitPct">12%</strong>
+                    <span class="text-muted ms-1" id="legendInTransitCount">(0)</span>
+                  </div>
                 </div>
                 <div class="d-flex justify-content-between extra-small">
-                  <span class="d-flex align-items-center gap-1"><span class="rounded-circle d-inline-block" style="width: 8px; height: 8px; background-color: #e2e8f0;"></span> Exception / Re-routed</span>
-                  <strong class="text-dark">6%</strong>
+                  <span class="d-flex align-items-center gap-1">
+                    <span class="rounded-circle d-inline-block" style="width: 8px; height: 8px; background-color: #cbd5e1;"></span> Pending / Failed
+                  </span>
+                  <div>
+                    <strong class="text-dark" id="legendPendingPct">6%</strong>
+                    <span class="text-muted ms-1" id="legendPendingCount">(0)</span>
+                  </div>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        <!-- Deliveries Breakdown Table for Filtered Interval -->
+        <div class="delivery-table-card mb-4 border shadow-sm">
+          <div class="p-3 border-bottom d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <div>
+              <h6 class="fw-bold text-dark mb-0">Delivery Orders in Selected Interval</h6>
+              <span class="extra-small text-muted" id="tableSubtitle">Complete audit trail of dispatched and delivered consignments</span>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-sm btn-outline-success py-1 px-3 extra-small fw-semibold" id="btnExportTableCSV">
+                <i class="bi bi-file-earmark-spreadsheet me-1"></i>Table CSV
+              </button>
+              <button class="btn btn-sm btn-coral-delivery py-1 px-3 extra-small fw-semibold" id="btnExportTablePDF">
+                <i class="bi bi-file-earmark-pdf me-1"></i>Table PDF
+              </button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0 extra-small">
+              <thead class="table-light">
+                <tr>
+                  <th>Order ID</th>
+                  <th>Date &amp; ETA</th>
+                  <th>Customer</th>
+                  <th>Drop-off Location</th>
+                  <th>Consignment Amount</th>
+                  <th>Rider Payout</th>
+                  <th>Duration</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="reportDeliveriesTableBody">
+                <!-- Dynamically Populated -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="p-3 border-top d-flex justify-content-between align-items-center extra-small text-muted" id="reportDeliveriesTableFooter">
+            <span id="reportDeliveriesCountInfo">Showing 0 orders</span>
+            <span>ShopNow Courier Delivery Audit Log</span>
           </div>
         </div>
 
@@ -231,61 +285,81 @@
           <div class="col-12 col-xl-7">
             <div class="delivery-table-card mb-0">
               <div class="p-3 border-bottom d-flex justify-content-between align-items-center">
-                <h6 class="fw-bold text-dark mb-0">Recent Reports</h6>
-                <a href="history.html" class="btn btn-sm btn-link text-coral text-decoration-none fw-bold extra-small">View all &rarr;</a>
+                <h6 class="fw-bold text-dark mb-0">Recent Audit Reports</h6>
+                <a href="history.html" class="btn btn-sm btn-link text-coral text-decoration-none fw-bold extra-small">View delivery history &rarr;</a>
               </div>
 
               <div class="list-group list-group-flush extra-small">
-                <div class="list-group-item d-flex justify-content-between align-items-center p-3">
+                <div class="list-group-item d-flex flex-wrap justify-content-between align-items-center p-3 gap-2">
                   <div class="d-flex align-items-center gap-3">
                     <i class="bi bi-file-earmark-bar-graph-fill text-coral fs-5"></i>
                     <div>
                       <strong class="text-dark d-block">Weekly Efficiency Audit</strong>
-                      <span class="text-muted">Oct 18, 2026 - Oct 24, 2026</span>
+                      <span class="text-muted" id="recentReportDates1">Oct 18, 2026 - Oct 24, 2026</span>
                     </div>
                   </div>
-                  <button class="btn btn-sm btn-outline-delivery py-1 px-3" onclick="ShopNowCommon.showToast('Downloading Weekly Audit PDF...', 'info');">
-                    <i class="bi bi-download"></i> PDF
-                  </button>
+                  <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-outline-success py-1 px-3 btn-export-recent-csv" data-type="efficiency">
+                      <i class="bi bi-file-earmark-spreadsheet me-1"></i> CSV
+                    </button>
+                    <button class="btn btn-sm btn-outline-delivery py-1 px-3 btn-export-recent-pdf" data-type="efficiency">
+                      <i class="bi bi-download me-1"></i> PDF
+                    </button>
+                  </div>
                 </div>
 
-                <div class="list-group-item d-flex justify-content-between align-items-center p-3">
+                <div class="list-group-item d-flex flex-wrap justify-content-between align-items-center p-3 gap-2">
                   <div class="d-flex align-items-center gap-3">
                     <i class="bi bi-fuel-pump-fill text-warning fs-5"></i>
                     <div>
                       <strong class="text-dark d-block">Fuel &amp; Distance Analysis</strong>
-                      <span class="text-muted">Oct 18, 2026 - Oct 24, 2026</span>
+                      <span class="text-muted" id="recentReportDates2">Oct 18, 2026 - Oct 24, 2026</span>
                     </div>
                   </div>
-                  <button class="btn btn-sm btn-outline-delivery py-1 px-3" onclick="ShopNowCommon.showToast('Downloading Fuel Audit PDF...', 'info');">
-                    <i class="bi bi-download"></i> PDF
-                  </button>
+                  <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-outline-success py-1 px-3 btn-export-recent-csv" data-type="fuel">
+                      <i class="bi bi-file-earmark-spreadsheet me-1"></i> CSV
+                    </button>
+                    <button class="btn btn-sm btn-outline-delivery py-1 px-3 btn-export-recent-pdf" data-type="fuel">
+                      <i class="bi bi-download me-1"></i> PDF
+                    </button>
+                  </div>
                 </div>
 
-                <div class="list-group-item d-flex justify-content-between align-items-center p-3">
+                <div class="list-group-item d-flex flex-wrap justify-content-between align-items-center p-3 gap-2">
                   <div class="d-flex align-items-center gap-3">
                     <i class="bi bi-star-half text-coral fs-5"></i>
                     <div>
                       <strong class="text-dark d-block">Customer Rating Summary</strong>
-                      <span class="text-muted">Q3 2026 Final Review</span>
+                      <span class="text-muted">Q3/Q4 2026 Rider Scorecard</span>
                     </div>
                   </div>
-                  <button class="btn btn-sm btn-outline-delivery py-1 px-3" onclick="ShopNowCommon.showToast('Downloading Rating Summary PDF...', 'info');">
-                    <i class="bi bi-download"></i> PDF
-                  </button>
+                  <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-outline-success py-1 px-3 btn-export-recent-csv" data-type="ratings">
+                      <i class="bi bi-file-earmark-spreadsheet me-1"></i> CSV
+                    </button>
+                    <button class="btn btn-sm btn-outline-delivery py-1 px-3 btn-export-recent-pdf" data-type="ratings">
+                      <i class="bi bi-download me-1"></i> PDF
+                    </button>
+                  </div>
                 </div>
 
-                <div class="list-group-item d-flex justify-content-between align-items-center p-3">
+                <div class="list-group-item d-flex flex-wrap justify-content-between align-items-center p-3 gap-2">
                   <div class="d-flex align-items-center gap-3">
                     <i class="bi bi-shield-check text-success fs-5"></i>
                     <div>
                       <strong class="text-dark d-block">Monthly Fleet Service Review</strong>
-                      <span class="text-muted">Sep 2026 Courier Performance</span>
+                      <span class="text-muted">Courier Monthly SLA &amp; Handover</span>
                     </div>
                   </div>
-                  <button class="btn btn-sm btn-outline-delivery py-1 px-3" onclick="ShopNowCommon.showToast('Downloading Fleet Review PDF...', 'info');">
-                    <i class="bi bi-download"></i> PDF
-                  </button>
+                  <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-outline-success py-1 px-3 btn-export-recent-csv" data-type="fleet">
+                      <i class="bi bi-file-earmark-spreadsheet me-1"></i> CSV
+                    </button>
+                    <button class="btn btn-sm btn-outline-delivery py-1 px-3 btn-export-recent-pdf" data-type="fleet">
+                      <i class="bi bi-download me-1"></i> PDF
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -330,6 +404,11 @@
   <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Chart.js for interactive dynamic bar & doughnut charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- jsPDF & AutoTable for client-side PDF document generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
   <script src="../../common/js/global.js"></script>
   <script src="../js/delivery-nav.js"></script>
   <script src="../js/delivery.js"></script>

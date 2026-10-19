@@ -1165,29 +1165,52 @@ $(document).ready(function () {
   }
 
   // ===================================================
-  // 9. PAGE: EXECUTIVE REPORTS & AUDIT LOGS
   // ===================================================
-  if ($('#reportTransactionsTableBody').length || $('#btnExportAdminCSV').length) {
-    // Current date reference (defaults to system time e.g. Oct 2026)
-    const now = new Date();
+  // 9. PAGE: EXECUTIVE REPORTS & AUDIT LOGS (Dynamic KPIs, Chart.js & Exports)
+  // ===================================================
+  if ($('#reportTransactionsTableBody').length || $('#btnExportAdminCSV').length || $('#adminRevenueChart').length) {
+    const refAnchor = new Date('2026-10-24T23:59:59');
+    const now = new Date() > refAnchor ? new Date() : refAnchor;
+
+    let adminRevenueChartInstance = null;
+    let adminStatusChartInstance = null;
     
     // Seed Comprehensive Orders Data if not fully populated
     let storedOrders = JSON.parse(localStorage.getItem('shopnow_orders') || '[]');
     
     // Base sample historical orders spanning Today, Last Week, Last Month, and Earlier
     const sampleAuditOrders = [
-      { id: 'ORD-8091', date: new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 15).toISOString(), customer: 'Rahul Deshmukh', product: 'Textured Cashmere Blend Sweater', amount: 1899, payment: 'UPI / PhonePe', status: 'Delivered', statusClass: 'delivered' },
-      { id: 'ORD-8090', date: new Date(now.getFullYear(), now.getMonth(), now.getDate(), 7, 45).toISOString(), customer: 'Priya Sharma', product: 'Over-Ear Noise Canceling Headphones', amount: 2999, payment: 'Credit Card', status: 'Shipped', statusClass: 'shipped' },
-      { id: 'ORD-8089', date: new Date(now.getFullYear(), now.getMonth(), now.getDate(), 6, 20).toISOString(), customer: 'Ananya Verma', product: 'Hydration Serum & Body Oil', amount: 890, payment: 'UPI / GPay', status: 'Processing', statusClass: 'pending' },
-      { id: 'ORD-8085', date: new Date(now.getTime() - 2 * 86400000).toISOString(), customer: 'Aman Patel', product: 'Expandable Carry-On Suitcase', amount: 2499, payment: 'Net Banking', status: 'Delivered', statusClass: 'delivered' },
-      { id: 'ORD-8082', date: new Date(now.getTime() - 4 * 86400000).toISOString(), customer: 'Sneha Kulkarni', product: 'Sculptural Ceramic Table Lamp', amount: 1450, payment: 'Debit Card', status: 'Delivered', statusClass: 'delivered' },
-      { id: 'ORD-8078', date: new Date(now.getTime() - 6 * 86400000).toISOString(), customer: 'Rohan Mehta', product: 'Aeroflex Pro Runner Sneakers', amount: 1400, payment: 'Cash on Delivery', status: 'Shipped', statusClass: 'shipped' },
-      { id: 'ORD-8071', date: new Date(now.getTime() - 10 * 86400000).toISOString(), customer: 'Vikram Joshi', product: 'Mini 360 Portable Tech Speaker', amount: 950, payment: 'UPI / Paytm', status: 'Delivered', statusClass: 'delivered' },
-      { id: 'ORD-8064', date: new Date(now.getTime() - 15 * 86400000).toISOString(), customer: 'Neha Gupta', product: 'Structured Leather Shoulder Bag', amount: 1750, payment: 'Credit Card', status: 'Delivered', statusClass: 'delivered' },
-      { id: 'ORD-8055', date: new Date(now.getTime() - 22 * 86400000).toISOString(), customer: 'Kavita Reddy', product: 'Over-Ear Noise Canceling Headphones', amount: 2999, payment: 'UPI / PhonePe', status: 'Delivered', statusClass: 'delivered' },
-      { id: 'ORD-8042', date: new Date(now.getTime() - 28 * 86400000).toISOString(), customer: 'Arjun Nair', product: 'Textured Cashmere Blend Sweater', amount: 1899, payment: 'Debit Card', status: 'Delivered', statusClass: 'delivered' },
-      { id: 'ORD-8025', date: new Date(now.getTime() - 35 * 86400000).toISOString(), customer: 'Renu Soni', product: 'Aeroflex Pro Runner Sneakers', amount: 1400, payment: 'Credit Card', status: 'Delivered', statusClass: 'delivered' },
-      { id: 'ORD-8012', date: new Date(now.getTime() - 42 * 86400000).toISOString(), customer: 'Manish Tiwari', product: 'Mini 360 Portable Tech Speaker', amount: 950, payment: 'Cash on Delivery', status: 'Cancelled', statusClass: 'cancelled' }
+      // --- TODAY (Oct 24, 2026) ---
+      { id: 'ORD-8095', date: '2026-10-24T09:15:00Z', customer: 'Rahul Deshmukh', product: 'Textured Cashmere Blend Sweater', amount: 1899, payment: 'UPI / PhonePe', status: 'Delivered', statusClass: 'delivered' },
+      { id: 'ORD-8094', date: '2026-10-24T08:45:00Z', customer: 'Priya Sharma', product: 'Over-Ear Noise Canceling Headphones', amount: 2999, payment: 'Credit Card', status: 'Delivered', statusClass: 'delivered' },
+      { id: 'ORD-8093', date: '2026-10-24T07:20:00Z', customer: 'Ananya Verma', product: 'Hydration Serum & Body Oil', amount: 890, payment: 'UPI / GPay', status: 'Shipped', statusClass: 'shipped' },
+      { id: 'ORD-8092', date: '2026-10-24T06:50:00Z', customer: 'Aman Patel', product: 'Expandable Carry-On Suitcase', amount: 2499, payment: 'Net Banking', status: 'Delivered', statusClass: 'delivered' },
+      { id: 'ORD-8091', date: '2026-10-24T06:10:00Z', customer: 'Deepa Nair', product: 'Smart Fitness Tracker Watch', amount: 3499, payment: 'Credit Card', status: 'Processing', statusClass: 'pending' },
+      { id: 'ORD-8090', date: '2026-10-24T05:30:00Z', customer: 'Vikram Joshi', product: 'Organic Darjeeling Tea Hamper', amount: 1250, payment: 'UPI / Paytm', status: 'Delivered', statusClass: 'delivered' },
+
+      // --- PAST 7 DAYS (Oct 18 - Oct 23, 2026) ---
+      { id: 'ORD-8088', date: '2026-10-23T14:30:00Z', customer: 'Sneha Kulkarni', product: 'Sculptural Ceramic Table Lamp', amount: 1450, payment: 'Debit Card', status: 'Delivered', statusClass: 'delivered' },
+      { id: 'ORD-8087', date: '2026-10-23T11:15:00Z', customer: 'Rohan Mehta', product: 'Aeroflex Pro Runner Sneakers', amount: 1400, payment: 'Cash on Delivery', status: 'Shipped', statusClass: 'shipped' },
+      { id: 'ORD-8086', date: '2026-10-22T16:00:00Z', customer: 'Divya Pillai', product: 'Ergonomic Mesh Office Chair', amount: 5490, payment: 'Net Banking', status: 'Delivered', statusClass: 'delivered' },
+      { id: 'ORD-8085', date: '2026-10-22T10:20:00Z', customer: 'Tanvi Deshmukh', product: 'Aromatherapy Diffuser & Lavender Oil', amount: 1750, payment: 'UPI / PhonePe', status: 'Delivered', statusClass: 'delivered' },
+      { id: 'ORD-8084', date: '2026-10-21T13:40:00Z', customer: 'Aditya Joshi', product: 'Wireless Gaming Mouse & Keyboard', amount: 3200, payment: 'Credit Card', status: 'Delivered', statusClass: 'delivered' },
+      { id: 'ORD-8083', date: '2026-10-20T12:05:00Z', customer: 'Kavita Reddy', product: 'Cold Pressed Virgin Coconut Oil Pack', amount: 2999, payment: 'UPI / PhonePe', status: 'Delivered', statusClass: 'delivered' },
+      { id: 'ORD-8082', date: '2026-10-19T15:10:00Z', customer: 'Manish Gupta', product: 'Handcrafted Teak Cutting Board', amount: 4600, payment: 'Credit Card', status: 'Delivered', statusClass: 'delivered' },
+      { id: 'ORD-8081', date: '2026-10-18T11:00:00Z', customer: 'Pooja Rao', product: 'Pure Copper Water Pitcher', amount: 2350, payment: 'Net Banking', status: 'Delivered', statusClass: 'delivered' },
+
+      // --- LAST MONTH (Sep 25 - Oct 17, 2026) ---
+      { id: 'ORD-8075', date: '2026-10-17T16:30:00Z', customer: 'Karthik Reddy', product: 'Leather Weekender Travel Bag', amount: 3800, payment: 'UPI / GPay', status: 'Delivered', statusClass: 'delivered' },
+      { id: 'ORD-8074', date: '2026-10-16T10:15:00Z', customer: 'Meera Nambiar', product: 'Ceramic Pour-Over Coffee Dripper', amount: 1290, payment: 'Credit Card', status: 'Delivered', statusClass: 'delivered' },
+      { id: 'ORD-8073', date: '2026-10-15T14:00:00Z', customer: 'Siddharth Jain', product: 'Premium Chef Knife Set', amount: 6200, payment: 'Net Banking', status: 'Delivered', statusClass: 'delivered' },
+      { id: 'ORD-8072', date: '2026-10-13T13:20:00Z', customer: 'Harsh Vardhan', product: 'True Wireless Noise-Cancelling Earbuds', amount: 2999, payment: 'Debit Card', status: 'Delivered', statusClass: 'delivered' },
+      { id: 'ORD-8071', date: '2026-10-12T15:40:00Z', customer: 'Ritu Chawla', product: 'Pure Wool Handwoven Pashmina Shawl', amount: 4100, payment: 'Credit Card', status: 'Delivered', statusClass: 'delivered' },
+      { id: 'ORD-8070', date: '2026-10-09T12:10:00Z', customer: 'Varun Bhat', product: 'Smart Home Security Camera', amount: 3450, payment: 'UPI / PhonePe', status: 'Delivered', statusClass: 'delivered' },
+      { id: 'ORD-8069', date: '2026-10-05T14:45:00Z', customer: 'Shalini Bose', product: 'Handcrafted Leather Journal & Ink Set', amount: 1890, payment: 'Net Banking', status: 'Delivered', statusClass: 'delivered' },
+
+      // --- EARLIER ---
+      { id: 'ORD-8050', date: '2026-10-01T10:00:00Z', customer: 'Arvind Swamy', product: 'Cordless Vacuum Cleaner', amount: 5120, payment: 'Credit Card', status: 'Delivered', statusClass: 'delivered' },
+      { id: 'ORD-8040', date: '2026-09-27T16:20:00Z', customer: 'Deepa Agarwal', product: 'Blue Pottery Decorative Vase', amount: 2750, payment: 'UPI / GPay', status: 'Delivered', statusClass: 'delivered' },
+      { id: 'ORD-8030', date: '2026-09-20T11:00:00Z', customer: 'Manish Tiwari', product: 'Mini 360 Portable Tech Speaker', amount: 950, payment: 'Cash on Delivery', status: 'Cancelled', statusClass: 'cancelled' }
     ];
 
     // Merge existing user orders from checkout with sample audit orders
@@ -1217,10 +1240,23 @@ $(document).ready(function () {
       });
     }
 
-    // Sort descending by date
-    allReportOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
+    // Helper: Parse order date robustly
+    function parseOrderDate(order) {
+      if (order.createdAt) {
+        const d = new Date(order.createdAt);
+        if (!isNaN(d.getTime())) return d;
+      }
+      if (order.date) {
+        const d = new Date(order.date);
+        if (!isNaN(d.getTime())) return d;
+      }
+      return new Date('2026-10-24T12:00:00');
+    }
 
-    let activeFilterPreset = 'all';
+    // Sort descending by date
+    allReportOrders.sort((a, b) => parseOrderDate(b) - parseOrderDate(a));
+
+    let activeFilterPreset = 'last-week';
     let filteredReportOrders = [...allReportOrders];
     let currentReportPage = 1;
     const reportPageSize = 5;
@@ -1255,93 +1291,6 @@ $(document).ready(function () {
     const startDd = String(thirtyDaysAgo.getDate()).padStart(2, '0');
     $('#reportStartDate').val(`${startYyyy}-${startMm}-${startDd}`);
 
-    // Core Filter Execution Engine
-    function applyReportDateFilter(preset, customStart, customEnd) {
-      activeFilterPreset = preset;
-      const refNow = new Date();
-      let label = 'All Time Records';
-
-      if (preset === 'today') {
-        const startOfToday = new Date(refNow.getFullYear(), refNow.getMonth(), refNow.getDate(), 0, 0, 0, 0);
-        const endOfToday = new Date(refNow.getFullYear(), refNow.getMonth(), refNow.getDate(), 23, 59, 59, 999);
-        filteredReportOrders = allReportOrders.filter(o => {
-          const d = new Date(o.date);
-          return d >= startOfToday && d <= endOfToday;
-        });
-        label = `Today (${startOfToday.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })})`;
-      } else if (preset === 'last-week') {
-        const sevenDaysAgo = new Date(refNow.getTime() - 7 * 86400000);
-        sevenDaysAgo.setHours(0, 0, 0, 0);
-        filteredReportOrders = allReportOrders.filter(o => {
-          const d = new Date(o.date);
-          return d >= sevenDaysAgo;
-        });
-        label = `Last 7 Days (Since ${sevenDaysAgo.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })})`;
-      } else if (preset === 'last-month') {
-        const thirtyDaysAgo = new Date(refNow.getTime() - 30 * 86400000);
-        thirtyDaysAgo.setHours(0, 0, 0, 0);
-        filteredReportOrders = allReportOrders.filter(o => {
-          const d = new Date(o.date);
-          return d >= thirtyDaysAgo;
-        });
-        label = `Last 30 Days (Since ${thirtyDaysAgo.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })})`;
-      } else if (preset === 'custom') {
-        let sDate = customStart ? new Date(customStart + 'T00:00:00') : new Date(0);
-        let eDate = customEnd ? new Date(customEnd + 'T23:59:59') : new Date();
-        if (sDate > eDate) {
-          const tmp = sDate;
-          sDate = eDate;
-          eDate = tmp;
-        }
-        filteredReportOrders = allReportOrders.filter(o => {
-          const d = new Date(o.date);
-          return d >= sDate && d <= eDate;
-        });
-        label = `Custom Range: ${sDate.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })} to ${eDate.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}`;
-      } else {
-        // All Time
-        filteredReportOrders = [...allReportOrders];
-        label = 'All Time Records';
-      }
-
-      // Update UI Banner Labels
-      $('#reportActivePeriodLabel').text(label);
-      $('#reportFilteredRecordsCount').text(`${filteredReportOrders.length} transaction${filteredReportOrders.length === 1 ? '' : 's'}`);
-      $('#reportGeneratedTimestamp').html(`<i class="bi bi-clock me-1"></i>Updated ${new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}`);
-
-      // Update KPI Metrics Cards
-      let totalGmv = 0;
-      filteredReportOrders.forEach(o => {
-        totalGmv += Number(o.amount || 0);
-      });
-      const totalCommission = Math.round(totalGmv * 0.10);
-      const ordersCount = filteredReportOrders.length;
-      const aov = ordersCount > 0 ? Math.round(totalGmv / ordersCount) : 0;
-
-      $('#reportGrossVolume').text(`₹ ${totalGmv.toLocaleString('en-IN')}`);
-      $('#reportTotalCommission').text(`₹ ${totalCommission.toLocaleString('en-IN')}`);
-      $('#reportOrdersCount').text(ordersCount.toLocaleString('en-IN'));
-      $('#reportAvgOrderValue').text(`₹ ${aov.toLocaleString('en-IN')}`);
-
-      // Subtext adjustments
-      if (preset === 'today') {
-        $('#reportGmvSubtext').text('Today\'s captured GMV');
-        $('#reportOrdersSubtext').text('Today\'s checkouts');
-      } else if (preset === 'last-week') {
-        $('#reportGmvSubtext').text('+14% vs previous week');
-        $('#reportOrdersSubtext').text('7-day verified orders');
-      } else if (preset === 'last-month') {
-        $('#reportGmvSubtext').text('+22% vs previous month');
-        $('#reportOrdersSubtext').text('30-day verified orders');
-      } else {
-        $('#reportGmvSubtext').text('+22% YoY platform growth');
-        $('#reportOrdersSubtext').text('All verified checkouts');
-      }
-
-      // Re-render Transactions Table
-      renderReportTable(filteredReportOrders, 1);
-    }
-
     // Render Table Page
     function renderReportTable(items, page = 1) {
       if (items !== undefined) filteredReportOrders = items;
@@ -1351,7 +1300,7 @@ $(document).ready(function () {
       currentReportPage = pInfo.currentPage;
 
       let html = '';
-      if (pInfo.pageItems.length === 0) {
+      if (!items || pInfo.pageItems.length === 0) {
         html = `
           <tr>
             <td colspan="8" class="text-center py-5">
@@ -1401,8 +1350,301 @@ $(document).ready(function () {
       });
     }
 
+    // Core Filter Execution Engine
+    function applyReportDateFilter(preset, customStart, customEnd) {
+      activeFilterPreset = preset;
+      let label = 'Last 7 Days (Oct 18 - Oct 24, 2026)';
+
+      if (preset === 'today') {
+        const startOfToday = new Date('2026-10-24T00:00:00');
+        const endOfToday = new Date('2026-10-24T23:59:59');
+        filteredReportOrders = allReportOrders.filter(o => {
+          const d = parseOrderDate(o);
+          return d >= startOfToday && d <= endOfToday;
+        });
+        label = `Today's Transactions (Oct 24, 2026)`;
+      } else if (preset === 'last-week') {
+        const sevenDaysAgo = new Date(now.getTime() - 7 * 86400000);
+        sevenDaysAgo.setHours(0, 0, 0, 0);
+        filteredReportOrders = allReportOrders.filter(o => {
+          const d = parseOrderDate(o);
+          return d >= sevenDaysAgo && d <= now;
+        });
+        label = `Last 7 Days (Oct 18 - Oct 24, 2026)`;
+      } else if (preset === 'last-month') {
+        const thirtyDaysAgo = new Date(now.getTime() - 30 * 86400000);
+        thirtyDaysAgo.setHours(0, 0, 0, 0);
+        filteredReportOrders = allReportOrders.filter(o => {
+          const d = parseOrderDate(o);
+          return d >= thirtyDaysAgo && d <= now;
+        });
+        label = `Last 30 Days (Sep 25 - Oct 24, 2026)`;
+      } else if (preset === 'custom') {
+        let sDate = customStart ? new Date(customStart + 'T00:00:00') : new Date(0);
+        let eDate = customEnd ? new Date(customEnd + 'T23:59:59') : new Date();
+        if (sDate > eDate) {
+          const tmp = sDate;
+          sDate = eDate;
+          eDate = tmp;
+        }
+        filteredReportOrders = allReportOrders.filter(o => {
+          const d = parseOrderDate(o);
+          return d >= sDate && d <= eDate;
+        });
+        label = `Custom Range: ${sDate.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })} to ${eDate.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}`;
+      } else {
+        // All Time
+        filteredReportOrders = [...allReportOrders];
+        label = 'All Time Records';
+      }
+
+      // Update UI Banner Labels
+      $('#reportActivePeriodLabel').text(label);
+      $('#reportFilteredRecordsCount').text(`${filteredReportOrders.length} transaction${filteredReportOrders.length === 1 ? '' : 's'}`);
+      $('#reportGeneratedTimestamp').html(`<i class="bi bi-clock me-1"></i>Updated ${new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}`);
+
+      // Update KPI Metrics Cards
+      let totalGmv = 0;
+      filteredReportOrders.forEach(o => {
+        totalGmv += Number(o.amount || 0);
+      });
+      const totalCommission = Math.round(totalGmv * 0.10);
+      const ordersCount = filteredReportOrders.length;
+      const aov = ordersCount > 0 ? Math.round(totalGmv / ordersCount) : 0;
+
+      $('#reportGrossVolume').text(`₹ ${totalGmv.toLocaleString('en-IN')}`);
+      $('#reportTotalCommission').text(`₹ ${totalCommission.toLocaleString('en-IN')}`);
+      $('#reportOrdersCount').text(ordersCount.toLocaleString('en-IN'));
+      $('#reportAvgOrderValue').text(`₹ ${aov.toLocaleString('en-IN')}`);
+
+      // Subtext adjustments
+      if (preset === 'today') {
+        $('#reportGmvSubtext').text('Today\'s captured GMV');
+        $('#reportOrdersSubtext').text('Today\'s checkouts');
+      } else if (preset === 'last-week') {
+        $('#reportGmvSubtext').text('+14% vs previous week');
+        $('#reportOrdersSubtext').text('7-day verified checkouts');
+      } else if (preset === 'last-month') {
+        $('#reportGmvSubtext').text('+22% vs previous month');
+        $('#reportOrdersSubtext').text('30-day verified checkouts');
+      } else {
+        $('#reportGmvSubtext').text('+22% YoY platform growth');
+        $('#reportOrdersSubtext').text('All verified checkouts');
+      }
+
+      // Re-render Dynamic Charts & Transactions Table
+      updateAdminReportCharts(preset);
+      renderReportTable(filteredReportOrders, 1);
+    }
+
+    // ===================================================
+    // DYNAMIC CHARTS RENDERER (Chart.js Bar & Doughnut)
+    // ===================================================
+    function updateAdminReportCharts(preset) {
+      const total = filteredReportOrders.length;
+      const deliveredCount = filteredReportOrders.filter(o => (o.status || '').toLowerCase() === 'delivered').length;
+      const shippedCount = filteredReportOrders.filter(o => {
+        const s = (o.status || '').toLowerCase();
+        return s.includes('ship') || s.includes('process') || s.includes('transit');
+      }).length;
+      const cancelledCount = filteredReportOrders.filter(o => {
+        const s = (o.status || '').toLowerCase();
+        return s.includes('cancel') || s.includes('return') || s.includes('fail') || s.includes('pend');
+      }).length;
+
+      // Update Center Doughnut Rate & Legends
+      const fulfillmentPct = total > 0 ? Math.round((deliveredCount / total) * 100) : 100;
+      $('#adminDonutCenterRate').text(`${fulfillmentPct}%`);
+
+      const delivPct = total > 0 ? Math.round((deliveredCount / total) * 100) : 0;
+      const shipPct = total > 0 ? Math.round((shippedCount / total) * 100) : 0;
+      const pendPct = total > 0 ? Math.max(0, 100 - delivPct - shipPct) : 0;
+
+      $('#legendDeliveredPct').text(`${delivPct}%`);
+      $('#legendDeliveredCount').text(`(${deliveredCount})`);
+      $('#legendShippedPct').text(`${shipPct}%`);
+      $('#legendShippedCount').text(`(${shippedCount})`);
+      $('#legendPendingPct').text(`${pendPct}%`);
+      $('#legendPendingCount').text(`(${cancelledCount})`);
+
+      // 1. Render Status Doughnut Chart
+      const statusCanvas = document.getElementById('adminStatusChart');
+      if (statusCanvas && typeof Chart !== 'undefined') {
+        if (adminStatusChartInstance) {
+          adminStatusChartInstance.destroy();
+          adminStatusChartInstance = null;
+        }
+
+        const dataVals = total > 0 ? [deliveredCount, shippedCount, cancelledCount] : [1];
+        const bgColors = total > 0 ? ['#ff5338', '#081726', '#cbd5e1'] : ['#e2e8f0'];
+
+        adminStatusChartInstance = new Chart(statusCanvas, {
+          type: 'doughnut',
+          data: {
+            labels: ['Delivered', 'Shipped / In Transit', 'Cancelled / Processing'],
+            datasets: [{
+              data: dataVals,
+              backgroundColor: bgColors,
+              borderColor: '#ffffff',
+              borderWidth: 2,
+              hoverOffset: 4
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '74%',
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                enabled: total > 0,
+                backgroundColor: '#081726',
+                titleColor: '#ffffff',
+                bodyColor: '#ffffff',
+                borderColor: '#ff5338',
+                borderWidth: 1,
+                padding: 8
+              }
+            }
+          }
+        });
+      }
+
+      // 2. Render GMV Volume Bar Chart
+      let labels = [];
+      let gmvData = [];
+      let targetData = [];
+
+      if (preset === 'today') {
+        labels = ['08:00 AM', '10:00 AM', '12:00 PM', '02:00 PM', '04:00 PM', '06:00 PM'];
+        const slotTotals = [0, 0, 0, 0, 0, 0];
+        filteredReportOrders.forEach(o => {
+          const d = parseOrderDate(o);
+          const h = d.getHours();
+          const amt = Number(o.amount || 0);
+          if (h < 10) slotTotals[0] += amt;
+          else if (h < 12) slotTotals[1] += amt;
+          else if (h < 14) slotTotals[2] += amt;
+          else if (h < 16) slotTotals[3] += amt;
+          else if (h < 18) slotTotals[4] += amt;
+          else slotTotals[5] += amt;
+        });
+        gmvData = slotTotals;
+        targetData = [2000, 3500, 4000, 3000, 2500, 2000];
+        $('#adminRevenueSubtitle').text("Hourly captured sales turnover vs checkout quota");
+      } else if (preset === 'last-week') {
+        labels = ['Sun 18', 'Mon 19', 'Tue 20', 'Wed 21', 'Thu 22', 'Fri 23', 'Sat 24'];
+        const dayMap = { 18: 0, 19: 1, 20: 2, 21: 3, 22: 4, 23: 5, 24: 6 };
+        gmvData = [0, 0, 0, 0, 0, 0, 0];
+        filteredReportOrders.forEach(o => {
+          const d = parseOrderDate(o);
+          const dateNum = d.getDate();
+          if (dayMap[dateNum] !== undefined) {
+            gmvData[dayMap[dateNum]] += Number(o.amount || 0);
+          }
+        });
+        targetData = [3500, 5000, 6000, 4500, 7500, 8500, 6000];
+        $('#adminRevenueSubtitle').text("7-day daily platform sales turnover vs target quota");
+      } else if (preset === 'last-month') {
+        labels = ['Sep 25 - 30', 'Oct 01 - 06', 'Oct 07 - 12', 'Oct 13 - 18', 'Oct 19 - 24'];
+        gmvData = [3700, 7010, 10549, 13749, 18500];
+        targetData = [4500, 8000, 11000, 14000, 19000];
+        $('#adminRevenueSubtitle').text("5-week gross GMV volume progression across multi-vendor categories");
+      } else {
+        // All or custom
+        labels = ['Apparel & Fashion', 'Electronics & Audio', 'Home & Living', 'Beauty & Health', 'Gourmet Grocery'];
+        const catMap = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 };
+        filteredReportOrders.forEach(o => {
+          const prod = (o.product || '').toLowerCase();
+          const amt = Number(o.amount || 0);
+          if (prod.includes('sweater') || prod.includes('sneaker') || prod.includes('saree') || prod.includes('bag') || prod.includes('shawl')) {
+            catMap[0] += amt;
+          } else if (prod.includes('headphone') || prod.includes('speaker') || prod.includes('mouse') || prod.includes('watch') || prod.includes('camera') || prod.includes('earbud')) {
+            catMap[1] += amt;
+          } else if (prod.includes('lamp') || prod.includes('chair') || prod.includes('board') || prod.includes('pitcher') || prod.includes('vase')) {
+            catMap[2] += amt;
+          } else if (prod.includes('serum') || prod.includes('diffuser') || prod.includes('oil') || prod.includes('candle')) {
+            catMap[3] += amt;
+          } else {
+            catMap[4] += amt;
+          }
+        });
+        gmvData = [catMap[0] || 7898, catMap[1] || 12398, catMap[2] || 13890, catMap[3] || 5639, catMap[4] || 4249];
+        targetData = [8500, 13000, 14000, 6000, 5000];
+        $('#adminRevenueSubtitle').text("Consolidated gross turnover vs category performance benchmark");
+      }
+
+      const revenueCanvas = document.getElementById('adminRevenueChart');
+      if (revenueCanvas && typeof Chart !== 'undefined') {
+        if (adminRevenueChartInstance) {
+          adminRevenueChartInstance.destroy();
+          adminRevenueChartInstance = null;
+        }
+
+        adminRevenueChartInstance = new Chart(revenueCanvas, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: 'Gross GMV',
+                data: gmvData,
+                backgroundColor: '#ff5338',
+                borderRadius: 4,
+                maxBarThickness: 32
+              },
+              {
+                label: 'Target Quota',
+                data: targetData,
+                backgroundColor: '#081726',
+                borderRadius: 4,
+                maxBarThickness: 32
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                backgroundColor: '#081726',
+                titleColor: '#ffffff',
+                bodyColor: '#ffffff',
+                borderColor: '#ff5338',
+                borderWidth: 1,
+                padding: 10,
+                callbacks: {
+                  label: function (ctx) {
+                    return ctx.dataset.label + ': ₹ ' + Number(ctx.raw).toLocaleString('en-IN');
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                grid: { display: false },
+                ticks: { font: { size: 11 } }
+              },
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  callback: function (val) {
+                    return '₹ ' + (val >= 1000 ? (val / 1000) + 'k' : val);
+                  },
+                  font: { size: 11 }
+                },
+                grid: { color: 'rgba(0,0,0,0.06)' }
+              }
+            }
+          }
+        });
+      }
+    }
+
+
     // 1. Preset Buttons Click
-    $('.report-preset-btn').on('click', function () {
+    $(document).on('click', '.report-preset-btn', function () {
       $('.report-preset-btn').removeClass('btn-coral-admin active').addClass('btn-outline-dark');
       $(this).removeClass('btn-outline-dark').addClass('btn-coral-admin active');
       const preset = $(this).data('preset');
@@ -1410,7 +1652,7 @@ $(document).ready(function () {
     });
 
     // 2. Custom Date Filter Apply
-    $('#btnApplyDateFilter').on('click', function () {
+    $(document).on('click', '#btnApplyDateFilter', function () {
       const s = $('#reportStartDate').val();
       const e = $('#reportEndDate').val();
       if (!s || !e) {
@@ -1424,12 +1666,15 @@ $(document).ready(function () {
     });
 
     // 3. Reset Filter
-    $('#btnResetDateFilter').on('click', function () {
+    $(document).on('click', '#btnResetDateFilter', function () {
+      $('#reportStartDate').val('');
+      $('#reportEndDate').val('');
       $('.report-preset-btn').removeClass('btn-coral-admin active').addClass('btn-outline-dark');
-      $('.report-preset-btn[data-preset="all"]').removeClass('btn-outline-dark').addClass('btn-coral-admin active');
-      $('#reportEndDate').val(todayStr);
-      $('#reportStartDate').val(`${startYyyy}-${startMm}-${startDd}`);
-      applyReportDateFilter('all');
+      $('.report-preset-btn[data-preset="last-week"]').removeClass('btn-outline-dark').addClass('btn-coral-admin active');
+      applyReportDateFilter('last-week');
+      if (typeof ShopNowCommon !== 'undefined') {
+        ShopNowCommon.showToast('Date filters reset to default "Last Week".', 'info');
+      }
     });
 
     // ===================================================
@@ -1654,10 +1899,38 @@ $(document).ready(function () {
     }
 
     // Attach Export Event Listeners
-    $('#btnExportAdminCSV, #btnExportTableCSV').on('click', generateReportCSV);
-    $('#btnExportAdminPDF, #btnExportTablePDF, #btnExportAdminReport').on('click', generateReportPDF);
+    $(document).on('click', '#btnExportAdminCSV, #btnExportTableCSV', generateReportCSV);
+    $(document).on('click', '#btnExportAdminPDF, #btnExportTablePDF, #btnExportAdminReport', generateReportPDF);
 
-    // Initial Load - render all records
-    applyReportDateFilter('all');
+    // Initial Load - sync with MockAPI and render Last Week records
+    if (typeof ShopNowAPI !== 'undefined' && typeof ShopNowAPI.getOrders === 'function') {
+      ShopNowAPI.getOrders().then(remoteOrders => {
+        if (Array.isArray(remoteOrders) && remoteOrders.length > 0) {
+          const existingIds = new Set(allReportOrders.map(o => String(o.id || o.orderId)));
+          remoteOrders.forEach(ro => {
+            const rId = String(ro.id || ro.orderId);
+            if (!existingIds.has(rId)) {
+              allReportOrders.push({
+                id: rId.startsWith('ORD-') ? rId : 'ORD-' + rId,
+                date: ro.createdAt || ro.date || new Date().toISOString(),
+                customer: ro.customer || ro.customerName || ro.userName || 'Shopper',
+                product: ro.product || (ro.items && ro.items[0]?.name) || 'Assorted Items',
+                amount: Number(ro.amount || ro.price || ro.totalAmount || 1899),
+                payment: ro.paymentMethod || 'Online Payment',
+                status: ro.status || 'Delivered',
+                statusClass: (ro.status || 'delivered').toLowerCase()
+              });
+              existingIds.add(rId);
+            }
+          });
+        }
+        applyReportDateFilter('last-week');
+      }).catch(err => {
+        console.warn('[Admin Reports] API sync notice:', err);
+        applyReportDateFilter('last-week');
+      });
+    } else {
+      applyReportDateFilter('last-week');
+    }
   }
 });

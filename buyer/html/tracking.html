@@ -53,13 +53,25 @@
             <strong class="d-block text-dark">Alex Johnson</strong>
             <div>742 Evergreen Terrace, Apt 4B</div>
             <div>Springfield, OR 97477</div>
-            <div>United States</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cancelled Order Banner (Hidden by default, shown if cancelled) -->
+      <div class="alert alert-danger-subtle border-danger border-1 rounded-4 p-3 mb-4 d-none" id="trackCancelledBanner">
+        <div class="d-flex align-items-center gap-3">
+          <i class="bi bi-x-octagon-fill text-danger fs-2"></i>
+          <div>
+            <h6 class="fw-bold text-danger mb-1">This order has been cancelled</h6>
+            <p class="small text-danger-emphasis mb-0" id="trackCancelledBannerText">
+              Your cancellation request was completed. A full refund has been initiated to your original payment method.
+            </p>
           </div>
         </div>
       </div>
 
       <!-- Delivery Progress Stepper (Matching Figma 4-step progress) -->
-      <div class="tracking-stepper-card">
+      <div class="tracking-stepper-card" id="trackingDeliveryProgressCard">
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h5 class="fw-bold text-dark mb-0 fs-6">Delivery progress</h5>
           <span class="badge bg-success-subtle text-success px-3 py-1 fw-bold" id="trackStepStatusBadge">On Schedule</span>
@@ -135,9 +147,10 @@
           </div>
         </div>
 
-        <!-- Right: Need to make a change? -->
+        <!-- Right: Need to make a change? or Cancellation Summary -->
         <div class="col-12 col-lg-4">
-          <div class="cancel-prompt-card">
+          <!-- Active Order Change Card -->
+          <div class="cancel-prompt-card" id="trackActiveActionsCard">
             <h5 class="cancel-prompt-title">Need to make a change?</h5>
             <p class="cancel-prompt-desc">
               Your order hasn't shipped yet. You can still cancel it before it leaves our fulfillment facility.
@@ -148,6 +161,25 @@
             <div class="text-center">
               <a href="support.html" class="text-coral fw-bold small text-decoration-none">
                 Contact support &rarr;
+              </a>
+            </div>
+          </div>
+
+          <!-- Cancelled Order Card (Hidden by default) -->
+          <div class="cancel-prompt-card d-none border-danger-subtle" id="trackCancelledActionsCard">
+            <span class="badge bg-danger-subtle text-danger mb-2 fw-bold">Cancelled &bull; Refund Initiated</span>
+            <h5 class="cancel-prompt-title text-danger">Cancellation Details</h5>
+            <div class="small text-muted mb-3" id="trackCancellationDetails">
+              <div>Refund Amount: <strong class="text-dark" id="trackRefundAmount">₹ 2,499.00</strong></div>
+              <div>Refund Method: <strong class="text-dark" id="trackRefundMethod">Original Payment Source</strong></div>
+              <div>Estimated Credit: <strong class="text-dark">1–2 business days</strong></div>
+            </div>
+            <div class="text-center">
+              <a href="support.html" class="btn btn-sm btn-outline-danger w-100 rounded-pill mb-2">
+                Need Help? Contact Support
+              </a>
+              <a href="catalog.html" class="text-coral fw-bold small text-decoration-none d-block">
+                Continue Shopping &rarr;
               </a>
             </div>
           </div>

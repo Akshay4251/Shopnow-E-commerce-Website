@@ -97,42 +97,125 @@
             
             <div class="payment-methods-list" id="paymentMethodsGroup">
               <!-- Credit / Debit Card (Selected) -->
-              <div class="payment-method-item selected" data-method="card">
-                <input class="form-check-input mt-0" type="radio" name="paymentOptionRadio" id="payMethodCard" checked />
-                <label for="payMethodCard" class="mb-0 fw-bold text-dark cursor-pointer flex-grow-1">
-                  Credit/debit card
-                </label>
-                <div class="d-flex gap-1">
-                  <span class="badge bg-secondary-subtle text-secondary font-monospace">VISA</span>
-                  <span class="badge bg-secondary-subtle text-secondary font-monospace">MC</span>
+              <div class="payment-method-card selected border rounded-3 p-3 mb-3 bg-white" data-method="card">
+                <div class="d-flex align-items-center justify-content-between cursor-pointer payment-method-header">
+                  <div class="d-flex align-items-center gap-2">
+                    <input class="form-check-input mt-0" type="radio" name="paymentOptionRadio" id="payMethodCard" checked />
+                    <label for="payMethodCard" class="mb-0 fw-bold text-dark cursor-pointer">
+                      Credit/debit card
+                    </label>
+                  </div>
+                  <div class="d-flex gap-1">
+                    <span class="badge bg-secondary-subtle text-secondary font-monospace">VISA</span>
+                    <span class="badge bg-secondary-subtle text-secondary font-monospace">Mastercard</span>
+                    <span class="badge bg-secondary-subtle text-secondary font-monospace">RuPay</span>
+                  </div>
+                </div>
+
+                <!-- Card Details Fields -->
+                <div class="payment-method-fields mt-3 pt-3 border-top" id="checkoutCardFields">
+                  <div class="mb-2">
+                    <label class="form-label extra-small fw-bold text-muted mb-1">Card Number</label>
+                    <div class="position-relative">
+                      <input type="text" class="form-control form-control-sm pe-5" id="checkoutCardNumber" placeholder="4242 &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; 4242" maxlength="19" value="4532 8920 1204 4242" />
+                      <span class="position-absolute end-0 top-50 translate-middle-y me-2 text-primary" id="checkoutCardBrandIcon">
+                        <i class="bi bi-credit-card-2-front"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="row g-2">
+                    <div class="col-6">
+                      <label class="form-label extra-small fw-bold text-muted mb-1">Name on Card</label>
+                      <input type="text" class="form-control form-control-sm" id="checkoutCardName" placeholder="Cardholder Name" value="Alex Johnson" />
+                    </div>
+                    <div class="col-3">
+                      <label class="form-label extra-small fw-bold text-muted mb-1">Expiry</label>
+                      <input type="text" class="form-control form-control-sm" id="checkoutCardExpiry" placeholder="MM/YY" maxlength="5" value="12/28" />
+                    </div>
+                    <div class="col-3">
+                      <label class="form-label extra-small fw-bold text-muted mb-1">CVV</label>
+                      <input type="password" class="form-control form-control-sm" id="checkoutCardCvv" placeholder="123" maxlength="4" value="894" />
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <!-- UPI -->
-              <div class="payment-method-item" data-method="upi">
-                <input class="form-check-input mt-0" type="radio" name="paymentOptionRadio" id="payMethodUpi" />
-                <label for="payMethodUpi" class="mb-0 fw-bold text-dark cursor-pointer flex-grow-1">
-                  UPI
-                </label>
-                <i class="bi bi-qr-code text-muted"></i>
+              <div class="payment-method-card border rounded-3 p-3 mb-3 bg-white" data-method="upi">
+                <div class="d-flex align-items-center justify-content-between cursor-pointer payment-method-header">
+                  <div class="d-flex align-items-center gap-2">
+                    <input class="form-check-input mt-0" type="radio" name="paymentOptionRadio" id="payMethodUpi" />
+                    <label for="payMethodUpi" class="mb-0 fw-bold text-dark cursor-pointer">
+                      UPI (Google Pay, PhonePe, Paytm, QR)
+                    </label>
+                  </div>
+                  <i class="bi bi-qr-code text-muted fs-5"></i>
+                </div>
+
+                <!-- UPI Fields (Hidden by default) -->
+                <div class="payment-method-fields mt-3 pt-3 border-top d-none" id="checkoutUpiFields">
+                  <label class="form-label extra-small fw-bold text-muted mb-1">Enter your UPI ID / VPA</label>
+                  <div class="input-group input-group-sm mb-2">
+                    <input type="text" class="form-control" id="checkoutUpiIdInput" placeholder="username@okhdfcbank" value="shreyas@okhdfcbank" />
+                    <button class="btn btn-outline-secondary" type="button" id="btnVerifyUpiId">Verify</button>
+                  </div>
+                  <div class="d-flex flex-wrap gap-2 align-items-center">
+                    <span class="extra-small text-muted fw-bold">Popular:</span>
+                    <button type="button" class="btn btn-sm btn-light border py-0 px-2 extra-small quick-upi-chip" data-vpa="@okhdfcbank">Google Pay</button>
+                    <button type="button" class="btn btn-sm btn-light border py-0 px-2 extra-small quick-upi-chip" data-vpa="@ybl">PhonePe</button>
+                    <button type="button" class="btn btn-sm btn-light border py-0 px-2 extra-small quick-upi-chip" data-vpa="@paytm">Paytm</button>
+                  </div>
+                </div>
               </div>
 
               <!-- Net banking -->
-              <div class="payment-method-item" data-method="netbanking">
-                <input class="form-check-input mt-0" type="radio" name="paymentOptionRadio" id="payMethodNetBanking" />
-                <label for="payMethodNetBanking" class="mb-0 fw-bold text-dark cursor-pointer flex-grow-1">
-                  Net banking
-                </label>
-                <i class="bi bi-bank text-muted"></i>
+              <div class="payment-method-card border rounded-3 p-3 mb-3 bg-white" data-method="netbanking">
+                <div class="d-flex align-items-center justify-content-between cursor-pointer payment-method-header">
+                  <div class="d-flex align-items-center gap-2">
+                    <input class="form-check-input mt-0" type="radio" name="paymentOptionRadio" id="payMethodNetBanking" />
+                    <label for="payMethodNetBanking" class="mb-0 fw-bold text-dark cursor-pointer">
+                      Net banking
+                    </label>
+                  </div>
+                  <i class="bi bi-bank text-muted fs-5"></i>
+                </div>
+
+                <!-- Net Banking Fields (Hidden by default) -->
+                <div class="payment-method-fields mt-3 pt-3 border-top d-none" id="checkoutNetBankingFields">
+                  <label class="form-label extra-small fw-bold text-muted mb-1">Choose your bank</label>
+                  <select class="form-select form-select-sm mb-2" id="checkoutBankSelect">
+                    <option value="ICICI Bank" selected>ICICI Bank</option>
+                    <option value="HDFC Bank">HDFC Bank</option>
+                    <option value="State Bank of India">State Bank of India (SBI)</option>
+                    <option value="Axis Bank">Axis Bank</option>
+                    <option value="Kotak Mahindra Bank">Kotak Mahindra Bank</option>
+                    <option value="Punjab National Bank">Punjab National Bank</option>
+                  </select>
+                  <div class="extra-small text-muted">
+                    <i class="bi bi-shield-check text-success me-1"></i>You will be redirected to the secure bank portal to authorize payment.
+                  </div>
+                </div>
               </div>
 
               <!-- Cash on delivery -->
-              <div class="payment-method-item" data-method="cod">
-                <input class="form-check-input mt-0" type="radio" name="paymentOptionRadio" id="payMethodCod" />
-                <label for="payMethodCod" class="mb-0 fw-bold text-dark cursor-pointer flex-grow-1">
-                  Cash on delivery
-                </label>
-                <i class="bi bi-cash-stack text-muted"></i>
+              <div class="payment-method-card border rounded-3 p-3 bg-white" data-method="cod">
+                <div class="d-flex align-items-center justify-content-between cursor-pointer payment-method-header">
+                  <div class="d-flex align-items-center gap-2">
+                    <input class="form-check-input mt-0" type="radio" name="paymentOptionRadio" id="payMethodCod" />
+                    <label for="payMethodCod" class="mb-0 fw-bold text-dark cursor-pointer">
+                      Cash on delivery
+                    </label>
+                  </div>
+                  <i class="bi bi-cash-stack text-muted fs-5"></i>
+                </div>
+
+                <!-- COD Details (Hidden by default) -->
+                <div class="payment-method-fields mt-3 pt-3 border-top d-none" id="checkoutCodFields">
+                  <div class="alert alert-success-subtle border-0 rounded-3 p-2 mb-0 small">
+                    <i class="bi bi-check-circle-fill text-success me-1"></i>
+                    Pay via cash or UPI QR upon delivery to our delivery executive. No advance payment required.
+                  </div>
+                </div>
               </div>
             </div>
           </div>

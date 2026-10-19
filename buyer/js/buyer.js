@@ -13,14 +13,65 @@ $(document).ready(function () {
   const STORAGE_WISHLIST_KEY = 'shopnow_wishlist';
   const STORAGE_CART_KEY = 'shopnow_cart';
   const STORAGE_USER_KEY = 'shopnow_current_user';
+  const STORAGE_ORDERS_KEY = 'shopnow_orders';
+  const STORAGE_RETURNS_KEY = 'shopnow_returns';
+  const STORAGE_ADDRESSES_KEY = 'shopnow_addresses';
 
-  // Fallback Full Product Catalog (Matching the exact 8 Figma products with Indian Rupee figures)
+  // Curated 17 Product Catalog Matching Screenshot 3 (Fashion, Sports, Home, Electronics, Beauty, Grocery, Luxury, Home decor)
   const defaultProducts = [
     {
       id: 101,
+      brand: 'NORTHWIND',
+      title: 'Midnight Navy Cotton Jacket',
+      category: 'Fashion',
+      price: 2499,
+      oldPrice: 3299,
+      badge: '15% OFF',
+      rating: 4.5,
+      reviews: 142,
+      image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&auto=format&fit=crop&q=80'
+    },
+    {
+      id: 102,
+      brand: 'STRIDE',
+      title: 'Soft White Running Shoes',
+      category: 'Sports',
+      price: 1999,
+      oldPrice: 2499,
+      badge: 'POPULAR',
+      rating: 4.2,
+      reviews: 98,
+      image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&auto=format&fit=crop&q=80'
+    },
+    {
+      id: 103,
+      brand: 'HEARTH',
+      title: 'Oatmeal Wool Throw Blanket',
+      category: 'Home',
+      price: 1499,
+      oldPrice: null,
+      badge: '',
+      rating: 4.7,
+      reviews: 64,
+      image: 'https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=600&auto=format&fit=crop&q=80'
+    },
+    {
+      id: 104,
+      brand: 'AURALIS',
+      title: 'Wireless Noise-Cancelling Headphones',
+      category: 'Electronics',
+      price: 3999,
+      oldPrice: 4999,
+      badge: 'BESTSELLER',
+      rating: 4.4,
+      reviews: 215,
+      image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_1_dtjolj.png'
+    },
+    {
+      id: 105,
       brand: 'AERFORM',
       title: 'Textured Cashmere Blend Sweater',
-      category: 'Sweaters',
+      category: 'Fashion',
       price: 1899,
       oldPrice: 2499,
       badge: '15% OFF',
@@ -29,46 +80,10 @@ $(document).ready(function () {
       image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382197/Product_image_ucgxvy.png'
     },
     {
-      id: 102,
-      brand: 'LUMEN',
-      title: 'Over-Ear Noise Canceling Headphones',
-      category: 'Audio',
-      price: 2999,
-      oldPrice: 3999,
-      badge: '15% OFF',
-      rating: 4.9,
-      reviews: 88,
-      image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_1_dtjolj.png'
-    },
-    {
-      id: 103,
-      brand: 'KIN HOME',
-      title: 'Sculptural Ceramic Table Lamp',
-      category: 'Decor',
-      price: 1450,
-      oldPrice: null,
-      badge: '',
-      rating: 4.7,
-      reviews: 42,
-      image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_2_k3wqpn.png'
-    },
-    {
-      id: 104,
-      brand: 'RIVIERA',
-      title: 'Structured Leather Shoulder Bag',
-      category: 'Accessories',
-      price: 1750,
-      oldPrice: 2200,
-      badge: '15% OFF',
-      rating: 4.6,
-      reviews: 210,
-      image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_3_jh8ziq.png'
-    },
-    {
-      id: 105,
+      id: 106,
       brand: 'AERFORM',
       title: 'Aeroflex Pro Runner Sneakers',
-      category: 'Footwear',
+      category: 'Sports',
       price: 1400,
       oldPrice: null,
       badge: 'NEW EDIT',
@@ -77,22 +92,10 @@ $(document).ready(function () {
       image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_4_dh5fbk.png'
     },
     {
-      id: 106,
-      brand: 'LUMEN',
-      title: 'Hydration Serum & Body Oil',
-      category: 'Skincare',
-      price: 890,
-      oldPrice: null,
-      badge: '',
-      rating: 4.9,
-      reviews: 310,
-      image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382197/Product_image_5_mqgoba.png'
-    },
-    {
       id: 107,
       brand: 'NOMAD',
       title: 'Expandable Carry-On Suitcase',
-      category: 'Luggage',
+      category: 'Sports',
       price: 2499,
       oldPrice: 3199,
       badge: 'BESTSELLER',
@@ -102,21 +105,139 @@ $(document).ready(function () {
     },
     {
       id: 108,
+      brand: 'LUMEN',
+      title: 'Over-Ear Studio Pro Headphones',
+      category: 'Electronics',
+      price: 2999,
+      oldPrice: 3999,
+      badge: '15% OFF',
+      rating: 4.9,
+      reviews: 88,
+      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&auto=format&fit=crop&q=80'
+    },
+    {
+      id: 109,
       brand: 'SONORA AUDIO',
       title: 'Mini 360 Portable Tech Speaker',
-      category: 'Portable Tech',
+      category: 'Electronics',
       price: 950,
       oldPrice: null,
       badge: '',
       rating: 4.7,
       reviews: 94,
       image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382197/Product_image_7_radxl9.png'
+    },
+    {
+      id: 110,
+      brand: 'KIN HOME',
+      title: 'Sculptural Ceramic Table Lamp',
+      category: 'Home',
+      price: 1450,
+      oldPrice: null,
+      badge: '',
+      rating: 4.7,
+      reviews: 42,
+      image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_2_k3wqpn.png'
+    },
+    {
+      id: 111,
+      brand: 'KIN HOME',
+      title: 'Handcrafted Ceramic Stoneware Vase',
+      category: 'Home decor',
+      price: 899,
+      oldPrice: 1199,
+      badge: 'HANDMADE',
+      rating: 4.6,
+      reviews: 35,
+      image: 'https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=600&auto=format&fit=crop&q=80'
+    },
+    {
+      id: 112,
+      brand: 'LUMEN',
+      title: 'Hydration Serum & Body Oil',
+      category: 'Beauty',
+      price: 890,
+      oldPrice: null,
+      badge: '',
+      rating: 4.9,
+      reviews: 310,
+      image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382197/Product_image_5_mqgoba.png'
+    },
+    {
+      id: 113,
+      brand: 'BOTANICA',
+      title: 'Rosehip Restorative Facial Elixir',
+      category: 'Beauty',
+      price: 1150,
+      oldPrice: 1450,
+      badge: 'ORGANIC',
+      rating: 4.8,
+      reviews: 178,
+      image: 'https://images.unsplash.com/photo-1608248597359-0f666f772591?w=600&auto=format&fit=crop&q=80'
+    },
+    {
+      id: 114,
+      brand: 'BLUE TOKAI',
+      title: 'Organic Single-Origin Dark Roast Coffee (500g)',
+      category: 'Grocery',
+      price: 649,
+      oldPrice: 799,
+      badge: 'FRESH ROAST',
+      rating: 4.9,
+      reviews: 420,
+      image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=600&auto=format&fit=crop&q=80'
+    },
+    {
+      id: 115,
+      brand: 'BORGES',
+      title: 'Cold-Pressed Extra Virgin Olive Oil (1L)',
+      category: 'Grocery',
+      price: 899,
+      oldPrice: 1099,
+      badge: 'IMPORTED',
+      rating: 4.8,
+      reviews: 265,
+      image: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=600&auto=format&fit=crop&q=80'
+    },
+    {
+      id: 116,
+      brand: 'RIVIERA',
+      title: 'Structured Italian Leather Handbag',
+      category: 'Luxury',
+      price: 4899,
+      oldPrice: 5999,
+      badge: 'LUXURY EDIT',
+      rating: 4.9,
+      reviews: 84,
+      image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_3_jh8ziq.png'
+    },
+    {
+      id: 117,
+      brand: 'VERDURE',
+      title: 'Minimalist Swiss Automatic Chronograph',
+      category: 'Luxury',
+      price: 9499,
+      oldPrice: 11999,
+      badge: 'PREMIUM',
+      rating: 4.9,
+      reviews: 52,
+      image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80'
     }
   ];
 
   // Scoped User Helpers for Buyer Cart & Wishlist
   function getCurrentBuyer() {
-    return (typeof ShopNowCommon !== 'undefined' ? ShopNowCommon.getCurrentUser() : null) || JSON.parse(localStorage.getItem(STORAGE_USER_KEY) || 'null');
+    let u = (typeof ShopNowCommon !== 'undefined' ? ShopNowCommon.getCurrentUser() : null) || JSON.parse(localStorage.getItem(STORAGE_USER_KEY) || 'null');
+    if (!u || !u.email) {
+      u = {
+        name: 'Shreyas Patil',
+        email: 'buyer@demo.com',
+        phone: '7709418984',
+        role: 'buyer'
+      };
+      localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(u));
+    }
+    return u;
   }
 
   function getBuyerWishlist() {
@@ -214,6 +335,275 @@ $(document).ready(function () {
     if (window.ShopNowHeader && window.ShopNowHeader.updateCartBadge) {
       window.ShopNowHeader.updateCartBadge(totalCount);
     }
+  }
+
+  // Scoped User Orders Helper (with rich realistic seed matching screenshots)
+  function getBuyerOrders() {
+    const user = getCurrentBuyer();
+    const storageData = localStorage.getItem(STORAGE_ORDERS_KEY);
+    let orders = [];
+    if (storageData) {
+      try {
+        orders = JSON.parse(storageData);
+      } catch (e) {
+        orders = [];
+      }
+    }
+
+    if (!orders || orders.length === 0) {
+      const buyerName = user && user.name ? user.name : 'Shreyas Patil';
+      const buyerEmail = user && user.email ? user.email : 'buyer@demo.com';
+
+      orders = [
+        {
+          id: '15',
+          orderId: 'ORD-844623',
+          buyerEmail: buyerEmail,
+          buyerName: buyerName,
+          date: '12 Oct 2026',
+          createdAt: '2026-10-12T09:10:00.000Z',
+          total: 2499,
+          status: 'Placed &bull; Awaiting packing',
+          statusClass: 'in-transit',
+          shipTo: buyerName,
+          phone: '7709418984',
+          address: 'near bus stand kumathe, Apt. 884, Sangli, maharashtra 416306, India',
+          paymentMethod: 'Net banking - ICICI Bank',
+          items: [
+            {
+              id: 101,
+              title: 'Midnight Navy Cotton Jacket',
+              variant: 'Midnight Navy &bull; Size M',
+              price: 2499,
+              quantity: 1,
+              image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&auto=format&fit=crop&q=80'
+            }
+          ]
+        },
+        {
+          id: '14',
+          orderId: 'ORD-100245',
+          buyerEmail: buyerEmail,
+          buyerName: buyerName,
+          date: '04 Oct 2026',
+          createdAt: '2026-10-04T14:30:00.000Z',
+          total: 3999,
+          status: 'Delivered',
+          statusClass: 'delivered',
+          shipTo: buyerName,
+          phone: '7709418984',
+          address: 'near bus stand kumathe, Apt. 884, Sangli, maharashtra 416306, India',
+          paymentMethod: 'UPI (shreyas@okhdfcbank)',
+          items: [
+            {
+              id: 104,
+              title: 'Wireless Noise-Cancelling Headphones',
+              variant: 'Matte Black &bull; Wireless',
+              price: 3999,
+              quantity: 1,
+              image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_1_dtjolj.png'
+            }
+          ]
+        },
+        {
+          id: '13',
+          orderId: 'ORD-482166',
+          buyerEmail: buyerEmail,
+          buyerName: buyerName,
+          date: '14 Sep 2026',
+          createdAt: '2026-09-14T11:20:00.000Z',
+          total: 1899,
+          status: 'Delivered',
+          statusClass: 'delivered',
+          shipTo: buyerName,
+          phone: '7709418984',
+          address: 'near bus stand kumathe, Apt. 884, Sangli, maharashtra 416306, India',
+          paymentMethod: 'Credit Card (Visa ending 4242)',
+          items: [
+            {
+              id: 105,
+              title: 'Textured Cashmere Blend Sweater',
+              variant: 'Oatmeal &bull; Size L',
+              price: 1899,
+              quantity: 1,
+              image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382197/Product_image_ucgxvy.png'
+            }
+          ]
+        },
+        {
+          id: '12',
+          orderId: 'ORD-513873',
+          buyerEmail: buyerEmail,
+          buyerName: buyerName,
+          date: '18 Aug 2026',
+          createdAt: '2026-08-18T16:45:00.000Z',
+          total: 1999,
+          status: 'Delivered',
+          statusClass: 'delivered',
+          shipTo: buyerName,
+          phone: '7709418984',
+          address: 'near bus stand kumathe, Apt. 884, Sangli, maharashtra 416306, India',
+          paymentMethod: 'Cash on Delivery',
+          items: [
+            {
+              id: 102,
+              title: 'Soft White Running Shoes',
+              variant: 'Soft White &bull; UK 9',
+              price: 1999,
+              quantity: 1,
+              image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&auto=format&fit=crop&q=80'
+            }
+          ]
+        },
+        {
+          id: '11',
+          orderId: 'ORD-908726',
+          buyerEmail: buyerEmail,
+          buyerName: buyerName,
+          date: '02 Jul 2026',
+          createdAt: '2026-07-02T10:15:00.000Z',
+          total: 649,
+          status: 'Delivered',
+          statusClass: 'delivered',
+          shipTo: buyerName,
+          phone: '7709418984',
+          address: 'near bus stand kumathe, Apt. 884, Sangli, maharashtra 416306, India',
+          paymentMethod: 'UPI (Google Pay)',
+          items: [
+            {
+              id: 114,
+              title: 'Organic Single-Origin Dark Roast Coffee (500g)',
+              variant: 'Medium Coarse &bull; 500g',
+              price: 649,
+              quantity: 1,
+              image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=600&auto=format&fit=crop&q=80'
+            }
+          ]
+        },
+        {
+          id: '10',
+          orderId: 'ORD-312984',
+          buyerEmail: buyerEmail,
+          buyerName: buyerName,
+          date: '15 May 2026',
+          createdAt: '2026-05-15T08:30:00.000Z',
+          total: 899,
+          status: 'Cancelled &bull; Refund Credited',
+          statusClass: 'cancelled',
+          isCancelled: true,
+          shipTo: buyerName,
+          phone: '7709418984',
+          address: 'near bus stand kumathe, Apt. 884, Sangli, maharashtra 416306, India',
+          paymentMethod: 'UPI (PhonePe)',
+          refundAmount: 899,
+          items: [
+            {
+              id: 115,
+              title: 'Cold-Pressed Extra Virgin Olive Oil (1L)',
+              variant: 'Glass Bottle &bull; 1L',
+              price: 899,
+              quantity: 1,
+              image: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=600&auto=format&fit=crop&q=80'
+            }
+          ]
+        },
+        {
+          id: '9',
+          orderId: 'ORD-774120',
+          buyerEmail: buyerEmail,
+          buyerName: buyerName,
+          date: '20 Nov 2025',
+          createdAt: '2025-11-20T10:00:00.000Z',
+          total: 1299,
+          status: 'Delivered',
+          statusClass: 'delivered',
+          shipTo: buyerName,
+          phone: '7709418984',
+          address: 'near bus stand kumathe, Apt. 884, Sangli, maharashtra 416306, India',
+          paymentMethod: 'Card (Visa ending 4242)',
+          items: [
+            {
+              id: 104,
+              title: 'Wireless Noise-Cancelling Headphones',
+              variant: 'Matte Black &bull; Wireless',
+              price: 1299,
+              quantity: 1,
+              image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_1_dtjolj.png'
+            }
+          ]
+        }
+      ];
+      localStorage.setItem(STORAGE_ORDERS_KEY, JSON.stringify(orders));
+    } else {
+      // Ensure key demo orders (such as cancelled order ORD-312984 and 2025 order ORD-774120) exist in cached orders
+      let modified = false;
+      if (!orders.some(o => o.orderId === 'ORD-312984')) {
+        orders.push({
+          id: '10',
+          orderId: 'ORD-312984',
+          buyerEmail: user && user.email ? user.email : 'buyer@demo.com',
+          buyerName: user && user.name ? user.name : 'Shreyas Patil',
+          date: '15 May 2026',
+          createdAt: '2026-05-15T08:30:00.000Z',
+          total: 899,
+          status: 'Cancelled &bull; Refund Credited',
+          statusClass: 'cancelled',
+          isCancelled: true,
+          shipTo: user && user.name ? user.name : 'Shreyas Patil',
+          phone: '7709418984',
+          address: 'near bus stand kumathe, Apt. 884, Sangli, maharashtra 416306, India',
+          paymentMethod: 'UPI (PhonePe)',
+          refundAmount: 899,
+          items: [
+            {
+              id: 115,
+              title: 'Cold-Pressed Extra Virgin Olive Oil (1L)',
+              variant: 'Glass Bottle &bull; 1L',
+              price: 899,
+              quantity: 1,
+              image: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=600&auto=format&fit=crop&q=80'
+            }
+          ]
+        });
+        modified = true;
+      }
+      if (!orders.some(o => o.orderId === 'ORD-774120')) {
+        orders.push({
+          id: '9',
+          orderId: 'ORD-774120',
+          buyerEmail: user && user.email ? user.email : 'buyer@demo.com',
+          buyerName: user && user.name ? user.name : 'Shreyas Patil',
+          date: '20 Nov 2025',
+          createdAt: '2025-11-20T10:00:00.000Z',
+          total: 1299,
+          status: 'Delivered',
+          statusClass: 'delivered',
+          shipTo: user && user.name ? user.name : 'Shreyas Patil',
+          phone: '7709418984',
+          address: 'near bus stand kumathe, Apt. 884, Sangli, maharashtra 416306, India',
+          paymentMethod: 'Card (Visa ending 4242)',
+          items: [
+            {
+              id: 104,
+              title: 'Wireless Noise-Cancelling Headphones',
+              variant: 'Matte Black &bull; Wireless',
+              price: 1299,
+              quantity: 1,
+              image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_1_dtjolj.png'
+            }
+          ]
+        });
+        modified = true;
+      }
+      if (modified) {
+        localStorage.setItem(STORAGE_ORDERS_KEY, JSON.stringify(orders));
+      }
+    }
+    return orders;
+  }
+
+  function saveBuyerOrders(orders) {
+    localStorage.setItem(STORAGE_ORDERS_KEY, JSON.stringify(orders));
   }
 
   // Helper: Get Cached or Default Products (Instant 0ms Load with Background Sync)
@@ -337,7 +727,7 @@ $(document).ready(function () {
       // Category matching filter sidebar categories
       let cat = p.category;
       if (!cat || /^category\s*\d*$/i.test(cat)) {
-        cat = defaultRef.category || 'Sweaters';
+        cat = defaultRef.category || 'Fashion';
       }
 
       // High-resolution image fallback
@@ -394,21 +784,20 @@ $(document).ready(function () {
       $('#categoryFiltersList input[type="checkbox"]').each(function () {
         const val = ($(this).val() || '').toLowerCase();
         if (val !== 'all' && (
+          val === catLower ||
           val.includes(catLower) || catLower.includes(val) ||
-          (catLower === 'fashion' && (val === 'sweaters' || val === 'accessories' || val === 'footwear')) ||
-          (catLower === 'electronics' && (val === 'audio' || val === 'portable tech')) ||
-          (catLower === 'home' && val === 'decor') ||
-          (catLower === 'beauty' && val === 'skincare') ||
-          (catLower === 'sports' && (val === 'footwear' || val === 'luggage')) ||
-          (catLower === 'luxury' && (val === 'accessories' || val === 'sweaters'))
+          (catLower === 'fashion' && (val === 'sweaters' || val === 'accessories' || val === 'footwear' || val === 'fashion')) ||
+          (catLower === 'electronics' && (val === 'audio' || val === 'portable tech' || val === 'electronics')) ||
+          (catLower === 'home' && (val === 'decor' || val === 'home' || val === 'home decor')) ||
+          (catLower === 'beauty' && (val === 'skincare' || val === 'beauty')) ||
+          (catLower === 'sports' && (val === 'footwear' || val === 'luggage' || val === 'sports')) ||
+          (catLower === 'grocery' && (val === 'grocery' || val === 'food' || val === 'organic')) ||
+          (catLower === 'luxury' && (val === 'accessories' || val === 'sweaters' || val === 'luxury'))
         )) {
           $(this).prop('checked', true);
           matched = true;
         }
       });
-      if (!matched) {
-        $('#categoryFiltersList input[value="all"]').prop('checked', true);
-      }
       if (window.ShopNowHeader && window.ShopNowHeader.setActiveCategory) {
         window.ShopNowHeader.setActiveCategory(catLower);
       }
@@ -445,13 +834,33 @@ $(document).ready(function () {
       // Category Checkboxes
       const selectedCats = [];
       $('#categoryFiltersList input[type="checkbox"]:checked').each(function () {
-        selectedCats.push($(this).val());
+        const v = ($(this).val() || '').toLowerCase();
+        if (v && v !== 'all') selectedCats.push(v);
       });
 
-      if (!selectedCats.includes('all') && selectedCats.length > 0) {
-        filtered = filtered.filter(p =>
-          selectedCats.some(cat => (p.category || '').toLowerCase().includes(cat.toLowerCase()))
-        );
+      if (selectedCats.length > 0) {
+        filtered = filtered.filter(p => {
+          const pCat = (p.category || '').toLowerCase();
+          return selectedCats.some(cat => {
+            if (pCat === cat || pCat.includes(cat) || cat.includes(pCat)) return true;
+            if (cat === 'fashion' && (pCat === 'sweaters' || pCat === 'accessories' || pCat === 'footwear' || pCat === 'fashion')) return true;
+            if (cat === 'electronics' && (pCat === 'audio' || pCat === 'portable tech' || pCat === 'electronics')) return true;
+            if (cat === 'home' && (pCat === 'decor' || pCat === 'home decor' || pCat === 'home')) return true;
+            if (cat === 'beauty' && (pCat === 'skincare' || pCat === 'beauty')) return true;
+            if (cat === 'sports' && (pCat === 'footwear' || pCat === 'luggage' || pCat === 'sports')) return true;
+            if (cat === 'grocery' && (pCat === 'grocery' || pCat === 'organic' || pCat === 'food')) return true;
+            if (cat === 'luxury' && (pCat === 'luxury' || pCat === 'accessories')) return true;
+            return false;
+          });
+        });
+      } else if (categoryParam && categoryParam !== 'all' && !$('#categoryFiltersList input[value="all"]').is(':checked')) {
+        const catLower = categoryParam.toLowerCase();
+        filtered = filtered.filter(p => {
+          const pCat = (p.category || '').toLowerCase();
+          if (pCat === catLower || pCat.includes(catLower) || catLower.includes(pCat)) return true;
+          if (catLower === 'grocery') return pCat.includes('grocery');
+          return false;
+        });
       }
 
       // Price Filter
@@ -488,7 +897,20 @@ $(document).ready(function () {
       const $title = $('#catalogResultsTitle');
 
       const searchQuery = ($('#siteSearchInput').val() || '').trim();
-      const resultLabel = searchQuery ? `"${searchQuery}"` : 'all items';
+      const selectedCats = [];
+      $('#categoryFiltersList input[type="checkbox"]:checked').each(function () {
+        const v = $(this).val();
+        if (v && v.toLowerCase() !== 'all') selectedCats.push(v);
+      });
+
+      let resultLabel = 'all products';
+      if (searchQuery) {
+        resultLabel = `"${searchQuery}"`;
+      } else if (selectedCats.length === 1) {
+        resultLabel = selectedCats[0].toLowerCase();
+      } else if (categoryParam && categoryParam !== 'all') {
+        resultLabel = categoryParam.toLowerCase();
+      }
       $title.text(`${filteredCatalogProds.length} results for ${resultLabel}`);
 
       if (filteredCatalogProds.length === 0) {
@@ -914,112 +1336,6 @@ $(document).ready(function () {
   }
 
   // ===================================================
-  // SEED HELPERS: DEFAULT CART & ORDERS DATA
-  // ===================================================
-  const STORAGE_ORDERS_KEY = 'shopnow_orders';
-  const STORAGE_RETURNS_KEY = 'shopnow_returns';
-
-  // Seed default orders matching Figma Screen 4 center (scoped to demo buyer)
-  function initDefaultOrders() {
-    if (!localStorage.getItem(STORAGE_ORDERS_KEY)) {
-      const sampleOrders = [
-        {
-          orderId: 'SN-98241',
-          buyerEmail: 'buyer@demo.com',
-          date: 'Oct 08, 2026',
-          total: 504.00,
-          status: 'Delivered',
-          statusClass: 'delivered',
-          shipTo: 'Alex Johnson',
-          address: '742 Evergreen Terrace, Apt 4B, Springfield, OR 97477',
-          items: [
-            {
-              id: 104,
-              title: 'Structured Leather Daypack',
-              variant: 'Midnight navy &bull; Standard',
-              price: 175.00,
-              quantity: 1,
-              image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_3_jh8ziq.png'
-            },
-            {
-              id: 105,
-              title: 'Aeroflex Pro Runner',
-              variant: 'Soft white &bull; Size 9',
-              price: 140.00,
-              quantity: 1,
-              image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_4_dh5fbk.png'
-            },
-            {
-              id: 101,
-              title: 'Textured Cashmere Blend Sweater',
-              variant: 'Oatmeal &bull; 50 x 60 in',
-              price: 189.00,
-              quantity: 1,
-              image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382197/Product_image_ucgxvy.png'
-            }
-          ]
-        },
-        {
-          orderId: 'SN-98104',
-          buyerEmail: 'buyer@demo.com',
-          date: 'Oct 12, 2026',
-          total: 189.00,
-          status: 'On the way &bull; Expected Oct 16',
-          statusClass: 'in-transit',
-          shipTo: 'Alex Johnson',
-          address: '742 Evergreen Terrace, Apt 4B, Springfield, OR 97477',
-          items: [
-            {
-              id: 101,
-              title: 'Textured Cashmere Blend Sweater',
-              variant: 'Oatmeal &bull; 50 x 60 in',
-              price: 189.00,
-              quantity: 1,
-              image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382197/Product_image_ucgxvy.png'
-            }
-          ]
-        },
-        {
-          orderId: 'SN-97552',
-          buyerEmail: 'buyer@demo.com',
-          date: 'Sep 24, 2026',
-          total: 145.00,
-          status: 'Delivered',
-          statusClass: 'delivered',
-          shipTo: 'Alex Johnson',
-          address: '742 Evergreen Terrace, Apt 4B, Springfield, OR 97477',
-          items: [
-            {
-              id: 103,
-              title: 'Sculptural Ceramic Table Lamp',
-              variant: 'Warm Ivory &bull; 18 in',
-              price: 145.00,
-              quantity: 1,
-              image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_2_k3wqpn.png'
-            }
-          ]
-        }
-      ];
-      localStorage.setItem(STORAGE_ORDERS_KEY, JSON.stringify(sampleOrders));
-    }
-  }
-
-  function getBuyerOrders() {
-    const user = getCurrentBuyer();
-    if (!user || !user.email) return [];
-    if (!localStorage.getItem(STORAGE_ORDERS_KEY) && user.email.toLowerCase() === 'buyer@demo.com') {
-      initDefaultOrders();
-    }
-    const allOrders = JSON.parse(localStorage.getItem(STORAGE_ORDERS_KEY) || '[]');
-    return allOrders.filter(function (o) {
-      if (user.email.toLowerCase() === 'buyer@demo.com') {
-        return !o.buyerEmail || o.buyerEmail.toLowerCase() === 'buyer@demo.com';
-      }
-      return o.buyerEmail && o.buyerEmail.toLowerCase() === user.email.toLowerCase();
-    });
-  }
-
-  // ===================================================
   // 5. PAGE: CART (EMPTY & POPULATED CONTROLLER)
   // ===================================================
   if ($('#cartItemsListContainer').length || $('#cartEmptyState').length) {
@@ -1151,8 +1467,8 @@ $(document).ready(function () {
     const cart = getBuyerCart();
     const subtotal = cart.reduce((sum, item) => sum + (Number(item.price) * (item.quantity || 1)), 0);
 
-    $('#checkoutItemsPrice').text(`$${subtotal.toFixed(2)}`);
-    $('#checkoutTotalPrice').text(`$${subtotal.toFixed(2)}`);
+    $('#checkoutItemsPrice').text(`₹ ${subtotal.toLocaleString('en-IN')}`);
+    $('#checkoutTotalPrice').text(`₹ ${subtotal.toLocaleString('en-IN')}`);
 
     // Render review items
     let reviewHtml = '';
@@ -1170,7 +1486,7 @@ $(document).ready(function () {
               <span class="small text-muted">Qty: ${item.quantity || 1}</span>
             </div>
             <div class="fw-bold text-dark fs-6">
-              $${(Number(item.price) * (item.quantity || 1)).toFixed(2)}
+              ₹ ${(Number(item.price) * (item.quantity || 1)).toLocaleString('en-IN')}
             </div>
           </div>
         `;
@@ -1184,41 +1500,92 @@ $(document).ready(function () {
       $(this).addClass('selected').find('input[type="radio"]').prop('checked', true);
     });
 
-    // Payment method radio selection
-    $(document).on('click', '.payment-method-item', function () {
-      $('.payment-method-item').removeClass('selected').find('input[type="radio"]').prop('checked', false);
+    // Payment method selection & expansion (Tailored inputs per method)
+    $(document).on('click', '.payment-method-card', function () {
+      $('.payment-method-card').removeClass('selected').find('input[type="radio"]').prop('checked', false);
       $(this).addClass('selected').find('input[type="radio"]').prop('checked', true);
+
+      // Expand tailored fields
+      $('.payment-method-fields').addClass('d-none');
+      $(this).find('.payment-method-fields').removeClass('d-none');
     });
 
-    // Place Order Button Click -> redirect to payment
+    $(document).on('click', '.quick-upi-chip', function (e) {
+      e.stopPropagation();
+      const vpa = $(this).data('vpa');
+      let base = $('#checkoutUpiIdInput').val().split('@')[0] || 'shreyas';
+      $('#checkoutUpiIdInput').val(base + vpa);
+    });
+
+    $(document).on('click', '#btnVerifyUpiId', function (e) {
+      e.stopPropagation();
+      const val = $('#checkoutUpiIdInput').val().trim();
+      if (val && val.includes('@')) {
+        $(this).removeClass('btn-outline-secondary').addClass('btn-success').html('<i class="bi bi-check-lg"></i> Verified');
+      } else {
+        if (typeof ShopNowCommon !== 'undefined') {
+          ShopNowCommon.showToast('Please enter a valid UPI ID (e.g. name@upi)', 'warning');
+        }
+      }
+    });
+
+    // Place Order Button Click -> redirect or direct COD confirm
     $('#btnPlaceOrder').on('click', function () {
-      const orderNum = 'SN-' + Math.floor(10000 + Math.random() * 90000);
+      const orderNum = 'ORD-' + Math.floor(100000 + Math.random() * 900000);
       const chosenAddr = $('.address-choice-card.selected').data('address') || 'home';
-      
+      const chosenMethod = $('.payment-method-card.selected').data('method') || 'card';
+
+      let paymentMethodDesc = 'Credit/Debit Card (Visa ending in 4242)';
+      if (chosenMethod === 'upi') {
+        const upiId = $('#checkoutUpiIdInput').val().trim() || 'shreyas@okhdfcbank';
+        paymentMethodDesc = `UPI (${upiId})`;
+      } else if (chosenMethod === 'netbanking') {
+        const bank = $('#checkoutBankSelect').val() || 'ICICI Bank';
+        paymentMethodDesc = `Net banking - ${bank}`;
+      } else if (chosenMethod === 'cod') {
+        paymentMethodDesc = 'Cash on Delivery';
+      }
+
       const orderData = {
+        id: String(Date.now()),
         orderId: orderNum,
         buyerEmail: user.email,
-        buyerName: user.name || 'Alex Johnson',
-        date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }),
-        total: subtotal > 0 ? subtotal : 504.00,
-        status: 'In transit',
+        buyerName: user.name || 'Shreyas Patil',
+        date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+        createdAt: new Date().toISOString(),
+        total: subtotal > 0 ? subtotal : 2499,
+        status: chosenMethod === 'cod' ? 'Placed &bull; Cash on delivery' : 'Placed &bull; Awaiting packing',
         statusClass: 'in-transit',
-        shipTo: chosenAddr === 'home' ? (user.name || 'Alex Johnson') : `${user.name || 'Alex Johnson'} (Tech Hub)`,
-        address: chosenAddr === 'home' ? '742 Evergreen Terrace, Apt 4B, Springfield, OR 97477' : '500 Innovation Way, Suite 120, San Francisco, CA 94105',
+        paymentMethod: paymentMethodDesc,
+        shipTo: chosenAddr === 'home' ? (user.name || 'Shreyas Patil') : `${user.name || 'Shreyas Patil'} (Work Hub)`,
+        address: chosenAddr === 'home'
+          ? 'near bus stand kumathe, Apt. 884, Sangli, maharashtra 416306, India'
+          : '402 Raheja Towers, Bandra Kurla Complex, Mumbai, MH 400051',
+        phone: '7709418984',
         items: cart.length > 0 ? cart : [
           {
-            id: 105,
-            title: 'Aeroflex Pro Runner',
-            variant: 'Soft white &bull; Size 9',
-            price: 140.00,
+            id: 101,
+            title: 'Midnight Navy Cotton Jacket',
+            variant: 'Midnight Navy &bull; Size M',
+            price: 2499,
             quantity: 1,
-            image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_4_dh5fbk.png'
+            image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&auto=format&fit=crop&q=80'
           }
         ]
       };
 
-      localStorage.setItem('shopnow_pending_order', JSON.stringify(orderData));
-      window.location.href = `payment.html?orderId=${orderNum}&amount=${orderData.total.toFixed(2)}`;
+      if (chosenMethod === 'cod') {
+        let orders = getBuyerOrders();
+        orders.unshift(orderData);
+        saveBuyerOrders(orders);
+        saveBuyerCart([]);
+        localStorage.removeItem(STORAGE_CART_KEY);
+        if (window.ShopNowHeader) window.ShopNowHeader.updateCartBadge(0);
+        window.location.href = `order-confirmation.html?orderId=${orderNum}`;
+      } else {
+        localStorage.setItem('shopnow_pending_order', JSON.stringify(orderData));
+        window.location.href = `payment.html?order=${orderNum}&amount=${orderData.total}&method=${chosenMethod}`;
+      }
     });
 
     // Add new address form handler
@@ -1274,12 +1641,59 @@ $(document).ready(function () {
   // ===================================================
   if ($('#paymentGatewayForm').length) {
     const urlParams = new URLSearchParams(window.location.search);
-    const orderIdParam = urlParams.get('orderId') || 'SN-98241';
-    const amountParam = urlParams.get('amount') || '504.00';
+    const orderIdParam = urlParams.get('order') || urlParams.get('orderId') || 'ORD-844623';
+    const amountParam = urlParams.get('amount') || '2499';
+    const methodParam = urlParams.get('method') || 'card';
 
-    $('#paymentHeadingTitle').text(`Pay for order #${orderIdParam}`);
-    $('#paymentOrderNumLabel').text(`Order #${orderIdParam}`);
-    $('#paymentOrderAmount').text(`$${Number(amountParam).toFixed(2)}`);
+    // Look up pending order or existing order in orders list
+    const pending = JSON.parse(localStorage.getItem('shopnow_pending_order') || 'null');
+    const allOrders = getBuyerOrders();
+    const matchedOrder = allOrders.find(o => String(o.id) === String(orderIdParam) || String(o.orderId).toLowerCase() === String(orderIdParam).toLowerCase());
+
+    const displayOrderId = (pending && pending.orderId) ? pending.orderId : (matchedOrder ? matchedOrder.orderId : (orderIdParam.startsWith('ORD-') ? orderIdParam : 'ORD-844623'));
+    const displayAmount = (pending && pending.total) ? Number(pending.total) : (matchedOrder ? Number(matchedOrder.total) : Number(amountParam));
+
+    $('#paymentHeadingTitle').text(`Pay for order ${displayOrderId}`);
+    $('#paymentOrderNumLabel').text(`Order ${displayOrderId}`);
+    $('#paymentOrderAmount').text(`₹${displayAmount.toLocaleString('en-IN')}`);
+
+    // Tab Switching Controller (Card / UPI / Net banking)
+    function switchPaymentTab(tabName) {
+      $('.payment-tab-btn').removeClass('btn-outline-coral active').addClass('btn-outline-secondary');
+      $(`.payment-tab-btn[data-tab="${tabName}"]`).removeClass('btn-outline-secondary').addClass('btn-outline-coral active');
+
+      $('.payment-tab-panel').addClass('d-none');
+      if (tabName === 'upi') {
+        $('#panelUpi').removeClass('d-none');
+      } else if (tabName === 'netbanking') {
+        $('#panelNetBanking').removeClass('d-none');
+      } else {
+        $('#panelCard').removeClass('d-none');
+      }
+    }
+
+    $(document).on('click', '.payment-tab-btn', function () {
+      const tab = $(this).data('tab');
+      switchPaymentTab(tab);
+    });
+
+    // Preset tab from URL or matched order (Screenshot 2 shows Net banking default for order 15)
+    let initialTab = methodParam;
+    if (orderIdParam === '15' || (matchedOrder && matchedOrder.paymentMethod && matchedOrder.paymentMethod.toLowerCase().includes('net banking'))) {
+      initialTab = 'netbanking';
+    } else if (matchedOrder && matchedOrder.paymentMethod && matchedOrder.paymentMethod.toLowerCase().includes('upi')) {
+      initialTab = 'upi';
+    }
+    switchPaymentTab(initialTab);
+
+    // Quick UPI app button click
+    $(document).on('click', '.btn-upi-app', function () {
+      const app = $(this).data('app');
+      let base = $('#upiIdInput').val().split('@')[0] || 'shreyas';
+      if (app === 'Google Pay') $('#upiIdInput').val(base + '@okhdfcbank');
+      else if (app === 'PhonePe') $('#upiIdInput').val(base + '@ybl');
+      else if (app === 'Paytm') $('#upiIdInput').val(base + '@paytm');
+    });
 
     // Format Card Number (auto space every 4 digits)
     $('#cardNumberInput').on('input', function () {
@@ -1310,17 +1724,29 @@ $(document).ready(function () {
     $('#paymentGatewayForm').on('submit', function (e) {
       e.preventDefault();
       const outcome = $('input[name="demoOutcomeRadio"]:checked').val() || 'success';
+      const activeTab = $('.payment-tab-btn.active').data('tab') || 'card';
+
+      let methodUsed = 'Credit/Debit Card (Visa ending 4242)';
+      if (activeTab === 'upi') {
+        const upi = $('#upiIdInput').val().trim() || 'shreyas@okhdfcbank';
+        methodUsed = `UPI (${upi})`;
+      } else if (activeTab === 'netbanking') {
+        const bank = $('#bankSelectDropdown').val() || 'ICICI Bank';
+        methodUsed = `Net Banking - ${bank}`;
+      }
+
       const $btn = $('#btnPayNowSubmit');
-      $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2"></span>Processing payment...');
+      $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2"></span>Authorizing payment with bank...');
 
       setTimeout(function () {
         if (outcome === 'success') {
           // Commit order to orders list and clear user cart
           const pending = JSON.parse(localStorage.getItem('shopnow_pending_order') || 'null');
-          let orders = JSON.parse(localStorage.getItem(STORAGE_ORDERS_KEY) || '[]');
+          let orders = getBuyerOrders();
           if (pending) {
+            pending.paymentMethod = methodUsed;
             orders.unshift(pending);
-            localStorage.setItem(STORAGE_ORDERS_KEY, JSON.stringify(orders));
+            saveBuyerOrders(orders);
             if (typeof ShopNowAPI !== 'undefined') {
               ShopNowAPI.createOrder(pending);
             }
@@ -1331,9 +1757,9 @@ $(document).ready(function () {
           if (window.ShopNowHeader) {
             window.ShopNowHeader.updateCartBadge(0);
           }
-          window.location.href = `payment-success.html?orderId=${orderIdParam}&amount=${amountParam}`;
+          window.location.href = `payment-success.html?orderId=${displayOrderId}&amount=${displayAmount}`;
         } else {
-          window.location.href = `payment-failed.html?orderId=${orderIdParam}&amount=${amountParam}`;
+          window.location.href = `payment-failed.html?orderId=${displayOrderId}&amount=${displayAmount}`;
         }
       }, 900);
     });
@@ -1436,10 +1862,45 @@ $(document).ready(function () {
 
       let orders = getBuyerOrders();
 
-      if (filter === 'delivered') {
+      // Date Filtering Logic
+      const nowMs = new Date('2026-10-15T23:59:59Z').getTime();
+
+      if (filter === 'last30days') {
+        orders = orders.filter(o => {
+          const t = new Date(o.createdAt || o.date).getTime();
+          return !isNaN(t) && (nowMs - t) <= (30 * 24 * 60 * 60 * 1000) && (nowMs - t) >= 0;
+        });
+      } else if (filter === 'last3months') {
+        orders = orders.filter(o => {
+          const t = new Date(o.createdAt || o.date).getTime();
+          return !isNaN(t) && (nowMs - t) <= (92 * 24 * 60 * 60 * 1000) && (nowMs - t) >= 0;
+        });
+      } else if (filter === 'last6months') {
+        orders = orders.filter(o => {
+          const t = new Date(o.createdAt || o.date).getTime();
+          return !isNaN(t) && (nowMs - t) <= (184 * 24 * 60 * 60 * 1000) && (nowMs - t) >= 0;
+        });
+      } else if (filter === 'last12months') {
+        orders = orders.filter(o => {
+          const t = new Date(o.createdAt || o.date).getTime();
+          return !isNaN(t) && (nowMs - t) <= (366 * 24 * 60 * 60 * 1000) && (nowMs - t) >= 0;
+        });
+      } else if (filter === '2026') {
+        orders = orders.filter(o => {
+          const d = new Date(o.createdAt || o.date);
+          return !isNaN(d) && d.getFullYear() === 2026;
+        });
+      } else if (filter === '2025') {
+        orders = orders.filter(o => {
+          const d = new Date(o.createdAt || o.date);
+          return !isNaN(d) && d.getFullYear() === 2025;
+        });
+      } else if (filter === 'delivered') {
         orders = orders.filter(o => o.statusClass === 'delivered');
       } else if (filter === 'transit') {
-        orders = orders.filter(o => o.statusClass !== 'delivered');
+        orders = orders.filter(o => o.statusClass === 'in-transit');
+      } else if (filter === 'cancelled') {
+        orders = orders.filter(o => o.statusClass === 'cancelled' || o.isCancelled);
       }
 
       // Filter by search query (Order ID, item title, brand, status)
@@ -1472,8 +1933,17 @@ $(document).ready(function () {
 
       let html = '';
       orders.forEach(order => {
-        const statusBadgeClass = order.statusClass === 'delivered' ? 'delivered' : 'in-transit';
-        const statusIcon = order.statusClass === 'delivered' ? 'bi-check-circle-fill' : 'bi-truck';
+        const isCancelled = order.statusClass === 'cancelled' || order.isCancelled || (order.status && String(order.status).toLowerCase().includes('cancel'));
+        let statusBadgeClass = 'order-status-pill in-transit';
+        let statusIcon = 'bi-truck';
+
+        if (isCancelled) {
+          statusBadgeClass = 'order-status-pill text-danger bg-danger-subtle border border-danger-subtle';
+          statusIcon = 'bi-x-circle-fill';
+        } else if (order.statusClass === 'delivered') {
+          statusBadgeClass = 'order-status-pill delivered';
+          statusIcon = 'bi-check-circle-fill';
+        }
 
         html += `
           <div class="order-history-card">
@@ -1504,7 +1974,7 @@ $(document).ready(function () {
 
             <!-- Card Body Items -->
             <div class="order-history-body">
-              <div class="order-status-pill ${statusBadgeClass}">
+              <div class="${statusBadgeClass}">
                 <i class="bi ${statusIcon}"></i>
                 <span>${order.status}</span>
               </div>
@@ -1520,9 +1990,14 @@ $(document).ready(function () {
                     <div class="fw-bold text-dark fs-6">₹ ${(Number(item.price) * (item.quantity || 1)).toLocaleString('en-IN')}</div>
                   </div>
                   <div class="order-history-actions">
-                    <a href="tracking.html?orderId=${order.orderId}" class="btn-order-action">Track order</a>
-                    <button type="button" class="btn-order-action btn-trigger-review" data-title="${item.title}" data-id="${item.id}">Write a review</button>
-                    <a href="request-return.html?orderId=${order.orderId}&itemId=${item.id}" class="btn-order-action">Return item</a>
+                    ${isCancelled ? `
+                      <a href="order-tracking.html?orderId=${order.orderId}&id=${order.id}" class="btn-order-action text-danger border-danger-subtle"><i class="bi bi-x-circle me-1"></i>Track cancellation</a>
+                      <a href="support.html" class="btn-order-action">Contact support</a>
+                    ` : `
+                      <a href="order-tracking.html?orderId=${order.orderId}&id=${order.id}" class="btn-order-action">Track order</a>
+                      <button type="button" class="btn-order-action btn-trigger-review" data-title="${item.title}" data-id="${item.id}">Write a review</button>
+                      <a href="request-return.html?orderId=${order.orderId}&itemId=${item.id}" class="btn-order-action">Return item</a>
+                    `}
                   </div>
                 </div>
               `).join('')}
@@ -1534,7 +2009,7 @@ $(document).ready(function () {
       $container.html(html);
     }
 
-    renderOrders();
+    renderOrders($('#orderDateFilter').val() || 'last3months');
 
     // Date Filter change
     $('#orderDateFilter').on('change', function () {
@@ -1640,16 +2115,149 @@ $(document).ready(function () {
   // ===================================================
   if ($('#trackingTimelineContainer').length) {
     const urlParams = new URLSearchParams(window.location.search);
-    const orderIdParam = urlParams.get('orderId') || 'SN-98104';
-    const orders = JSON.parse(localStorage.getItem(STORAGE_ORDERS_KEY) || '[]');
-    const order = orders.find(o => o.orderId == orderIdParam) || orders[1] || orders[0];
+    const orderQuery = urlParams.get('id') || urlParams.get('orderId') || '15';
+    const allOrders = getBuyerOrders();
+    const order = allOrders.find(o => String(o.id) === String(orderQuery) || String(o.orderId).toLowerCase() === String(orderQuery).toLowerCase()) || allOrders[0];
 
     if (order) {
       $('#trackOrderNumBadge').text(`Order #${order.orderId}`);
       $('#btnCancelOrderLink').attr('href', `cancel-order.html?orderId=${order.orderId}`);
-      if (order.items && order.items[0]) {
-        $('#trackProductThumb').attr('src', order.items[0].image);
-        $('#trackProductTitle').text(order.items[0].title);
+
+      const firstItem = (order.items && order.items[0]) || {
+        title: 'Midnight Navy Cotton Jacket',
+        image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&auto=format&fit=crop&q=80',
+        price: 2499
+      };
+
+      $('#trackProductThumb').attr('src', firstItem.image);
+      $('#trackProductThumb').attr('alt', firstItem.title);
+      $('#trackProductTitle').text(firstItem.title);
+
+      // Populate delivery address
+      const buyerName = order.shipTo || order.buyerName || 'Shreyas Patil';
+      const buyerAddr = order.address || 'near bus stand kumathe, Apt. 884, Sangli, maharashtra 416306, India';
+      const buyerPhone = order.phone || '7709418984';
+      $('#trackAddressBlock').html(`
+        <strong class="d-block text-dark">${buyerName}</strong>
+        <div>${buyerAddr}</div>
+        <div class="text-muted extra-small mt-1">${buyerPhone}</div>
+      `);
+
+      const isCancelled = order.statusClass === 'cancelled' || order.isCancelled || (order.status && String(order.status).toLowerCase().includes('cancel'));
+
+      if (isCancelled) {
+        // 1. Show Cancelled Order State
+        $('#trackCancelledBanner').removeClass('d-none');
+        $('#trackCancelledBannerText').text(
+          `Your order was cancelled. A full refund of ₹ ${Number(order.refundAmount || order.total).toLocaleString('en-IN')} has been initiated to your ${order.paymentMethod || 'original payment method'}.`
+        );
+        $('#trackStatusText').html(`<span class="text-danger fw-bold"><i class="bi bi-x-circle-fill me-1"></i>Cancelled &bull; Refund pending</span>`);
+        $('#trackExpDelivery').html(`<strong class="text-danger">Delivery Cancelled</strong>`);
+        $('#trackStepStatusBadge')
+          .removeClass('bg-success-subtle text-success')
+          .addClass('bg-danger-subtle text-danger fs-6')
+          .html('<i class="bi bi-x-circle-fill me-1"></i>Order Cancelled');
+
+        // Cancelled progress stepper
+        $('#stepperFillBar').css({ width: '100%', background: '#dc3545' });
+
+        $('#stepNodePlaced')
+          .removeClass('upcoming active')
+          .addClass('done')
+          .html(`
+            <div class="stepper-dot"><i class="bi bi-check-lg"></i></div>
+            <span class="stepper-label">Placed</span>
+            <span class="stepper-sub">${order.date}</span>
+          `);
+
+        $('#stepNodePacked')
+          .removeClass('upcoming active')
+          .addClass('done')
+          .html(`
+            <div class="stepper-dot bg-danger border-danger text-white"><i class="bi bi-x-lg"></i></div>
+            <span class="stepper-label text-danger">Cancellation Requested</span>
+            <span class="stepper-sub">Approved</span>
+          `);
+
+        $('#stepNodeOut')
+          .removeClass('upcoming active')
+          .addClass('done')
+          .html(`
+            <div class="stepper-dot bg-danger border-danger text-white"><i class="bi bi-slash-circle"></i></div>
+            <span class="stepper-label text-danger">Order Cancelled</span>
+            <span class="stepper-sub">Terminated</span>
+          `);
+
+        $('#stepNodeDelivered')
+          .removeClass('upcoming done')
+          .addClass('active')
+          .html(`
+            <div class="stepper-dot bg-success border-success text-white"><i class="bi bi-arrow-counterclockwise"></i></div>
+            <span class="stepper-label text-success">Refund Processed</span>
+            <span class="stepper-sub">₹ ${Number(order.refundAmount || order.total).toLocaleString('en-IN')}</span>
+          `);
+
+        // Cancelled timeline updates
+        $('#trackingTimelineContainer').html(`
+          <div class="tracking-timeline-point">
+            <div class="timeline-bullet bg-success"></div>
+            <h6 class="timeline-point-title text-success">Refund initiated</h6>
+            <p class="timeline-point-desc">A refund of ₹ ${Number(order.refundAmount || order.total).toLocaleString('en-IN')} is being credited back to ${order.paymentMethod || 'your original payment method'}.</p>
+            <span class="timeline-point-time">Today &bull; 11:30 AM</span>
+          </div>
+          <div class="tracking-timeline-point">
+            <div class="timeline-bullet bg-danger"></div>
+            <h6 class="timeline-point-title text-danger">Order cancelled</h6>
+            <p class="timeline-point-desc">Your order #${order.orderId} was cancelled per your request before fulfillment.</p>
+            <span class="timeline-point-time">Today &bull; 10:15 AM</span>
+          </div>
+          <div class="tracking-timeline-point">
+            <div class="timeline-bullet"></div>
+            <h6 class="timeline-point-title">Order placed &amp; payment authorized</h6>
+            <p class="timeline-point-desc">Total ₹ ${Number(order.total).toLocaleString('en-IN')} authorized via ${order.paymentMethod || 'Payment Gateway'}.</p>
+            <span class="timeline-point-time">${order.date}</span>
+          </div>
+        `);
+
+        // Action cards
+        $('#trackActiveActionsCard').addClass('d-none');
+        $('#trackCancelledActionsCard').removeClass('d-none');
+        $('#trackRefundAmount').text(`₹ ${Number(order.refundAmount || order.total).toLocaleString('en-IN')}`);
+        $('#trackRefundMethod').text(order.paymentMethod || 'Original Payment Source');
+      } else {
+        // 2. Show Active / Delivered Order State
+        $('#trackCancelledBanner').addClass('d-none');
+        $('#trackCancelledActionsCard').addClass('d-none');
+        $('#trackActiveActionsCard').removeClass('d-none');
+        $('#stepperFillBar').css({ background: '#0d6efd' });
+
+        if (order.statusClass === 'delivered') {
+          $('#trackStatusText').html(`<span class="text-success fw-bold"><i class="bi bi-check-circle-fill me-1"></i>Delivered</span>`);
+          $('#trackExpDelivery').html(`<strong class="text-dark">Delivered on ${order.date}</strong>`);
+          $('#trackStepStatusBadge')
+            .removeClass('bg-danger-subtle text-danger')
+            .addClass('bg-success-subtle text-success fs-6')
+            .html('<i class="bi bi-check-circle-fill me-1"></i>Delivered');
+          $('#stepperFillBar').css({ width: '100%', background: '#198754' });
+
+          $('#stepNodePlaced').attr('class', 'stepper-node done');
+          $('#stepNodePacked').attr('class', 'stepper-node done');
+          $('#stepNodeOut').attr('class', 'stepper-node done');
+          $('#stepNodeDelivered').attr('class', 'stepper-node done').find('.stepper-sub').text('Completed');
+        } else {
+          $('#trackStatusText').html(`<span class="text-primary fw-bold">${order.status}</span>`);
+          $('#trackExpDelivery').html(`<strong class="text-dark">Expected delivery 19 Oct 2026</strong>`);
+          $('#trackStepStatusBadge')
+            .removeClass('bg-danger-subtle text-danger')
+            .addClass('bg-success-subtle text-success fs-6')
+            .text('On Schedule');
+          $('#stepperFillBar').css({ width: '33%', background: '#0d6efd' });
+
+          $('#stepNodePlaced').attr('class', 'stepper-node done');
+          $('#stepNodePacked').attr('class', 'stepper-node active');
+          $('#stepNodeOut').attr('class', 'stepper-node upcoming');
+          $('#stepNodeDelivered').attr('class', 'stepper-node upcoming');
+        }
       }
     }
   }
@@ -1659,41 +2267,42 @@ $(document).ready(function () {
   // ===================================================
   if ($('#cancelOrderForm').length) {
     const urlParams = new URLSearchParams(window.location.search);
-    const orderIdParam = urlParams.get('orderId') || 'SN-98104';
-    const orders = JSON.parse(localStorage.getItem(STORAGE_ORDERS_KEY) || '[]');
-    const order = orders.find(o => o.orderId == orderIdParam) || orders[1] || orders[0];
+    const orderIdParam = urlParams.get('orderId') || 'ORD-844623';
+    const allOrders = getBuyerOrders();
+    const order = allOrders.find(o => o.orderId == orderIdParam) || allOrders[0];
 
     if (order) {
       $('#cancelOrderNumBadge').text(`Order #${order.orderId}`);
-      $('#cancelRefundAmountText').text(`$${Number(order.total).toFixed(2)}`);
+      $('#cancelRefundAmountText').text(`₹ ${Number(order.total).toLocaleString('en-IN')}`);
       if (order.items && order.items[0]) {
         $('#cancelProductImg').attr('src', order.items[0].image);
         $('#cancelProductTitle').text(order.items[0].title);
-        $('#cancelProductPrice').text(`$${Number(order.items[0].price).toFixed(2)}`);
+        $('#cancelProductPrice').text(`₹ ${Number(order.items[0].price).toLocaleString('en-IN')}`);
       }
     }
 
     $('#cancelOrderForm').on('submit', function (e) {
       e.preventDefault();
-      // Update order status in localStorage
-      let allOrders = JSON.parse(localStorage.getItem(STORAGE_ORDERS_KEY) || '[]');
-      const target = allOrders.find(o => o.orderId == orderIdParam);
+      let orders = getBuyerOrders();
+      const target = orders.find(o => o.orderId == orderIdParam);
       if (target) {
         target.status = 'Cancelled &bull; Refund pending';
         target.statusClass = 'cancelled';
-        localStorage.setItem(STORAGE_ORDERS_KEY, JSON.stringify(allOrders));
+        target.isCancelled = true;
+        target.refundAmount = target.total;
+        saveBuyerOrders(orders);
       }
 
-      window.location.href = `order-cancelled.html?orderId=${orderIdParam}&refund=${order ? order.total.toFixed(2) : '189.00'}`;
+      window.location.href = `order-cancelled.html?orderId=${orderIdParam}&refund=${order ? order.total : '2499'}`;
     });
   }
 
   if ($('#cancelledOrderNumLabel').length) {
     const urlParams = new URLSearchParams(window.location.search);
-    const orderIdParam = urlParams.get('orderId') || 'SN-98104';
-    const refundParam = urlParams.get('refund') || '189.00';
+    const orderIdParam = urlParams.get('orderId') || 'ORD-844623';
+    const refundParam = urlParams.get('refund') || '2499';
     $('#cancelledOrderNumLabel').text(`#${orderIdParam}`);
-    $('#cancelledRefundAmountLabel').text(`$${Number(refundParam).toFixed(2)}`);
+    $('#cancelledRefundAmountLabel').text(`₹ ${Number(refundParam).toLocaleString('en-IN')}`);
   }
 
   // ===================================================
@@ -1701,69 +2310,95 @@ $(document).ready(function () {
   // ===================================================
   if ($('#requestReturnForm').length) {
     const urlParams = new URLSearchParams(window.location.search);
-    const orderIdParam = urlParams.get('orderId') || 'SN-97880';
+    const orderIdParam = urlParams.get('orderId') || 'ORD-100245';
+    const itemIdParam = urlParams.get('itemId');
+
+    const allOrders = getBuyerOrders();
+    const foundOrder = allOrders.find(o => o.orderId === orderIdParam || o.id === orderIdParam) || allOrders[1] || allOrders[0];
+    const foundItem = (foundOrder && Array.isArray(foundOrder.items) && foundOrder.items.find(it => String(it.id) === String(itemIdParam))) || (foundOrder && foundOrder.items[0]) || {
+      id: 104,
+      title: 'Wireless Noise-Cancelling Headphones',
+      price: 3999,
+      image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_1_dtjolj.png'
+    };
+
+    // Dynamically update item overview on request-return.html
+    $('#returnOrderNum').text(`Order #${foundOrder ? foundOrder.orderId : 'ORD-100245'}`);
+    $('#returnProductTitle').text(foundItem.title);
+    $('#returnProductImage').attr('src', foundItem.image);
+    $('#returnProductImage').attr('alt', foundItem.title);
+    $('#returnProductPrice').text(`₹ ${(Number(foundItem.price) * (foundItem.quantity || 1)).toLocaleString('en-IN')}`);
+    if (foundOrder && foundOrder.date) {
+      $('#returnDeliveredDate').text(foundOrder.date);
+    }
 
     $('#requestReturnForm').on('submit', function (e) {
       e.preventDefault();
       const retId = 'RET-' + Math.floor(1000 + Math.random() * 9000);
       const reason = $('#returnReasonSelect option:selected').text();
+      const condition = $('#returnConditionSelect option:selected').text();
+      const comments = $('#returnCommentsText').val().trim();
+      const isStoreCredit = $('#refundMethodCredit').is(':checked');
 
       let returns = JSON.parse(localStorage.getItem(STORAGE_RETURNS_KEY) || '[]');
       const newRet = {
         returnId: retId,
-        orderId: orderIdParam,
-        itemTitle: 'Hydration Serum & Body Oil',
-        image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382197/Product_image_5_mqgoba.png',
-        amount: 48.00,
+        orderId: foundOrder ? foundOrder.orderId : orderIdParam,
+        itemId: foundItem.id,
+        itemTitle: foundItem.title,
+        image: foundItem.image,
+        amount: Number(foundItem.price) * (foundItem.quantity || 1),
         reason: reason,
+        condition: condition,
+        comments: comments,
+        refundPreference: isStoreCredit ? 'Store Credit' : 'Original Payment Method',
         currentStep: 1, // Step 1: Return requested
-        date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })
+        status: 'Return requested',
+        statusType: 'in_progress',
+        date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
       };
+
       returns.unshift(newRet);
       localStorage.setItem(STORAGE_RETURNS_KEY, JSON.stringify(returns));
 
-      if (typeof ShopNowAPI !== 'undefined') {
+      if (typeof ShopNowAPI !== 'undefined' && ShopNowAPI.createReturn) {
         ShopNowAPI.createReturn(newRet);
       }
 
-      window.location.href = `return-status.html?retId=${retId}`;
+      window.location.href = `returns.html?retId=${retId}`;
     });
   }
 
   // ===================================================
-  // 14. PAGE: RETURN STATUS CONTROLLER
+  // 14. PAGE: RETURN STATUS & RETURNS LIST CONTROLLER
   // ===================================================
   if ($('#returnsListContainer').length) {
-    // Seed sample returns matching Figma Screen 5 center
     function initDefaultReturns() {
       if (!localStorage.getItem(STORAGE_RETURNS_KEY)) {
         const defaultReturns = [
           {
-            returnId: 'RET-7281',
-            orderId: 'SN-98104',
+            returnId: 'RET-8412',
+            orderId: 'ORD-100245',
+            itemTitle: 'Wireless Noise-Cancelling Headphones',
+            image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_1_dtjolj.png',
+            amount: 3999,
+            date: '06 Oct 2026',
+            currentStep: 2, // Step 2: Item picked up
+            status: 'Pickup scheduled',
+            statusType: 'in_progress',
+            refundPreference: 'Original Payment Method'
+          },
+          {
+            returnId: 'RET-6290',
+            orderId: 'ORD-482166',
             itemTitle: 'Textured Cashmere Blend Sweater',
             image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382197/Product_image_ucgxvy.png',
-            amount: 189.00,
-            date: 'Oct 11, 2026',
-            currentStep: 2 // Step 2: Item picked up
-          },
-          {
-            returnId: 'RET-6104',
-            orderId: 'SN-97552',
-            itemTitle: 'Sculptural Ceramic Table Lamp',
-            image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_2_k3wqpn.png',
-            amount: 145.00,
-            date: 'Sep 26, 2026',
-            currentStep: 3 // Step 3: Inspected & approved
-          },
-          {
-            returnId: 'RET-5580',
-            orderId: 'SN-96112',
-            itemTitle: 'Structured Leather Shoulder Bag',
-            image: 'https://res.cloudinary.com/dpva4smxo/image/upload/v1791382196/Product_image_3_jh8ziq.png',
-            amount: 175.00,
-            date: 'Aug 14, 2026',
-            currentStep: 4 // Step 4: Refund processed
+            amount: 1899,
+            date: '18 Sep 2026',
+            currentStep: 4, // Step 4: Refund processed
+            status: 'Refund completed',
+            statusType: 'completed',
+            refundPreference: 'Original Payment Card'
           }
         ];
         localStorage.setItem(STORAGE_RETURNS_KEY, JSON.stringify(defaultReturns));
@@ -1771,67 +2406,99 @@ $(document).ready(function () {
     }
     initDefaultReturns();
 
-    const returns = JSON.parse(localStorage.getItem(STORAGE_RETURNS_KEY) || '[]');
-    let html = '';
+    function renderReturnsList(filter = 'all') {
+      const allReturns = JSON.parse(localStorage.getItem(STORAGE_RETURNS_KEY) || '[]');
+      let returns = [...allReturns];
 
-    returns.forEach(ret => {
-      const step1Done = ret.currentStep >= 1 ? 'done' : 'upcoming';
-      const step2Done = ret.currentStep > 2 ? 'done' : (ret.currentStep === 2 ? 'active' : 'upcoming');
-      const step3Done = ret.currentStep > 3 ? 'done' : (ret.currentStep === 3 ? 'active' : 'upcoming');
-      const step4Done = ret.currentStep >= 4 ? 'done' : 'upcoming';
+      if (filter === 'in_progress') {
+        returns = returns.filter(r => r.currentStep < 4 || r.statusType === 'in_progress');
+      } else if (filter === 'completed') {
+        returns = returns.filter(r => r.currentStep >= 4 || r.statusType === 'completed');
+      }
 
-      const fillWidth = ret.currentStep === 1 ? '0%' : (ret.currentStep === 2 ? '33%' : (ret.currentStep === 3 ? '66%' : '100%'));
-
-      html += `
-        <div class="card border-1 rounded-4 shadow-sm p-4 mb-4">
-          <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 border-bottom pb-3 mb-3">
-            <div class="d-flex align-items-center gap-3">
-              <div class="cart-item-thumb-box" style="width: 72px; height: 72px;">
-                <img src="${ret.image}" alt="${ret.itemTitle}" />
-              </div>
-              <div>
-                <span class="badge bg-secondary-subtle text-secondary mb-1">Return ID: #${ret.returnId}</span>
-                <h5 class="fw-bold text-dark mb-0 fs-6">${ret.itemTitle}</h5>
-                <span class="small text-muted">Refund Amount: <strong class="text-dark">$${Number(ret.amount).toFixed(2)}</strong></span>
-              </div>
-            </div>
-            <div class="text-end small text-muted">
-              <div>Requested: <strong class="text-dark">${ret.date}</strong></div>
-              <div class="text-success fw-bold">Pickup scheduled</div>
+      if (returns.length === 0) {
+        $('#returnsListContainer').html(`
+          <div class="card border-1 rounded-4 shadow-sm p-5 text-center">
+            <i class="bi bi-arrow-counterclockwise text-muted fs-1 mb-2 d-block"></i>
+            <h5 class="text-muted fw-bold">No return requests found.</h5>
+            <p class="small text-muted mb-3">You don't have any returns matching the selected status filter.</p>
+            <div>
+              <a href="orders.html" class="btn btn-coral px-4 rounded-pill">View delivered orders</a>
             </div>
           </div>
+        `);
+        return;
+      }
 
-          <!-- 4-Step Stepper -->
-          <div class="stepper-container my-3">
-            <div class="stepper-progress-line">
-              <div class="stepper-progress-fill" style="width: ${fillWidth};"></div>
+      let html = '';
+      returns.forEach(ret => {
+        const step1Done = ret.currentStep >= 1 ? 'done' : 'upcoming';
+        const step2Done = ret.currentStep > 2 ? 'done' : (ret.currentStep === 2 ? 'active' : 'upcoming');
+        const step3Done = ret.currentStep > 3 ? 'done' : (ret.currentStep === 3 ? 'active' : 'upcoming');
+        const step4Done = ret.currentStep >= 4 ? 'done' : 'upcoming';
+
+        const fillWidth = ret.currentStep === 1 ? '0%' : (ret.currentStep === 2 ? '33%' : (ret.currentStep === 3 ? '66%' : '100%'));
+
+        html += `
+          <div class="card border-1 rounded-4 shadow-sm p-4 mb-4">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 border-bottom pb-3 mb-3">
+              <div class="d-flex align-items-center gap-3">
+                <div class="cart-item-thumb-box" style="width: 72px; height: 72px;">
+                  <img src="${ret.image}" alt="${ret.itemTitle}" />
+                </div>
+                <div>
+                  <span class="badge bg-secondary-subtle text-secondary mb-1">Return ID: #${ret.returnId} &bull; Order #${ret.orderId}</span>
+                  <h5 class="fw-bold text-dark mb-0 fs-6">${ret.itemTitle}</h5>
+                  <span class="small text-muted">Refund Amount: <strong class="text-dark">₹ ${Number(ret.amount).toLocaleString('en-IN')}</strong></span>
+                </div>
+              </div>
+              <div class="text-end small text-muted">
+                <div>Requested: <strong class="text-dark">${ret.date}</strong></div>
+                <div class="${ret.currentStep >= 4 ? 'text-success' : 'text-primary'} fw-bold">
+                  <i class="bi ${ret.currentStep >= 4 ? 'bi-check-circle-fill' : 'bi-clock-history'} me-1"></i>
+                  ${ret.status || (ret.currentStep >= 4 ? 'Refund completed' : 'Pickup in progress')}
+                </div>
+              </div>
             </div>
 
-            <div class="stepper-node ${step1Done}">
-              <div class="stepper-dot"><i class="bi bi-check-lg"></i></div>
-              <span class="stepper-label">Return requested</span>
-            </div>
+            <!-- 4-Step Stepper -->
+            <div class="stepper-container my-3">
+              <div class="stepper-progress-line">
+                <div class="stepper-progress-fill" style="width: ${fillWidth};"></div>
+              </div>
 
-            <div class="stepper-node ${step2Done}">
-              <div class="stepper-dot">${ret.currentStep >= 2 ? '<i class="bi bi-box-seam"></i>' : '2'}</div>
-              <span class="stepper-label">Item picked up</span>
-            </div>
+              <div class="stepper-node ${step1Done}">
+                <div class="stepper-dot"><i class="bi bi-check-lg"></i></div>
+                <span class="stepper-label">Return requested</span>
+              </div>
 
-            <div class="stepper-node ${step3Done}">
-              <div class="stepper-dot">${ret.currentStep >= 3 ? '<i class="bi bi-search"></i>' : '3'}</div>
-              <span class="stepper-label">Inspected &amp; approved</span>
-            </div>
+              <div class="stepper-node ${step2Done}">
+                <div class="stepper-dot">${ret.currentStep >= 2 ? '<i class="bi bi-box-seam"></i>' : '2'}</div>
+                <span class="stepper-label">Item picked up</span>
+              </div>
 
-            <div class="stepper-node ${step4Done}">
-              <div class="stepper-dot">${ret.currentStep >= 4 ? '<i class="bi bi-check-lg"></i>' : '4'}</div>
-              <span class="stepper-label">Refund processed</span>
+              <div class="stepper-node ${step3Done}">
+                <div class="stepper-dot">${ret.currentStep >= 3 ? '<i class="bi bi-search"></i>' : '3'}</div>
+                <span class="stepper-label">Inspected &amp; approved</span>
+              </div>
+
+              <div class="stepper-node ${step4Done}">
+                <div class="stepper-dot">${ret.currentStep >= 4 ? '<i class="bi bi-check-lg"></i>' : '4'}</div>
+                <span class="stepper-label">Refund processed</span>
+              </div>
             </div>
           </div>
-        </div>
-      `;
+        `;
+      });
+
+      $('#returnsListContainer').html(html);
+    }
+
+    renderReturnsList($('#returnStatusFilter').val() || 'all');
+
+    $('#returnStatusFilter').on('change', function () {
+      renderReturnsList($(this).val());
     });
-
-    $('#returnsListContainer').html(html);
   }
 
   // ===================================================
@@ -2288,14 +2955,13 @@ $(document).ready(function () {
   // ===================================================
   // 18. PAGE: PROFILE CONTROLLER (FIGMA SCREEN: PROFILE)
   // ===================================================
-  const STORAGE_ADDRESSES_KEY = 'shopnow_addresses';
-
   if ($('#profileDetailsForm').length) {
     const user = JSON.parse(localStorage.getItem(STORAGE_USER_KEY) || 'null') || {
       name: 'Priya Patel',
       email: 'priya@example.in',
       phone: '+91 98201 45892',
-      role: 'buyer'
+      role: 'buyer',
+      password: 'buyer123'
     };
 
     $('#profileFullName').val(user.name || 'Priya Patel');
@@ -2303,8 +2969,16 @@ $(document).ready(function () {
     $('#profilePhone').val(user.phone || '+91 98201 45892');
     $('#profileDisplayName').text(user.name || 'Priya Patel');
 
-    const initial = (user.name || 'Alex').charAt(0).toUpperCase();
-    $('#profileAvatarInitial').text(initial);
+    function updateAvatarDisplay(avatarUrl, name) {
+      if (avatarUrl) {
+        $('#profileAvatarInitial').html(`<img src="${avatarUrl}" alt="${name || 'Avatar'}" class="w-100 h-100 rounded-circle object-fit-cover" />`);
+      } else {
+        const initial = (name || 'Priya').charAt(0).toUpperCase();
+        $('#profileAvatarInitial').text(initial);
+      }
+    }
+
+    updateAvatarDisplay(user.avatar, user.name);
 
     // Save Profile Details
     $('#profileDetailsForm').on('submit', function (e) {
@@ -2322,48 +2996,131 @@ $(document).ready(function () {
 
       localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(updatedUser));
       $('#profileDisplayName').text(updatedName);
-      $('#profileAvatarInitial').text(updatedName.charAt(0).toUpperCase());
+      if (!updatedUser.avatar) {
+        $('#profileAvatarInitial').text(updatedName.charAt(0).toUpperCase());
+      }
 
       // Sync with MockAPI Users endpoint
-      window.ShopNowMockAPI.put('users', '1', updatedUser);
+      if (window.ShopNowMockAPI && window.ShopNowMockAPI.put) {
+        window.ShopNowMockAPI.put('users', '1', updatedUser);
+      }
 
       if (typeof ShopNowCommon !== 'undefined') {
         ShopNowCommon.showToast('Profile details updated successfully!', 'success');
       }
     });
 
-    // Update Password
+    // Modal popup helper for password errors/success
+    function showPasswordAlert(title, message, isError = true) {
+      $('#passwordAlertTitle').text(title);
+      $('#passwordAlertMessage').text(message);
+      if (isError) {
+        $('#passwordAlertIconWrap').html('<i class="bi bi-exclamation-triangle-fill text-danger" style="font-size: 3rem;"></i>');
+      } else {
+        $('#passwordAlertIconWrap').html('<i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>');
+      }
+      const modalEl = document.getElementById('passwordAlertModal');
+      if (modalEl) {
+        const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+        modal.show();
+      }
+    }
+
+    // Update Password with Modal Popup on wrong password or mismatch
     $('#profilePasswordForm').on('submit', function (e) {
       e.preventDefault();
       const currentPass = $('#profileCurrentPassword').val().trim();
       const newPass = $('#profileNewPassword').val().trim();
       const confirmPass = $('#profileConfirmPassword').val().trim();
 
+      const currentUser = JSON.parse(localStorage.getItem(STORAGE_USER_KEY) || 'null') || user;
+      const expectedPass = currentUser.password || 'buyer123';
+
+      // 1. Verify current password
+      if (currentPass !== expectedPass) {
+        showPasswordAlert(
+          'Incorrect Current Password',
+          'The current password you entered is incorrect. Please verify and try again.',
+          true
+        );
+        $('#profileCurrentPassword').focus();
+        return;
+      }
+
+      // 2. Verify new password length
       if (newPass.length < 8) {
+        showPasswordAlert(
+          'Password Too Short',
+          'Your new password must be at least 8 characters long to keep your account secure.',
+          true
+        );
+        $('#profileNewPassword').focus();
+        return;
+      }
+
+      // 3. Verify new and confirm passwords match
+      if (newPass !== confirmPass) {
+        $('#passwordMatchError').removeClass('d-none');
+        showPasswordAlert(
+          'Passwords Do Not Match',
+          'The new password and confirm new password do not match. Please re-enter them carefully.',
+          true
+        );
+        $('#profileConfirmPassword').focus();
+        return;
+      }
+
+      // Success: Save new password and show success modal
+      $('#passwordMatchError').addClass('d-none');
+      currentUser.password = newPass;
+      localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(currentUser));
+      this.reset();
+
+      showPasswordAlert(
+        'Password Updated Successfully',
+        'Your password has been changed successfully! Please use your new password next time you sign in.',
+        false
+      );
+    });
+
+    // Photo file selection via file picker input
+    $('#btnChangePhoto').on('click', function () {
+      $('#profileImageFileInput').trigger('click');
+    });
+
+    $('#profileImageFileInput').on('change', function () {
+      const file = this.files && this.files[0];
+      if (!file) return;
+
+      if (!file.type.startsWith('image/')) {
         if (typeof ShopNowCommon !== 'undefined') {
-          ShopNowCommon.showToast('New password must have at least 8 characters.', 'warning');
+          ShopNowCommon.showToast('Please select a valid image file (JPG, PNG, WebP).', 'warning');
         }
         return;
       }
 
-      if (newPass !== confirmPass) {
-        $('#passwordMatchError').removeClass('d-none');
+      // Max 5MB check
+      if (file.size > 5 * 1024 * 1024) {
+        if (typeof ShopNowCommon !== 'undefined') {
+          ShopNowCommon.showToast('Selected image exceeds 5MB limit. Please choose a smaller photo.', 'warning');
+        }
         return;
       }
 
-      $('#passwordMatchError').addClass('d-none');
-      this.reset();
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const dataUrl = e.target.result;
+        updateAvatarDisplay(dataUrl, user.name);
 
-      if (typeof ShopNowCommon !== 'undefined') {
-        ShopNowCommon.showToast('Password updated successfully!', 'success');
-      }
-    });
+        const currentUser = JSON.parse(localStorage.getItem(STORAGE_USER_KEY) || 'null') || user;
+        currentUser.avatar = dataUrl;
+        localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(currentUser));
 
-    // Change photo simulated trigger
-    $('#btnChangePhoto').on('click', function () {
-      if (typeof ShopNowCommon !== 'undefined') {
-        ShopNowCommon.showToast('Photo upload option: select your image file.', 'info');
-      }
+        if (typeof ShopNowCommon !== 'undefined') {
+          ShopNowCommon.showToast('Profile photo updated successfully!', 'success');
+        }
+      };
+      reader.readAsDataURL(file);
     });
   }
 
