@@ -47,63 +47,22 @@
         <li>
           <a href="delivery-agents.html" class="admin-nav-item ${activeTab === 'delivery' ? 'active' : ''}">
             <i class="bi bi-truck"></i>
-            <span>Delivery Agent</span>
-          </a>
-        </li>
-        <li>
-          <a href="orders.html" class="admin-nav-item ${activeTab === 'orders' ? 'active' : ''}">
+            <span>Assign Delivery</span>
+            </a>
+            </li>
+            <li>
+            <a href="orders.html" class="admin-nav-item ${activeTab === 'orders' ? 'active' : ''}">
             <i class="bi bi-receipt"></i>
-            <span>Order Management</span>
+            <span>Order Tracking</span>
           </a>
         </li>
-        <li>
-          <a href="returns-refunds.html" class="admin-nav-item ${activeTab === 'returns' ? 'active' : ''}">
-            <i class="bi bi-arrow-left-right"></i>
-            <span>Return and Refund</span>
-          </a>
-        </li>
-        <li>
-          <a href="products.html" class="admin-nav-item ${activeTab === 'products' ? 'active' : ''}">
-            <i class="bi bi-box-seam-fill"></i>
-            <span>Product</span>
-          </a>
-        </li>
-        <li>
-          <a href="categories.html" class="admin-nav-item ${activeTab === 'categories' ? 'active' : ''}">
-            <i class="bi bi-tags-fill"></i>
-            <span>Categories</span>
-          </a>
-        </li>
-        <li>
-          <a href="payouts.html" class="admin-nav-item ${activeTab === 'payouts' ? 'active' : ''}">
-            <i class="bi bi-cash-coin"></i>
-            <span>Commission &amp; Payout</span>
-          </a>
-        </li>
-        <li>
-          <a href="promotions.html" class="admin-nav-item ${activeTab === 'promotions' ? 'active' : ''}">
-            <i class="bi bi-megaphone-fill"></i>
-            <span>Promotion</span>
-          </a>
-        </li>
-        <li>
-          <a href="support.html" class="admin-nav-item ${activeTab === 'support' ? 'active' : ''}">
-            <i class="bi bi-headset"></i>
-            <span>Support &amp; Complaint</span>
-          </a>
-        </li>
-        <li>
+       
           <a href="reports.html" class="admin-nav-item ${activeTab === 'reports' ? 'active' : ''}">
             <i class="bi bi-bar-chart-fill"></i>
             <span>Reports</span>
           </a>
         </li>
-        <li>
-          <a href="notifications.html" class="admin-nav-item ${activeTab === 'notifications' ? 'active' : ''}">
-            <i class="bi bi-bell-fill"></i>
-            <span>Notification</span>
-          </a>
-        </li>
+       
         <li>
           <a href="profile.html" class="admin-nav-item ${activeTab === 'profile' ? 'active' : ''}">
             <i class="bi bi-person-badge-fill"></i>

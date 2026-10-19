@@ -616,11 +616,11 @@ $(document).ready(function () {
         if (Array.isArray(parsed) && parsed.length > 0) {
           initial = parsed;
         }
-      } catch (e) {}
+      } catch (e) { }
     } else {
       localStorage.setItem(STORAGE_PRODUCTS_KEY, JSON.stringify(defaultProducts));
     }
-    
+
     // Call callback immediately with initial data for instant UI rendering
     callback(initial);
 
@@ -715,7 +715,7 @@ $(document).ready(function () {
     function normalizeCatalogProduct(p, idx) {
       if (!p) return null;
       const defaultRef = defaultProducts.find(d => String(d.id) === String(p.id)) || defaultProducts[idx % defaultProducts.length];
-      
+
       // Sanitizing dummy generated titles
       const isDummyTitle = !p.title || /^title\s*\d*$/i.test(p.title);
       const title = isDummyTitle ? defaultRef.title : p.title;
@@ -1368,8 +1368,8 @@ $(document).ready(function () {
 
       $headerCount.text(`${totalItems} item${totalItems > 1 ? 's' : ''}`);
       $footerCount.text(`Subtotal (${totalItems} item${totalItems > 1 ? 's' : ''}):`);
-      $footerVal.text(`$${subtotalPrice.toFixed(2)}`);
-      $summarySubtotal.text(`$${subtotalPrice.toFixed(2)}`);
+      $footerVal.text(`₹${subtotalPrice.toFixed(2)}`);
+      $summarySubtotal.text(`₹${subtotalPrice.toFixed(2)}`);
 
       let html = '';
       cart.forEach((item, idx) => {
@@ -1399,7 +1399,7 @@ $(document).ready(function () {
                 ${[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => `<option value="${n}" ${n == (item.quantity || 1) ? 'selected' : ''}>${n}</option>`).join('')}
               </select>
             </div>
-            <div class="cart-item-price-val">$${itemTotal}</div>
+            <div class="cart-item-price-val">₹ ${itemTotal}</div>
           </div>
         `;
       });
@@ -2674,7 +2674,7 @@ $(document).ready(function () {
           const hist = JSON.parse(sessionStorage.getItem(CHAT_STORAGE_KEY) || '[]');
           hist.push({ sender, htmlContent, time: timeStr });
           sessionStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(hist));
-        } catch (e) {}
+        } catch (e) { }
       }
     }
 
@@ -2758,7 +2758,7 @@ $(document).ready(function () {
             hist.forEach(m => appendMessage(m.sender, m.htmlContent, false));
             return;
           }
-        } catch (e) {}
+        } catch (e) { }
       }
 
       // Initial Bot Greeting
@@ -2871,7 +2871,7 @@ $(document).ready(function () {
           if (Array.isArray(parsed) ? parsed.length > 0 : parsed) {
             callback(parsed);
           }
-        } catch (e) {}
+        } catch (e) { }
       }
 
       const url = this.endpoints[resource];
